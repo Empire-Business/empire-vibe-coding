@@ -9,27 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Empire Brand Colors
-        empire: {
-          black: '#000000',
-          light: '#f2f2f2',
-          sage: '#bec3bf',
-          sand: '#d8d2c1',
-          olive: '#6f755a',
-          terracotta: '#8c4b32',
-          gold: '#e4b820',
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
-        // Semantic aliases
-        background: '#f2f2f2',
-        foreground: '#000000',
-        muted: '#6f755a',
-        accent: '#e4b820',
-        card: '#ffffff',
-        border: '#d8d2c1',
       },
       fontFamily: {
-        sans: ['Archivo', 'system-ui', 'sans-serif'],
-        display: ['Archivo Black', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
     },
