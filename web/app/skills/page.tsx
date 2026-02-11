@@ -1,4 +1,4 @@
-import { Download, Terminal, CheckCircle, Copy, BookOpen, AlertTriangle, Wrench, Rocket, ArrowRight, ExternalLink, HelpCircle } from 'lucide-react'
+import { Download, Terminal, CheckCircle, BookOpen, AlertTriangle, Wrench, Rocket, ArrowRight, ExternalLink, HelpCircle, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 
 const skills = [
@@ -6,61 +6,37 @@ const skills = [
     id: 'start-guide',
     title: 'Guia de Início',
     description: 'Inicia o guia completo de vibe coding para iniciantes.',
-    longDescription: 'Esta skill ativa o guia completo de vibe coding. O Claude vai te guiar passo a passo, explicando cada conceito em português simples, usando analogias do dia a dia. Ele vai perguntar o que você quer fazer (criar projeto, resolver erro, etc.) e te orientar através da documentação apropriada.',
+    longDescription: 'Esta skill ativa o guia completo. O Claude baixa a documentação do GitHub (se necessário) e te guia passo a passo através do projeto.',
     icon: Rocket,
     color: 'bg-blue-100 text-blue-600',
-    usage: 'Abra seu projeto no terminal e digite: "me ajuda a começar um projeto" ou "quero aprender vibe coding"',
-    features: [
-      'Guia passo a passo personalizado',
-      'Explicações em português simples',
-      'Verifica entendimento antes de prosseguir',
-      'Consulta documentação automaticamente',
-    ],
+    usage: '"quero começar um projeto", "me ajuda a desenvolver", "iniciar vibe coding"',
   },
   {
     id: 'ask-term',
     title: 'Explicar Termo',
     description: 'Explica um termo técnico com analogias do dia a dia.',
-    longDescription: 'Pergunte qualquer termo técnico e o Claude vai explicar usando o glossário do projeto. Ele explica o que é, para que serve, e dá uma analogia do dia a dia para facilitar o entendimento.',
+    longDescription: 'Pergunte qualquer termo técnico. O Claude baixa o glossário do GitHub e explica com analogias.',
     icon: BookOpen,
     color: 'bg-green-100 text-green-600',
-    usage: 'Pergunte: "o que é API?", "explique o que é commit", "o que significa deploy?"',
-    features: [
-      'Consultas ao glossário completo',
-      'Analogias do dia a dia',
-      'Exemplos práticos',
-      'Linguagem simples e acessível',
-    ],
+    usage: '"o que é API?", "explique commit", "o que significa deploy?"',
   },
   {
     id: 'check-command',
     title: 'Verificar Comando',
     description: 'Verifica se um comando é perigoso antes de executar.',
-    longDescription: 'Antes de executar qualquer comando que parece estranho, pergunte ao Claude. Ele consulta a lista de bandeiras vermelhas e te avisa se o comando é perigoso, explicando os riscos e oferecendo alternativas seguras.',
+    longDescription: 'Antes de executar comandos suspeitos, pergunte ao Claude. Ele baixa a lista de bandeiras vermelhas e te avisa.',
     icon: AlertTriangle,
     color: 'bg-orange-100 text-orange-600',
-    usage: 'Pergunte: "posso rodar rm -rf /?", "esse comando é seguro?", "o que faz git reset --hard?"',
-    features: [
-      'Verifica comandos perigosos',
-      'Explica os riscos em português',
-      'Oferece alternativas seguras',
-      'Nunca executa sem confirmação',
-    ],
+    usage: '"posso rodar rm -rf?", "esse comando é seguro?", "verifica antes de executar"',
   },
   {
     id: 'troubleshoot',
     title: 'Resolver Erro',
     description: 'Ajuda a resolver erros comuns passo a passo.',
-    longDescription: 'Quando der erro, cole a mensagem de erro para o Claude. Ele consulta o guia de troubleshooting e oferece soluções em português simples, explicando cada passo necessário.',
+    longDescription: 'Cole o erro e o Claude baixa o guia de troubleshooting do GitHub para te ajudar.',
     icon: Wrench,
     color: 'bg-purple-100 text-purple-600',
-    usage: 'Cole o erro e digite: "deu esse erro, me ajuda", "como resolvo isso?", " não sei o que fazer"',
-    features: [
-      'Identifica o tipo de erro',
-      'Consulta guia de soluções',
-      'Passos em português simples',
-      'Soluções genéricas quando não está na lista',
-    ],
+    usage: '"deu esse erro: [cole aqui]", "como resolvo isso?", "me ajuda com esse erro"',
   },
 ]
 
@@ -71,9 +47,20 @@ export default function SkillsPage() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Instalar Claude Skills</h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Siga os passos abaixo para instalar as skills no seu Claude Code e começar a usar.
+          Skills que dão superpoderes ao seu Claude Code para desenvolvimento com IA.
         </p>
       </div>
+
+      {/* Como Funciona */}
+      <section className="mb-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h2 className="text-xl font-semibold text-blue-900 mb-4">Como Funciona</h2>
+        <div className="space-y-3 text-blue-800">
+          <p><strong>1. Instale a skill</strong> no seu Claude Code</p>
+          <p><strong>2. Ao usar</strong>, o Claude baixa automaticamente a documentação do GitHub</p>
+          <p><strong>3. A documentação fica salva</strong> na pasta <code className="bg-blue-100 px-1 rounded">vibe-coding/</code> do seu projeto</p>
+          <p><strong>4. Nas próximas vezes</strong>, o Claude usa os arquivos locais (mais rápido)</p>
+        </div>
+      </section>
 
       {/* Prerequisites */}
       <section className="mb-12">
@@ -90,7 +77,7 @@ export default function SkillsPage() {
               <div>
                 <h3 className="font-semibold text-gray-900">Claude Code CLI</h3>
                 <p className="text-gray-600 text-sm mb-2">
-                  Você precisa ter o Claude Code instalado no seu computador.
+                  Você precisa ter o Claude Code instalado.
                 </p>
                 <a
                   href="https://claude.ai/code"
@@ -111,7 +98,7 @@ export default function SkillsPage() {
               <div>
                 <h3 className="font-semibold text-gray-900">Conta Anthropic</h3>
                 <p className="text-gray-600 text-sm">
-                  Você precisa de uma conta na Anthropic para usar o Claude Code.
+                  Necessária para usar o Claude Code.
                 </p>
               </div>
             </div>
@@ -121,9 +108,9 @@ export default function SkillsPage() {
                 3
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Git (opcional)</h3>
+                <h3 className="font-semibold text-gray-900">Conexão com internet</h3>
                 <p className="text-gray-600 text-sm">
-                  Necessário se quiser clonar o repositório manualmente.
+                  Necessária para baixar a documentação do GitHub na primeira vez.
                 </p>
               </div>
             </div>
@@ -131,60 +118,64 @@ export default function SkillsPage() {
         </div>
       </section>
 
-      {/* Installation Methods */}
+      {/* Installation */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
           <Download className="h-6 w-6 mr-2 text-primary-600" />
-          Métodos de Instalação
+          Instalação
         </h2>
 
-        {/* Method 1: Quick Install */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+        <div className="bg-gray-900 rounded-2xl p-8 text-white mb-6">
           <div className="flex items-center mb-4">
-            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium mr-3">
-              Recomendado
-            </span>
-            <h3 className="text-lg font-semibold text-gray-900">Instalação Rápida</h3>
+            <Terminal className="h-6 w-6 mr-3 text-green-400" />
+            <h3 className="text-xl font-semibold">Comando de Instalação</h3>
           </div>
-          <p className="text-gray-600 mb-4">
-            Execute este comando no terminal para instalar automaticamente:
+          <p className="text-gray-300 mb-6">
+            Execute no terminal, na pasta do seu projeto:
           </p>
-          <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+          <div className="bg-gray-800 rounded-lg p-4 font-mono text-sm overflow-x-auto">
             <code className="text-green-400">
               claude skill install https://github.com/Empire-Business/empire-vibe-coding
             </code>
           </div>
+          <p className="text-gray-400 text-sm mt-4">
+            Isso instala as 5 skills no seu Claude Code.
+          </p>
         </div>
 
-        {/* Method 2: Manual Install */}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Instalação Manual</h3>
-          <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Instalação Manual (alternativa)</h3>
+          <div className="space-y-3 text-sm">
             <div>
-              <p className="text-gray-600 text-sm mb-2">1. Clone o repositório:</p>
-              <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm">
-                <code className="text-green-400">
-                  git clone https://github.com/Empire-Business/empire-vibe-coding.git
-                </code>
-              </div>
+              <p className="text-gray-600 mb-1">1. Clone o repositório:</p>
+              <code className="block bg-gray-100 p-2 rounded">git clone https://github.com/Empire-Business/empire-vibe-coding.git</code>
             </div>
             <div>
-              <p className="text-gray-600 text-sm mb-2">2. Copie a pasta claude-skill para seu projeto:</p>
-              <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm">
-                <code className="text-green-400">
-                  cp -r empire-vibe-coding/claude-skill ~/.claude/skills/empire-vibe-coding
-                </code>
-              </div>
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm mb-2">3. Ou copie o skill.yaml para seu projeto:</p>
-              <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm">
-                <code className="text-green-400">
-                  cp empire-vibe-coding/claude-skill/skill.yaml ./claude-skill/
-                </code>
-              </div>
+              <p className="text-gray-600 mb-1">2. Copie a pasta claude-skill para ~/.claude/skills/:</p>
+              <code className="block bg-gray-100 p-2 rounded">cp -r empire-vibe-coding/claude-skill ~/.claude/skills/empire-vibe-coding</code>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* First Use */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+          <RefreshCw className="h-6 w-6 mr-2 text-primary-600" />
+          Primeira Utilização
+        </h2>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <p className="text-yellow-800 mb-4">
+            <strong>Na primeira vez que você usar uma skill</strong>, o Claude vai automaticamente:
+          </p>
+          <ol className="list-decimal list-inside space-y-2 text-yellow-700">
+            <li>Criar a pasta <code className="bg-yellow-100 px-1 rounded">vibe-coding/</code> no seu projeto</li>
+            <li>Baixar a documentação do GitHub via curl</li>
+            <li>Salvar os arquivos localmente para uso futuro</li>
+          </ol>
+          <p className="text-yellow-700 mt-4 text-sm">
+            Isso acontece automaticamente. Você só precisa ter conexão com internet.
+          </p>
         </div>
       </section>
 
@@ -205,21 +196,9 @@ export default function SkillsPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{skill.title}</h3>
                   <p className="text-gray-600 mb-4">{skill.longDescription}</p>
 
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Como usar:</p>
-                    <p className="text-gray-600 text-sm">{skill.usage}</p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">O que faz:</p>
-                    <ul className="space-y-1">
-                      {skill.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-sm text-gray-600">
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Como usar (exemplos):</p>
+                    <p className="text-gray-600 text-sm font-mono">{skill.usage}</p>
                   </div>
                 </div>
               </div>
@@ -228,75 +207,29 @@ export default function SkillsPage() {
         </div>
       </section>
 
-      {/* How to Use */}
+      {/* Files Created */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <Terminal className="h-6 w-6 mr-2 text-gray-700" />
-          Como Usar
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Arquivos Criados</h2>
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <div className="space-y-6">
-            <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                1
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Abra seu projeto</h3>
-                <p className="text-gray-600 text-sm">
-                  Navegue até a pasta do seu projeto no terminal.
-                </p>
-                <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm mt-2">
-                  <code className="text-gray-300">cd /caminho/do/seu/projeto</code>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                2
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Inicie o Claude Code</h3>
-                <p className="text-gray-600 text-sm">
-                  Digite <code className="bg-gray-100 px-2 py-0.5 rounded">claude</code> para iniciar.
-                </p>
-                <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm mt-2">
-                  <code className="text-green-400">claude</code>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                3
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Converse em português</h3>
-                <p className="text-gray-600 text-sm mb-2">
-                  As skills são ativadas automaticamente quando você faz perguntas relacionadas. Exemplos:
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                  <p className="text-sm text-gray-700">• "me ajuda a começar um projeto"</p>
-                  <p className="text-sm text-gray-700">• "o que é API?"</p>
-                  <p className="text-sm text-gray-700">• "posso rodar esse comando: rm -rf node_modules?"</p>
-                  <p className="text-sm text-gray-700">• "deu esse erro: [cole o erro aqui]"</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                4
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Aprenda enquanto constrói</h3>
-                <p className="text-gray-600 text-sm">
-                  O Claude vai te guiar, explicar termos e proteger contra comandos perigosos.
-                  Com o tempo, você vai aprendendo os conceitos naturalmente.
-                </p>
-              </div>
-            </div>
+          <p className="text-gray-600 mb-4">Após usar as skills, seu projeto terá:</p>
+          <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm text-gray-300">
+            <pre>{`seu-projeto/
+└── vibe-coding/
+    ├── README.md                 # Guia principal
+    ├── GUIA-DO-INICIANTE.md      # Glossário de termos
+    ├── BANDEIRAS-VERMELHAS.md    # Comandos perigosos
+    ├── TROUBLESHOOTING.md        # Solução de erros
+    └── PROTOCOLOS/
+        ├── 00-PLANEJAMENTO-INICIAL.md
+        ├── 01-DESENVOLVIMENTO.md
+        ├── 02-CORRECAO-BUGS.md
+        ├── 03-APRIMORAMENTO.md
+        ├── 04-MANUTENCAO-PROJETOS-PRONTOS.md
+        └── 05-CHECKLIST-LANCAMENTO.md`}</pre>
           </div>
+          <p className="text-gray-500 text-sm mt-4">
+            Você pode editar esses arquivos para customizar as instruções do Claude.
+          </p>
         </div>
       </section>
 
@@ -308,30 +241,30 @@ export default function SkillsPage() {
         </h2>
         <div className="space-y-4">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="font-semibold text-gray-900 mb-2">Precisa de internet sempre?</h3>
+            <p className="text-gray-600 text-sm">
+              Só na primeira vez. Depois que a documentação é baixada, funciona offline.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="font-semibold text-gray-900 mb-2">Posso usar em qualquer projeto?</h3>
+            <p className="text-gray-600 text-sm">
+              Sim! As skills funcionam em qualquer projeto. A documentação é criada na pasta do projeto atual.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="font-semibold text-gray-900 mb-2">Como atualizar a documentação?</h3>
+            <p className="text-gray-600 text-sm">
+              Delete a pasta <code className="bg-gray-100 px-1 rounded">vibe-coding/</code> e use uma skill novamente. O Claude vai baixar a versão mais recente.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h3 className="font-semibold text-gray-900 mb-2">As skills são gratuitas?</h3>
             <p className="text-gray-600 text-sm">
-              Sim! As skills são open source e gratuitas. Você só precisa de uma conta na Anthropic para usar o Claude Code.
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Preciso saber programar?</h3>
-            <p className="text-gray-600 text-sm">
-              Não! As skills são feitas para iniciantes. O Claude explica tudo em português simples e usa analogias do dia a dia.
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Funciona em qualquer projeto?</h3>
-            <p className="text-gray-600 text-sm">
-              Sim! As skills funcionam em qualquer projeto. Elas usam a documentação como base de conhecimento para te ajudar.
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Como atualizar as skills?</h3>
-            <p className="text-gray-600 text-sm">
-              Execute o comando de instalação novamente ou faça pull do repositório para atualizar.
+              Sim! Open source e gratuitas. Você só precisa de uma conta na Anthropic para usar o Claude Code.
             </p>
           </div>
         </div>
@@ -352,7 +285,7 @@ export default function SkillsPage() {
               className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
             >
               <Download className="mr-2 h-5 w-5" />
-              Instalar Agora
+              Ver no GitHub
             </a>
             <Link
               href="/glossary"

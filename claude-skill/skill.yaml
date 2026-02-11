@@ -1,11 +1,25 @@
 name: empire-vibe-coding
 description: |
-  Documentação completa para desenvolvimento com IA (vibe coding) para iniciantes.
-  Inclui glossário de termos, guias de desenvolvimento, segurança e troubleshooting.
+  Claude Skill para desenvolvimento com IA (vibe coding) para iniciantes.
+  Inclui guias passo a passo, glossário de termos, comandos perigosos e troubleshooting.
+  Após instalar, digite "quero começar um projeto" para ativar o guia.
 version: "1.0.0"
 author: Empire Business
 license: MIT
 homepage: https://github.com/Empire-Business/empire-vibe-coding
+
+# Arquivos de documentação que serão incluídos
+files:
+  - source: docs/README.md
+    dest: vibe-coding/README.md
+  - source: docs/GUIA-DO-INICIANTE.md
+    dest: vibe-coding/GUIA-DO-INICIANTE.md
+  - source: docs/BANDEIRAS-VERMELHAS.md
+    dest: vibe-coding/BANDEIRAS-VERMELHAS.md
+  - source: docs/TROUBLESHOOTING.md
+    dest: vibe-coding/TROUBLESHOOTING.md
+  - source: docs/PROTOCOLOS/
+    dest: vibe-coding/PROTOCOLOS/
 
 prompts:
   - file: prompts/start-guide.md
@@ -19,3 +33,6 @@ prompts:
 
   - file: prompts/troubleshoot.md
     description: "Ajuda a resolver um erro"
+
+  - file: prompts/setup-project.md
+    description: "Configura a documentação no projeto atual"
