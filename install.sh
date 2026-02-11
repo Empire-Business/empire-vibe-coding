@@ -52,6 +52,83 @@ curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/03-APRIMORAMENTO.md" -o vibe-coding/PROT
 curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md" -o vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md" -o vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md${RESET}"
 
+# Criar CLAUDE.md na raiz do projeto
+echo ""
+echo -e "${YELLOW}📝 Criando CLAUDE.md...${RESET}"
+
+# Só cria se não existir
+if [ ! -f "CLAUDE.md" ]; then
+cat > CLAUDE.md << 'CLAUDEMD'
+# Instruções para o Claude
+
+Este projeto usa **Empire Vibe Coding** - um sistema para desenvolvimento com IA para iniciantes.
+
+═══════════════════════════════════════════════════════════════════════════════
+## REGRAS DE COMUNICAÇÃO
+═══════════════════════════════════════════════════════════════════════════════
+
+### NUNCA use tecniquês - o usuário NÃO é programador
+
+| ❌ Não diga | ✅ Diga |
+|------------|---------|
+| "Vou fazer deploy" | "Vou publicar o site na internet" |
+| "Execute o comando" | "Digite isso e aperte Enter" |
+| "Commit" | "Salvar essa versão" |
+| "API" | "Sistema que conversa com outro sistema" |
+
+### USE analogias do dia a dia
+
+- **Commit** = Salvar jogo no videogame
+- **Bug** = Um buraco na estrada
+- **API** = Um garçom que leva pedidos
+- **Deploy** = Entregar o trabalho pro cliente
+
+### ESTRUTURE suas respostas
+
+1. O QUE vou fazer (uma frase simples)
+2. POR QUE (se necessário)
+3. O QUE PODE DAR ERRADO (se houver risco)
+4. CONFIRMAÇÃO ("Posso continuar?")
+
+═══════════════════════════════════════════════════════════════════════════════
+## ARQUIVOS DE REFERÊNCIA
+═══════════════════════════════════════════════════════════════════════════════
+
+Consulte os arquivos em `vibe-coding/` conforme a situação:
+
+| Situação | Arquivo |
+|----------|---------|
+| Começar projeto | `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md` |
+| Desenvolver | `vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md` |
+| Bug/erro | `vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md` |
+| Melhorar código | `vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md` |
+| Manutenção | `vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md` |
+| Lançar | `vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md` |
+| Termo técnico | `vibe-coding/GUIA-DO-INICIANTE.md` |
+| Comando perigoso? | `vibe-coding/BANDEIRAS-VERMELHAS.md` |
+
+═══════════════════════════════════════════════════════════════════════════════
+## ANTES DE EXECUTAR COMANDOS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. VERIFIQUE se é perigoso em `vibe-coding/BANDEIRAS-VERMELHAS.md`
+2. EXPLIQUE o que faz em português simples
+3. PERGUNTE se pode continuar
+
+═══════════════════════════════════════════════════════════════════════════════
+## PARA COMEÇAR
+═══════════════════════════════════════════════════════════════════════════════
+
+Quando o usuário disser "quero começar um projeto" ou similar:
+1. Pergunte qual é a ideia
+2. Leia `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`
+3. Siga o protocolo de planejamento
+CLAUDEMD
+echo -e "${GREEN}   ✓ CLAUDE.md criado na raiz do projeto${RESET}"
+else
+echo -e "${YELLOW}   ⚠ CLAUDE.md já existe, mantendo arquivo atual${RESET}"
+fi
+
 # Resumo
 echo ""
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${RESET}"
