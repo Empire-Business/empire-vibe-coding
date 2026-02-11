@@ -1,5 +1,6 @@
-import { Download, Terminal, CheckCircle, BookOpen, AlertTriangle, Wrench, Rocket, ArrowRight, ExternalLink, HelpCircle, RefreshCw } from 'lucide-react'
+import { Download, Terminal, CheckCircle, BookOpen, AlertTriangle, Wrench, Rocket, ArrowRight, ExternalLink, HelpCircle, RefreshCw, Copy, Check } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const skills = [
   {
@@ -40,7 +41,33 @@ const skills = [
   },
 ]
 
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-700 rounded transition-colors"
+      title="Copiar"
+    >
+      {copied ? (
+        <Check className="h-4 w-4 text-green-400" />
+      ) : (
+        <Copy className="h-4 w-4 text-gray-400" />
+      )}
+    </button>
+  )
+}
+
 export default function SkillsPage() {
+  const installCommand = 'curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash'
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
@@ -55,10 +82,9 @@ export default function SkillsPage() {
       <section className="mb-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
         <h2 className="text-xl font-semibold text-blue-900 mb-4">Como Funciona</h2>
         <div className="space-y-3 text-blue-800">
-          <p><strong>1. Instale a skill</strong> no seu Claude Code</p>
-          <p><strong>2. Ao usar</strong>, o Claude baixa automaticamente a documentação do GitHub</p>
-          <p><strong>3. A documentação fica salva</strong> na pasta <code className="bg-blue-100 px-1 rounded">vibe-coding/</code> do seu projeto</p>
-          <p><strong>4. Nas próximas vezes</strong>, o Claude usa os arquivos locais (mais rápido)</p>
+          <p><strong>1. Instale</strong> executando o comando abaixo (baixa skill + documentação)</p>
+          <p><strong>2. Reinicie</strong> o Claude Code se estiver aberto</p>
+          <p><strong>3. Use</strong> digitando "quero começar um projeto" no Claude</p>
         </div>
       </section>
 
@@ -108,9 +134,9 @@ export default function SkillsPage() {
                 3
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Conexão com internet</h3>
+                <h3 className="font-semibold text-gray-900">curl (já vem no Mac/Linux)</h3>
                 <p className="text-gray-600 text-sm">
-                  Necessária para baixar a documentação do GitHub na primeira vez.
+                  Necessário para executar o instalador.
                 </p>
               </div>
             </div>
@@ -133,55 +159,66 @@ export default function SkillsPage() {
           <p className="text-gray-300 mb-6">
             Execute no terminal, na pasta do seu projeto:
           </p>
-          <div className="bg-gray-800 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-            <code className="text-green-400">
-              claude skill install https://github.com/Empire-Business/empire-vibe-coding
+          <div className="bg-gray-800 rounded-lg p-4 font-mono text-sm overflow-x-auto relative">
+            <code className="text-green-400 break-all">
+              {installCommand}
             </code>
+            <CopyButton text={installCommand} />
           </div>
           <p className="text-gray-400 text-sm mt-4">
-            Isso instala as 5 skills no seu Claude Code.
+            Isso instala a skill + toda a documentação de suporte.
           </p>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Instalação Manual (alternativa)</h3>
-          <div className="space-y-3 text-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">O que o instalador faz:</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li className="flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+              Cria <code className="bg-gray-100 px-1 rounded">.claude/skills/empire-vibe-coding/</code> com a skill
+            </li>
+            <li className="flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+              Cria <code className="bg-gray-100 px-1 rounded">vibe-coding/</code> com toda documentação
+            </li>
+            <li className="flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+              Baixa 6 protocolos + guias + glossário
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Manual Installation */}
+      <section className="mb-12">
+        <details className="bg-white border border-gray-200 rounded-lg">
+          <summary className="p-6 cursor-pointer text-lg font-semibold text-gray-900 hover:bg-gray-50">
+            Instalação Manual (alternativa)
+          </summary>
+          <div className="px-6 pb-6 space-y-4 text-sm">
             <div>
               <p className="text-gray-600 mb-1">1. Clone o repositório:</p>
               <code className="block bg-gray-100 p-2 rounded">git clone https://github.com/Empire-Business/empire-vibe-coding.git</code>
             </div>
             <div>
-              <p className="text-gray-600 mb-1">2. Copie a pasta claude-skill para ~/.claude/skills/:</p>
-              <code className="block bg-gray-100 p-2 rounded">cp -r empire-vibe-coding/claude-skill ~/.claude/skills/empire-vibe-coding</code>
+              <p className="text-gray-600 mb-1">2. Crie as pastas necessárias:</p>
+              <code className="block bg-gray-100 p-2 rounded">mkdir -p .claude/skills/empire-vibe-coding vibe-coding/PROTOCOLOS</code>
+            </div>
+            <div>
+              <p className="text-gray-600 mb-1">3. Copie a skill:</p>
+              <code className="block bg-gray-100 p-2 rounded">cp empire-vibe-coding/claude-skill/SKILL.md .claude/skills/empire-vibe-coding/</code>
+            </div>
+            <div>
+              <p className="text-gray-600 mb-1">4. Copie a documentação:</p>
+              <code className="block bg-gray-100 p-2 rounded">cp -r empire-vibe-coding/docs/* vibe-coding/</code>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* First Use */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <RefreshCw className="h-6 w-6 mr-2 text-primary-600" />
-          Primeira Utilização
-        </h2>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <p className="text-yellow-800 mb-4">
-            <strong>Na primeira vez que você usar uma skill</strong>, o Claude vai automaticamente:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 text-yellow-700">
-            <li>Criar a pasta <code className="bg-yellow-100 px-1 rounded">vibe-coding/</code> no seu projeto</li>
-            <li>Baixar a documentação do GitHub via curl</li>
-            <li>Salvar os arquivos localmente para uso futuro</li>
-          </ol>
-          <p className="text-yellow-700 mt-4 text-sm">
-            Isso acontece automaticamente. Você só precisa ter conexão com internet.
-          </p>
-        </div>
+        </details>
       </section>
 
       {/* Available Skills */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Skills Disponíveis</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">O que você ganha</h2>
         <div className="space-y-6">
           {skills.map((skill) => (
             <div
@@ -209,16 +246,21 @@ export default function SkillsPage() {
 
       {/* Files Created */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Arquivos Criados</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Estrutura Criada</h2>
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <p className="text-gray-600 mb-4">Após usar as skills, seu projeto terá:</p>
-          <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm text-gray-300">
+          <p className="text-gray-600 mb-4">Após a instalação, seu projeto terá:</p>
+          <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
             <pre>{`seu-projeto/
-└── vibe-coding/
-    ├── README.md                 # Guia principal
-    ├── GUIA-DO-INICIANTE.md      # Glossário de termos
-    ├── BANDEIRAS-VERMELHAS.md    # Comandos perigosos
-    ├── TROUBLESHOOTING.md        # Solução de erros
+├── .claude/
+│   └── skills/
+│       └── empire-vibe-coding/
+│           └── SKILL.md              ← A skill do Claude
+│
+└── vibe-coding/                      ← Documentação de referência
+    ├── README.md
+    ├── GUIA-DO-INICIANTE.md
+    ├── BANDEIRAS-VERMELHAS.md
+    ├── TROUBLESHOOTING.md
     └── PROTOCOLOS/
         ├── 00-PLANEJAMENTO-INICIAL.md
         ├── 01-DESENVOLVIMENTO.md
@@ -241,9 +283,9 @@ export default function SkillsPage() {
         </h2>
         <div className="space-y-4">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Precisa de internet sempre?</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Funciona no Windows?</h3>
             <p className="text-gray-600 text-sm">
-              Só na primeira vez. Depois que a documentação é baixada, funciona offline.
+              Sim! Use WSL (Windows Subsystem for Linux) ou Git Bash. O comando curl funciona em ambos.
             </p>
           </div>
 
@@ -255,9 +297,9 @@ export default function SkillsPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Como atualizar a documentação?</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Como atualizar?</h3>
             <p className="text-gray-600 text-sm">
-              Delete a pasta <code className="bg-gray-100 px-1 rounded">vibe-coding/</code> e use uma skill novamente. O Claude vai baixar a versão mais recente.
+              Execute o comando de instalação novamente. Ele vai sobrescrever os arquivos com as versões mais recentes.
             </p>
           </div>
 
