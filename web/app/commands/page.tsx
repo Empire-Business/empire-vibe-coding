@@ -225,3 +225,4 @@ export default function CommandsPage() {
       </section>
     </div>
   )
+}
