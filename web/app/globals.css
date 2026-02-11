@@ -6,35 +6,39 @@
 
 @layer base {
   :root {
-    --background: #000000;
-    --foreground: #f2f2f2;
-    --muted: #bec3bf;
-    --accent: #1e2a38;
+    --background: #f2f2f2;
+    --foreground: #000000;
+    --muted: #6f755a;
+    --accent: #e4b820;
+    --card: #ffffff;
+    --border: #d8d2c1;
+    --sage: #bec3bf;
+    --terracotta: #8c4b32;
   }
 }
 
 @layer base {
   body {
-    @apply bg-black text-[#f2f2f2];
+    @apply bg-[#f2f2f2] text-black;
   }
 }
 
-/* Custom scrollbar - Empire style */
+/* Custom scrollbar - Empire light style */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-[#1e2a38];
+  @apply bg-[#d8d2c1]/50;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[#bec3bf] rounded-full;
+  @apply bg-[#6f755a] rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-[#f2f2f2];
+  @apply bg-[#8c4b32];
 }
 
 /* Smooth scrolling */
@@ -42,43 +46,43 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Code highlight - Empire style */
+/* Code highlight - Empire light style */
 code {
-  @apply bg-[#1e2a38] text-[#bec3bf] px-1.5 py-0.5 rounded text-sm font-mono;
+  @apply bg-[#bec3bf]/40 text-black px-1.5 py-0.5 rounded text-sm font-mono;
 }
 
 /* Selection */
 ::selection {
-  @apply bg-[#1e2a38] text-[#f2f2f2];
+  @apply bg-[#e4b820] text-black;
 }
 
-/* Markdown content styling - Empire style */
+/* Markdown content styling */
 .prose {
   @apply max-w-none;
 }
 
 .prose h1 {
-  @apply text-3xl font-bold text-[#f2f2f2] mt-8 mb-4;
+  @apply text-3xl font-bold text-black mt-8 mb-4;
 }
 
 .prose h2 {
-  @apply text-2xl font-semibold text-[#f2f2f2] mt-6 mb-3;
+  @apply text-2xl font-semibold text-black mt-6 mb-3;
 }
 
 .prose h3 {
-  @apply text-xl font-semibold text-[#f2f2f2] mt-4 mb-2;
+  @apply text-xl font-semibold text-black mt-4 mb-2;
 }
 
 .prose p {
-  @apply text-[#bec3bf] mb-4 leading-relaxed;
+  @apply text-[#6f755a] mb-4 leading-relaxed;
 }
 
 .prose ul {
-  @apply list-disc list-inside mb-4 space-y-2 text-[#bec3bf];
+  @apply list-disc list-inside mb-4 space-y-2 text-[#6f755a];
 }
 
 .prose ol {
-  @apply list-decimal list-inside mb-4 space-y-2 text-[#bec3bf];
+  @apply list-decimal list-inside mb-4 space-y-2 text-[#6f755a];
 }
 
 .prose li {
@@ -86,11 +90,11 @@ code {
 }
 
 .prose a {
-  @apply text-[#f2f2f2] hover:text-[#bec3bf] underline;
+  @apply text-[#8c4b32] hover:text-[#6f755a] underline;
 }
 
 .prose blockquote {
-  @apply border-l-4 border-[#bec3bf] pl-4 italic text-[#bec3bf] mb-4;
+  @apply border-l-4 border-[#e4b820] pl-4 italic text-[#6f755a] mb-4;
 }
 
 .prose pre {
@@ -98,7 +102,7 @@ code {
 }
 
 .prose strong {
-  @apply font-semibold text-[#f2f2f2];
+  @apply font-semibold text-black;
 }
 
 .prose em {
