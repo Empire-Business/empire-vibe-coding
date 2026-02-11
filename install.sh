@@ -225,148 +225,155 @@ echo -e "${YELLOW}📝 Criando CLAUDE.md...${RESET}"
 # Só cria se não existir
 if [ ! -f "CLAUDE.md" ]; then
 cat > CLAUDE.md << 'CLAUDEMD'
-# Instruções para o Claude
+# CLAUDE.md - Orquestrador do Projeto
 
-Este projeto usa **Empire Vibe Coding** - um sistema para desenvolvimento com IA para iniciantes.
-
-═══════════════════════════════════════════════════════════════════════════════
-## ⚠️ REGRA MAIS IMPORTANTE: DOCUMENTE TUDO
-═══════════════════════════════════════════════════════════════════════════════
-
-**SEMPRE que fizer qualquer mudança significativa no projeto, VOCÊ DEVE:**
-
-### 1. Atualizar o CHANGELOG
-Adicione em `docs/CHANGELOG.md`:
-
-```markdown
-## [Unreleased]
-### Added
-- Nova funcionalidade X
-### Fixed
-- Bug Y corrigido
-```
-
-### 2. Se for decisão técnica, registrar em DECISIONS.md
-Adicione em `docs/DECISIONS.md`:
-
-```markdown
-## ADR-XXX: Título da Decisão
-**Data:** [data]
-**Decisão:** [o que foi decidido]
-**Contexto:** [por que]
-**Motivo:** [razão]
-**Consequências:** [impacto]
-```
-
-### 3. Se completar tarefa, atualizar ROADMAP.md
-Marque como concluído em `docs/ROADMAP.md`
-
-### 4. Se mudar escopo ou arquitetura, atualizar PRD.md ou ARCHITECTURE.md
-
-**NUNCA deixe de documentar mudanças!** A documentação em `docs/` é viva e deve ser mantida atualizada.
+Este projeto usa **Empire Vibe Coding** - desenvolvimento com IA para iniciantes.
 
 ═══════════════════════════════════════════════════════════════════════════════
-## ESTRUTURA DE PASTAS
+## ⚡ COMANDOS DO USUÁRIO (começam com *)
+═══════════════════════════════════════════════════════════════════════════════
+
+Quando o usuário digitar um comando com `*`, execute a função correspondente:
+
+### COMANDOS PRINCIPAIS
+
+| Comando | Ação | O que fazer |
+|---------|------|-------------|
+| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`, guie o planejamento, preencha `docs/PRD.md` |
+| `*desenvolver` | Modo dev | Leia `vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md`, ative protocolo de desenvolvimento |
+| `*bug` | Resolver bug | Leia `vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md`, investigue e corrija |
+| `*erro` | Resolver erro | Leia `vibe-coding/TROUBLESHOOTING.md`, ajude passo a passo |
+| `*termo` | Explicar termo | Leia `vibe-coding/GUIA-DO-INICIANTE.md`, explique com analogias |
+| `*comando` | Verificar comando | Leia `vibe-coding/BANDEIRAS-VERMELHAS.md`, diga se é perigoso |
+| `*lançar` | Preparar lançamento | Leia `vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md`, execute checklist |
+
+### COMANDOS DE DOCUMENTAÇÃO
+
+| Comando | Ação | O que fazer |
+|---------|------|-------------|
+| `*roadmap` | Ver/atualizar roadmap | Mostre `docs/ROADMAP.md`, pergunte o que atualizar |
+| `*decisão` | Registrar decisão | Adicione ADR em `docs/DECISIONS.md` |
+| `*mudança` | Registrar mudança | Adicione entrada em `docs/CHANGELOG.md` |
+| `*arquitetura` | Atualizar arquitetura | Edite `docs/ARCHITECTURE.md` |
+| `*status` | Ver status do projeto | Resuma: onde está, o que falta, próximos passos |
+
+### COMANDOS AVANÇADOS
+
+| Comando | Ação | O que fazer |
+|---------|------|-------------|
+| `*agentes` | Usar Agent Teams | Crie equipe de agentes para tarefa complexa |
+| `*revisar` | Code review | Faça revisão completa do código |
+| `*melhorar` | Refatorar | Leia `vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md` |
+| `*especificar` | Criar spec | Crie `docs/specs/nome-da-feature.md` |
+
+### COMANDO DE AJUDA
+
+| Comando | Ação |
+|---------|------|
+| `*ajuda` | Liste todos os comandos disponíveis |
+
+═══════════════════════════════════════════════════════════════════════════════
+## ⚠️ REGRA #1: DOCUMENTE TUDO
+═══════════════════════════════════════════════════════════════════════════════
+
+**SEMPRE que fizer qualquer mudança significativa, VOCÊ DEVE atualizar a documentação:**
+
+1. **Mudança implementada** → `docs/CHANGELOG.md`
+2. **Decisão técnica tomada** → `docs/DECISIONS.md`
+3. **Tarefa concluída** → `docs/ROADMAP.md`
+4. **Arquitetura mudou** → `docs/ARCHITECTURE.md`
+
+**NUNCA deixe de documentar!**
+
+═══════════════════════════════════════════════════════════════════════════════
+## 📁 ESTRUTURA DE PASTAS
 ═══════════════════════════════════════════════════════════════════════════════
 
 ```
 projeto/
-├── CLAUDE.md              ← VOCUÊ ESTÁ AQUI (instruções para o Claude)
-├── docs/                   ← DOCUMENTAÇÃO DO PROJETO (SEMPRE ATUALIZE!)
-│   ├── PRD.md             # Requisitos do produto
-│   ├── ARCHITECTURE.md    # Arquitetura técnica
-│   ├── DECISIONS.md       # Decisões tomadas (ADRs)
-│   ├── CHANGELOG.md       # Histórico de mudanças
-│   ├── ROADMAP.md         # Próximos passos
-│   └── specs/             # Especificações de features
-├── vibe-coding/            ← REFERÊNCIA (não editar, baixada do GitHub)
+├── CLAUDE.md              ← VOCÊ ESTÁ AQUI (orquestrador)
+├── docs/                   ← DO PROJETO (sempre atualize!)
+│   ├── PRD.md
+│   ├── ARCHITECTURE.md
+│   ├── DECISIONS.md
+│   ├── CHANGELOG.md
+│   ├── ROADMAP.md
+│   └── specs/
+├── vibe-coding/            ← REFERÊNCIA (consulte, não edite)
 │   ├── README.md
 │   ├── GUIA-DO-INICIANTE.md
 │   ├── BANDEIRAS-VERMELHAS.md
 │   ├── TROUBLESHOOTING.md
 │   └── PROTOCOLOS/
-└── .claude/skills/         ← Skills do Claude Code
+└── .claude/skills/
 ```
 
 **docs/** = Documentação DO PROJETO (crie, edite, mantenha atualizada!)
-**vibe-coding/** = Documentação de REFERÊNCIA (consulte, não edite)
+**vibe-coding/** = Documentação de REFERÊNCIA (consulte quando precisar)
 
 ═══════════════════════════════════════════════════════════════════════════════
-## REGRAS DE COMUNICAÇÃO
+## 💬 REGRAS DE COMUNICAÇÃO
 ═══════════════════════════════════════════════════════════════════════════════
 
-### NUNCA use tecniquês - o usuário NÃO é programador
+### NUNCA use tecniquês
 
 | ❌ Não diga | ✅ Diga |
 |------------|---------|
-| "Vou fazer deploy" | "Vou publicar o site na internet" |
-| "Execute o comando" | "Digite isso e aperte Enter" |
-| "Commit" | "Salvar essa versão" |
-| "API" | "Sistema que conversa com outro sistema" |
-| "Branch" | "Cópia separada do projeto" |
-| "Merge" | "Juntar as mudanças" |
+| "deploy" | "publicar na internet" |
+| "commit" | "salvar essa versão" |
+| "branch" | "cópia separada do projeto" |
+| "API" | "sistema que conversa com outro sistema" |
+| "banco de dados" | "arquivo de fichas" |
 
-### USE analogias do dia a dia
+### USE analogias
 
 - **Commit** = Salvar jogo no videogame
-- **Bug** = Um buraco na estrada
-- **API** = Um garçom que leva pedidos
-- **Deploy** = Entregar o trabalho pro cliente
-- **Branch** = Cópia do documento pra editar sem estragar o original
-- **Banco de dados** = Arquivo de fichas onde guarda informações
+- **Bug** = Buraco na estrada
+- **API** = Garçom que leva pedidos
+- **Deploy** = Entregar trabalho pro cliente
 
-### ESTRUTURE suas respostas
+### ESTRUTURE respostas
 
-1. O QUE vou fazer (uma frase simples)
+1. O QUE vou fazer
 2. POR QUE (se necessário)
-3. O QUE PODE DAR ERRADO (se houver risco)
+3. O QUE PODE DAR ERRADO
 4. CONFIRMAÇÃO ("Posso continuar?")
 
 ═══════════════════════════════════════════════════════════════════════════════
-## ARQUIVOS DE REFERÊNCIA (vibe-coding/)
+## 🛡️ ANTES DE EXECUTAR COMANDOS
 ═══════════════════════════════════════════════════════════════════════════════
 
-Consulte os arquivos em `vibe-coding/` conforme a situação:
-
-| Situação | Arquivo |
-|----------|---------|
-| Começar projeto | `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md` |
-| Desenvolver | `vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md` |
-| Bug/erro | `vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md` |
-| Melhorar código | `vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md` |
-| Manutenção | `vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md` |
-| Lançar | `vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md` |
-| Termo técnico | `vibe-coding/GUIA-DO-INICIANTE.md` |
-| Comando perigoso? | `vibe-coding/BANDEIRAS-VERMELHAS.md` |
-
-═══════════════════════════════════════════════════════════════════════════════
-## ANTES DE EXECUTAR COMANDOS
-═══════════════════════════════════════════════════════════════════════════════
-
-1. VERIFIQUE se é perigoso em `vibe-coding/BANDEIRAS-VERMELHAS.md`
-2. EXPLIQUE o que faz em português simples
+1. VERIFIQUE em `vibe-coding/BANDEIRAS-VERMELHAS.md`
+2. EXPLIQUE em português simples
 3. PERGUNTE se pode continuar
 
 ═══════════════════════════════════════════════════════════════════════════════
-## PARA COMEÇAR
+## ✅ CHECKLIST PÓS-MUDANÇA
 ═══════════════════════════════════════════════════════════════════════════════
 
-Quando o usuário disser "quero começar um projeto" ou similar:
-1. Pergunte qual é a ideia
-2. Leia `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`
-3. Siga o protocolo de planejamento
-4. Preencha `docs/PRD.md` com as informações coletadas
-
-═══════════════════════════════════════════════════════════════════════════════
-## CHECKLIST PÓS-MUDANÇA
-═══════════════════════════════════════════════════════════════════════════════
-
-Após implementar qualquer mudança, verificar:
+Após implementar, verificar:
 
 - [ ] Atualizei `docs/CHANGELOG.md`?
-- [ ] Se foi decisão técnica, registrei em `docs/DECISIONS.md`?
-- [ ] Se completei tarefa, marquei em `docs/ROADMAP.md`?
-- [ ] Se mudei arquitetura, atualizei `docs/ARCHITECTURE.md`?
+- [ ] Se foi decisão → `docs/DECISIONS.md`?
+- [ ] Se completei tarefa → `docs/ROADMAP.md`?
+- [ ] Se mudei arquitetura → `docs/ARCHITECTURE.md`?
+
+═══════════════════════════════════════════════════════════════════════════════
+## 🚀 INÍCIO RÁPIDO
+═══════════════════════════════════════════════════════════════════════════════
+
+Para começar um projeto do zero, o usuário deve digitar:
+
+```
+*começar
+```
+
+Você deve:
+1. Perguntar qual é a ideia do projeto
+2. Ler `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`
+3. Seguir o protocolo de planejamento
+4. Preencher `docs/PRD.md` com as informações
+5. Criar `docs/ROADMAP.md` com os próximos passos
 
 CLAUDEMD
 echo -e "${GREEN}   ✓ CLAUDE.md criado na raiz do projeto${RESET}"

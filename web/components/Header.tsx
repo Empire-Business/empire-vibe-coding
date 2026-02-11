@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { BookOpen, Github, Menu, X, Sparkles } from 'lucide-react'
+import { BookOpen, Github, Menu, X, Sparkles, Terminal } from 'lucide-react'
 import { useState } from 'react'
 
 export function Header() {
@@ -9,6 +9,7 @@ export function Header() {
 
   const navLinks = [
     { href: '/skills', label: 'Instalar Skills', highlight: true },
+    { href: '/commands', label: 'Comandos', icon: Terminal },
     { href: '/glossary', label: 'Glossário' },
     { href: '/flags', label: 'Bandeiras Vermelhas' },
     { href: '/troubleshooting', label: 'Troubleshooting' },
@@ -34,10 +35,11 @@ export function Header() {
                 className={
                   link.highlight
                     ? 'inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 font-medium rounded-full hover:bg-primary-200 transition-colors'
-                    : 'text-gray-700 hover:text-primary-600 transition-colors'
+                    : 'inline-flex items-center text-gray-700 hover:text-primary-600 transition-colors'
                 }
               >
                 {link.highlight && <Sparkles className="h-4 w-4 mr-1" />}
+                {link.icon && <link.icon className="h-4 w-4 mr-1" />}
                 {link.label}
               </Link>
             ))}

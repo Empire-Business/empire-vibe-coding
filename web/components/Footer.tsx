@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Github, BookOpen, Sparkles } from 'lucide-react'
+import { Github, BookOpen, Sparkles, Terminal } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -27,6 +27,12 @@ export function Footer() {
                 <Link href="/skills" className="flex items-center space-x-1 text-primary-400 font-medium">
                   <Sparkles className="h-4 w-4" />
                   <span>Instalar Skills</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/commands" className="flex items-center space-x-1 hover:text-primary-400 transition-colors">
+                  <Terminal className="h-4 w-4" />
+                  <span>Comandos</span>
                 </Link>
               </li>
               <li>
