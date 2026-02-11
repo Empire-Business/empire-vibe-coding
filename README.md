@@ -1,4 +1,4 @@
-# Vibe Coding Docs - Guia para Iniciantes
+# Empire Vibe Coding - Guia para Iniciantes
 
 Documentação completa para desenvolvimento com IA (vibe coding) sem necessidade de conhecimento prévio de programação.
 
@@ -6,59 +6,60 @@ Documentação completa para desenvolvimento com IA (vibe coding) sem necessidad
 
 Vibe coding é quando você usa uma IA (como Claude) para desenvolver software, sem precisar entender toda a complexidade técnica. Você descreve o que quer em linguagem simples, e a IA escreve o código para você.
 
-## Como Começar
+## Instalação Rápida
 
-### Opção 1: Via Claude Code Skill (Recomendado)
-
-Instale a skill no seu Claude Code:
+Execute este comando na pasta do seu projeto:
 
 ```bash
-# (Comando de instalação será definido)
+curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
 ```
 
-### Opção 2: Acessar Versão Web
+Isso cria:
+- `CLAUDE.md` - Orquestrador com comandos `*`
+- `vibe-coding/` - Documentação de referência
+- `docs/` - Templates para documentar seu projeto
+
+## Como Usar
+
+1. Abra o terminal na pasta do seu projeto
+2. Execute `claude` para iniciar o Claude Code
+3. Digite `*começar` para iniciar um novo projeto
+4. Use comandos como `*bug`, `*desenvolver`, `*termo` conforme precisar
+
+## Versão Web
 
 Acesse o site interativo: [https://empire-vibe-coding.vercel.app](https://empire-vibe-coding.vercel.app)
-
-### Opção 3: Copiar Manualmente
-
-1. Clone este repositório
-2. Copie a pasta `docs/` para seu projeto
-3. Siga o guia em `docs/README.md`
-
-## Documentação Incluída
-
-- **Guia do Iniciante:** Termos técnicos explicados de forma simples
-- **Protocolos de Desenvolvimento:** Fluxo de trabalho diário
-- **Segurança:** Como manter seu projeto seguro
-- **Troubleshooting:** O que fazer quando der erro
-- **Arquitetura:** Como organizar o código
-- **Design:** Como construir interfaces bonitas
 
 ## Estrutura do Repositório
 
 ```
 empire-vibe-coding/
-├── docs/                          # Documentação completa
-│   ├── README.md                    # Guia principal
-│   ├── GUIA-DO-INICIANTE.md        # Glossário
-│   ├── BANDEIRAS-VERMELHAS.md      # Comandos perigosos
-│   ├── TROUBLESHOOTING.md           # Solução de erros
-│   ├── PROTOCOLOS/                 # Guias de processo
-│   ├── ARQUITETURA/                # Arquitetura
-│   ├── DESIGN/                     # Design system
-│   ├── SEGURANCA/                  # Segurança
+├── vibe-coding/                   # Documentação de referência
+│   ├── COMANDOS.md                # Lista de comandos *
+│   ├── COMUNICACAO.md             # Regras de comunicação
+│   ├── GLOSSARIO.md               # Termos técnicos explicados
+│   ├── BANDEIRAS-VERMELHAS.md     # Comandos perigosos
+│   ├── TROUBLESHOOTING.md         # Solução de erros
+│   └── PROTOCOLOS/                # Guias de processo
+│       ├── 00-INICIAR.md
+│       ├── 01-DESENVOLVER.md
+│       ├── 02-BUGS.md
+│       ├── 03-MELHORAR.md
+│       ├── 04-MANUTENCAO.md
+│       └── 05-LANCAR.md
+│
+├── docs/                          # Documentação avançada
+│   ├── ARQUITETURA/               # Arquitetura de software
+│   ├── DESIGN/                    # Design system
+│   ├── SEGURANCA/                 # Segurança
 │   └── QUALIDADE/                 # Qualidade de código
 │
 ├── web/                           # App web Next.js
-│   ├── app/                        # Páginas
-│   ├── components/                  # Componentes React
-│   ├── lib/                        # Utilitários
-│   └── public/                     # Arquivos estáticos
+│   ├── app/                       # Páginas
+│   ├── components/                # Componentes React
+│   └── lib/                       # Utilitários
 │
-└── claude-skill/                   # Claude Code Skill
-    ├── skill.yaml                   # Definição do skill
-    └── prompts/                    # Prompts do skill
+└── install.sh                     # Script de instalação
 ```
 
 ## Desenvolvimento Local
@@ -66,17 +67,12 @@ empire-vibe-coding/
 ### Rodar o App Web Localmente
 
 ```bash
+cd web
 npm install
-npm run web:dev
+npm run dev
 ```
 
-### Scripts Disponíveis
-
-```bash
-npm run web:dev       # Rodar o app web em modo desenvolvimento
-npm run web:build     # Build para produção
-npm run web:start     # Rodar o build de produção
-```
+O app estará disponível em http://localhost:3000
 
 ## Contribuindo
 
@@ -94,4 +90,4 @@ MIT License - Uso livre para todos os fins.
 
 ---
 
-Criado por **Empire Business** 🏗️
+Criado por **Empire Business**

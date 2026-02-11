@@ -7,7 +7,7 @@ Ao guiar o usuário através deste documento:
 3. Antes de executar comandos, explique O QUE o comando faz
 4. Antes de deletar/modificar dados, CONFIRME com o usuário
 5. Use analogias do dia a dia quando possível
-6. Se o usuário perguntar sobre um termo técnico, verifique o glossário em GUIA-DO-INICIANTE.md
+6. Se o usuário perguntar sobre um termo técnico, verifique o glossário em GLOSSARIO.md
 7. Nunca execute comandos da lista de BANDEIRAS-VERMELHAS.md sem explicar primeiro
 8. Pergunte ao usuário se ele entendeu antes de prosseguir
 9. Se algo der errado, consulte TROUBLESHOOTING.md
@@ -648,7 +648,7 @@ Geralmente é:
 Agora que você entende os termos básicos:
 
 1. **Leia BANDEIRAS-VERMELHAS.md** para saber o que NÃO fazer
-2. **Vá para 00-PLANEJAMENTO-INICIAL.md** quando estiver pronto para criar seu projeto
+2. **Vá para 00-INICIAR.md** quando estiver pronto para criar seu projeto
 3. **Pergunte à IA sempre que não entender algo**
 
 ---
