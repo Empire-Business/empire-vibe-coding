@@ -23,7 +23,7 @@ const PROTOCOLS = [
   },
   {
     id: 'bugs',
-    href: '#',
+    href: '/protocols/bugs',
     icon: Wrench,
     title: 'Correção de Bugs',
     description: 'Processo para identificar, entender e corrigir bugs de forma sistemática.',
@@ -31,7 +31,7 @@ const PROTOCOLS = [
   },
   {
     id: 'improvement',
-    href: '#',
+    href: '/protocols/improvement',
     icon: Package,
     title: 'Aprimoramento',
     description: 'Como melhorar features existentes sem quebrar o que já funciona.',
@@ -39,7 +39,7 @@ const PROTOCOLS = [
   },
   {
     id: 'maintenance',
-    href: '#',
+    href: '/protocols/maintenance',
     icon: Shield,
     title: 'Manutenção',
     description: 'Cuidar de projetos prontos: updates, monitoramento e melhorias contínuas.',
@@ -47,7 +47,7 @@ const PROTOCOLS = [
   },
   {
     id: 'launch',
-    href: '#',
+    href: '/protocols/launch',
     icon: AlertTriangle,
     title: 'Checklist de Lançamento',
     description: 'Lista de verificação completa antes de colocar o projeto em produção.',
