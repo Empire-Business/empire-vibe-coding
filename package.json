@@ -1,0 +1,23 @@
+{
+  "name": "empire-vibe-coding",
+  "version": "1.0.0",
+  "description": "Documentação completa para vibe coding (desenvolvimento com IA)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Empire-Business/empire-vibe-coding.git"
+  },
+  "author": "Empire Business",
+  "license": "MIT",
+  "scripts": {
+    "web:dev": "cd web && npm run dev",
+    "web:build": "cd web && npm run build",
+    "web:start": "cd web && npm start"
+  },
+  "keywords": [
+    "vibe-coding",
+    "ai-development",
+    "claude-code",
+    "documentation",
+    "beginner-friendly"
+  ]
+}

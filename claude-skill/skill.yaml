@@ -1,0 +1,21 @@
+name: empire-vibe-coding
+description: |
+  Documentação completa para desenvolvimento com IA (vibe coding) para iniciantes.
+  Inclui glossário de termos, guias de desenvolvimento, segurança e troubleshooting.
+version: "1.0.0"
+author: Empire Business
+license: MIT
+homepage: https://github.com/Empire-Business/empire-vibe-coding
+
+prompts:
+  - file: prompts/start-guide.md
+    description: "Inicia o guia de vibe coding para iniciantes"
+
+  - file: prompts/ask-term.md
+    description: "Explica um termo técnico específico do glossário"
+
+  - file: prompts/check-command.md
+    description: "Verifica se um comando é perigoso"
+
+  - file: prompts/troubleshoot.md
+    description: "Ajuda a resolver um erro"
