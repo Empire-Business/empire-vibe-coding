@@ -1,3 +1,5 @@
+'use client'
+
 import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, HelpCircle, Copy, Check, Terminal } from 'lucide-react'
 import { useState } from 'react'
 
