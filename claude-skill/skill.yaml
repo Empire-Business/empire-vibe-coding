@@ -3,26 +3,25 @@ description: |
   Claude Skill para desenvolvimento com IA (vibe coding) para iniciantes.
   Inclui guias passo a passo, glossário de termos, comandos perigosos e troubleshooting.
   Após instalar, digite "quero começar um projeto" para ativar o guia.
-version: "1.0.0"
+version: "2.0.0"
 author: Empire Business
 license: MIT
 homepage: https://github.com/Empire-Business/empire-vibe-coding
 
-# MAPEAMENTO: Quando usar qual arquivo
+# MAPEAMENTO: Quando usar qual prompt
 #
-# SITUAÇÃO                              → ARQUIVO A CONSULTAR
-# ─────────────────────────────────────────────────────────────────────
-# Usuário quer começar projeto novo     → PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md
-# Usuário está desenvolvendo features   → PROTOCOLOS/01-DESENVOLVIMENTO.md
-# Usuário encontrou um bug              → PROTOCOLOS/02-CORRECAO-BUGS.md
-# Usuário quer melhorar código          → PROTOCOLOS/03-APRIMORAMENTO.md
-# Usuário quer manter projeto pronto    → PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md
-# Usuário vai lançar em produção        → PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md
-# Usuário pergunta sobre termo técnico  → GUIA-DO-INICIANTE.md
-# Usuário quer executar comando         → BANDEIRAS-VERMELHAS.md (verificar primeiro!)
-# Usuário tem erro/exception            → TROUBLESHOOTING.md
-# Usuário quer entender o projeto       → README.md
-# ─────────────────────────────────────────────────────────────────────
+# SITUAÇÃO                              → PROMPT/ARQUIVO
+# ─────────────────────────────────────────────────────────────────────────────
+# Usuário não sabe por onde começar     → strategist.md (conselheiro)
+# Usuário quer começar projeto          → start-guide.md + project-docs.md
+# Usuário está desenvolvendo            → start-guide.md + PROTOCOLOS/01-DESENVOLVIMENTO.md
+# Usuário encontrou bug                 → troubleshoot.md + PROTOCOLOS/02-CORRECAO-BUGS.md
+# Usuário pergunta sobre termo          → ask-term.md + GUIA-DO-INICIANTE.md
+# Usuário quer executar comando         → check-command.md + BANDEIRAS-VERMELHAS.md
+# Bug complexo / feature grande         → agent-teams.md
+# Documentar o projeto                  → project-docs.md
+# Primeira vez / setup                  → setup-project.md
+# ─────────────────────────────────────────────────────────────────────────────
 
 files:
   - source: docs/README.md
@@ -37,20 +36,32 @@ files:
     dest: vibe-coding/PROTOCOLOS/
 
 prompts:
+  # GUIA PRINCIPAL
   - file: prompts/master-guide.md
-    description: "Prompt principal com mapeamento completo de situações → arquivos"
+    description: "Prompt mestre com mapeamento completo de situações → arquivos"
 
+  # CONSELHEIRO
+  - file: prompts/strategist.md
+    description: "Conselheiro estratégico para ajudar usuário a tomar decisões"
+
+  # GUIAS DE TRABALHO
   - file: prompts/start-guide.md
     description: "Inicia o guia de vibe coding para iniciantes"
-
+  - file: prompts/troubleshoot.md
+    description: "Ajuda a resolver um erro"
   - file: prompts/ask-term.md
-    description: "Explica um termo técnico específico do glossário"
-
+    description: "Explica um termo técnico com analogias"
   - file: prompts/check-command.md
     description: "Verifica se um comando é perigoso"
 
-  - file: prompts/troubleshoot.md
-    description: "Ajuda a resolver um erro"
+  # DOCUMENTAÇÃO DE PROJETO
+  - file: prompts/project-docs.md
+    description: "Cria e mantém documentação do projeto (PRD, arquitetura, changelog)"
 
+  # AGENT TEAMS
+  - file: prompts/agent-teams.md
+    description: "Workflows prontos para usar Agent Teams em situações complexas"
+
+  # SETUP
   - file: prompts/setup-project.md
-    description: "Configura a documentação no projeto atual"
+    description: "Configura a documentação no projeto atual (download do GitHub)"
