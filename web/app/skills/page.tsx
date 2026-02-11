@@ -189,31 +189,58 @@ export default function SkillsPage() {
         </div>
       </section>
 
-      {/* Manual Installation */}
+      {/* Alternative Installation Methods */}
       <section className="mb-12">
-        <details className="bg-white border border-gray-200 rounded-lg">
-          <summary className="p-6 cursor-pointer text-lg font-semibold text-gray-900 hover:bg-gray-50">
-            Instalação Manual (alternativa)
-          </summary>
-          <div className="px-6 pb-6 space-y-4 text-sm">
-            <div>
-              <p className="text-gray-600 mb-1">1. Clone o repositório:</p>
-              <code className="block bg-gray-100 p-2 rounded">git clone https://github.com/Empire-Business/empire-vibe-coding.git</code>
-            </div>
-            <div>
-              <p className="text-gray-600 mb-1">2. Crie as pastas necessárias:</p>
-              <code className="block bg-gray-100 p-2 rounded">mkdir -p .claude/skills/empire-vibe-coding vibe-coding/PROTOCOLOS</code>
-            </div>
-            <div>
-              <p className="text-gray-600 mb-1">3. Copie a skill:</p>
-              <code className="block bg-gray-100 p-2 rounded">cp empire-vibe-coding/claude-skill/SKILL.md .claude/skills/empire-vibe-coding/</code>
-            </div>
-            <div>
-              <p className="text-gray-600 mb-1">4. Copie a documentação:</p>
-              <code className="block bg-gray-100 p-2 rounded">cp -r empire-vibe-coding/docs/* vibe-coding/</code>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Alternativas de Instalação</h2>
+
+        <div className="space-y-4">
+          {/* Option 1: Download then run */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Opção 1: Baixar e executar</h3>
+            <p className="text-gray-600 mb-4">Se o comando único não funcionar, baixe o script primeiro:</p>
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm text-gray-500 mb-1">Passo 1 - Baixar:</p>
+                <div className="bg-gray-800 rounded-lg p-3 font-mono text-sm relative">
+                  <code className="text-green-400">curl -O https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh</code>
+                  <CopyButton text="curl -O https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh" />
+                </div>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 mb-1">Passo 2 - Executar:</p>
+                <div className="bg-gray-800 rounded-lg p-3 font-mono text-sm relative">
+                  <code className="text-green-400">bash install.sh</code>
+                  <CopyButton text="bash install.sh" />
+                </div>
+              </div>
             </div>
           </div>
-        </details>
+
+          {/* Option 2: Manual with git */}
+          <details className="bg-white border border-gray-200 rounded-lg">
+            <summary className="p-6 cursor-pointer text-lg font-semibold text-gray-900 hover:bg-gray-50">
+              Opção 2: Instalação Manual com Git
+            </summary>
+            <div className="px-6 pb-6 space-y-4 text-sm">
+              <div>
+                <p className="text-gray-600 mb-1">1. Clone o repositório:</p>
+                <code className="block bg-gray-100 p-2 rounded">git clone https://github.com/Empire-Business/empire-vibe-coding.git</code>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">2. Crie as pastas necessárias:</p>
+                <code className="block bg-gray-100 p-2 rounded">mkdir -p .claude/skills/empire-vibe-coding vibe-coding/PROTOCOLOS</code>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">3. Copie a skill:</p>
+                <code className="block bg-gray-100 p-2 rounded">cp empire-vibe-coding/claude-skill/SKILL.md .claude/skills/empire-vibe-coding/</code>
+              </div>
+              <div>
+                <p className="text-gray-600 mb-1">4. Copie a documentação:</p>
+                <code className="block bg-gray-100 p-2 rounded">cp -r empire-vibe-coding/docs/* vibe-coding/</code>
+              </div>
+            </div>
+          </details>
+        </div>
       </section>
 
       {/* Available Skills */}
