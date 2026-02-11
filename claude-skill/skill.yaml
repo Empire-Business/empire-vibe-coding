@@ -8,7 +8,22 @@ author: Empire Business
 license: MIT
 homepage: https://github.com/Empire-Business/empire-vibe-coding
 
-# Arquivos de documentação que serão incluídos
+# MAPEAMENTO: Quando usar qual arquivo
+#
+# SITUAÇÃO                              → ARQUIVO A CONSULTAR
+# ─────────────────────────────────────────────────────────────────────
+# Usuário quer começar projeto novo     → PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md
+# Usuário está desenvolvendo features   → PROTOCOLOS/01-DESENVOLVIMENTO.md
+# Usuário encontrou um bug              → PROTOCOLOS/02-CORRECAO-BUGS.md
+# Usuário quer melhorar código          → PROTOCOLOS/03-APRIMORAMENTO.md
+# Usuário quer manter projeto pronto    → PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md
+# Usuário vai lançar em produção        → PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md
+# Usuário pergunta sobre termo técnico  → GUIA-DO-INICIANTE.md
+# Usuário quer executar comando         → BANDEIRAS-VERMELHAS.md (verificar primeiro!)
+# Usuário tem erro/exception            → TROUBLESHOOTING.md
+# Usuário quer entender o projeto       → README.md
+# ─────────────────────────────────────────────────────────────────────
+
 files:
   - source: docs/README.md
     dest: vibe-coding/README.md
@@ -22,6 +37,9 @@ files:
     dest: vibe-coding/PROTOCOLOS/
 
 prompts:
+  - file: prompts/master-guide.md
+    description: "Prompt principal com mapeamento completo de situações → arquivos"
+
   - file: prompts/start-guide.md
     description: "Inicia o guia de vibe coding para iniciantes"
 
