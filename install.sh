@@ -2,6 +2,11 @@
 
 # EMPIRE VIBE CODING - Instalador
 # Execute: curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+#
+# Flags disponíveis:
+#   --merge      Adiciona instruções ao final do CLAUDE.md existente
+#   --separate   Cria CLAUDE.vibe-coding.md separado
+#   --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)
 
 GITHUB_RAW="https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main"
 
@@ -12,6 +17,44 @@ YELLOW='\033[33m'
 RED='\033[31m'
 RESET='\033[0m'
 BOLD='\033[1m'
+
+# Parse flags
+MERGE_MODE=false
+SEPARATE_MODE=false
+NO_CLAUDE=false
+
+for arg in "$@"; do
+  case $arg in
+    --merge)
+      MERGE_MODE=true
+      shift
+      ;;
+    --separate)
+      SEPARATE_MODE=true
+      shift
+      ;;
+    --no-claude)
+      NO_CLAUDE=true
+      shift
+      ;;
+    --help|-h)
+      echo ""
+      echo -e "${BOLD}Uso:${RESET}"
+      echo "  curl -fsSL https://raw.githubusercontent.com/.../install.sh | bash"
+      echo "  curl -fsSL https://raw.githubusercontent.com/.../install.sh | bash -s -- --flag"
+      echo ""
+      echo -e "${BOLD}Flags disponíveis:${RESET}"
+      echo "  --merge      Adiciona instruções ao final do CLAUDE.md existente"
+      echo "  --separate   Cria CLAUDE.vibe-coding.md separado"
+      echo "  --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)"
+      echo ""
+      echo -e "${BOLD}Comportamento padrão:${RESET}"
+      echo "  Se CLAUDE.md NÃO existe → Cria CLAUDE.md completo"
+      echo "  Se CLAUDE.md JÁ existe → Cria CLAUDE.vibe-coding.md separado (seguro)"
+      exit 0
+      ;;
+  esac
+done
 
 echo ""
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${RESET}"
@@ -37,12 +80,34 @@ curl -fsSL "$GITHUB_RAW/vibe-coding/COMUNICACAO.md" -o vibe-coding/COMUNICACAO.m
 curl -fsSL "$GITHUB_RAW/vibe-coding/GLOSSARIO.md" -o vibe-coding/GLOSSARIO.md && echo -e "${GREEN}   ✓ vibe-coding/GLOSSARIO.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/BANDEIRAS-VERMELHAS.md" -o vibe-coding/BANDEIRAS-VERMELHAS.md && echo -e "${GREEN}   ✓ vibe-coding/BANDEIRAS-VERMELHAS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/TROUBLESHOOTING.md" -o vibe-coding/TROUBLESHOOTING.md && echo -e "${GREEN}   ✓ vibe-coding/TROUBLESHOOTING.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/CLAUDE-INSTRUCTIONS.md" -o vibe-coding/CLAUDE-INSTRUCTIONS.md && echo -e "${GREEN}   ✓ vibe-coding/CLAUDE-INSTRUCTIONS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/00-INICIAR.md" -o vibe-coding/PROTOCOLOS/00-INICIAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-INICIAR.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-DESENVOLVER.md" -o vibe-coding/PROTOCOLOS/01-DESENVOLVER.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-DESENVOLVER.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/02-BUGS.md" -o vibe-coding/PROTOCOLOS/02-BUGS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/02-BUGS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/03-MELHORAR.md" -o vibe-coding/PROTOCOLOS/03-MELHORAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/03-MELHORAR.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/04-MANUTENCAO.md" -o vibe-coding/PROTOCOLOS/04-MANUTENCAO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/04-MANUTENCAO.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/05-LANCAR.md" -o vibe-coding/PROTOCOLOS/05-LANCAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/05-LANCAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/06-SEGURANCA.md" -o vibe-coding/PROTOCOLOS/06-SEGURANCA.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/06-SEGURANCA.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/07-QUALIDADE.md" -o vibe-coding/PROTOCOLOS/07-QUALIDADE.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/07-QUALIDADE.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/08-GARANTIDOR.md" -o vibe-coding/PROTOCOLOS/08-GARANTIDOR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/08-GARANTIDOR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/09-DESIGN.md" -o vibe-coding/PROTOCOLOS/09-DESIGN.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/09-DESIGN.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/10-UX.md" -o vibe-coding/PROTOCOLOS/10-UX.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/10-UX.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/11-BANCO.md" -o vibe-coding/PROTOCOLOS/11-BANCO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/11-BANCO.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/12-SUPABASE.md" -o vibe-coding/PROTOCOLOS/12-SUPABASE.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/12-SUPABASE.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/13-WORKFLOW.md" -o vibe-coding/PROTOCOLOS/13-WORKFLOW.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/13-WORKFLOW.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md" -o vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/15-TAREFAS.md" -o vibe-coding/PROTOCOLOS/15-TAREFAS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/15-TAREFAS.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/16-PLANEJAR.md" -o vibe-coding/PROTOCOLOS/16-PLANEJAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/16-PLANEJAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/17-NERD.md" -o vibe-coding/PROTOCOLOS/17-NERD.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/17-NERD.md${RESET}"
+
+# Baixar template de ambiente
+echo ""
+echo -e "${YELLOW}⚙️  Baixando template de ambiente...${RESET}"
+if [ ! -f ".env.template" ]; then
+curl -fsSL "$GITHUB_RAW/.env.template" -o .env.template && echo -e "${GREEN}   ✓ .env.template${RESET}"
+else
+echo -e "${YELLOW}   ⚠ .env.template já existe${RESET}"
+fi
 
 # Criar templates de documentação do projeto
 echo ""
@@ -212,10 +277,32 @@ fi
 
 # Criar CLAUDE.md na raiz do projeto
 echo ""
-echo -e "${YELLOW}📝 Criando CLAUDE.md...${RESET}"
+echo -e "${YELLOW}📝 Configurando CLAUDE.md...${RESET}"
 
-# Só cria se não existir
-if [ ! -f "CLAUDE.md" ]; then
+# Verificar flag --no-claude
+if [ "$NO_CLAUDE" = true ]; then
+  echo -e "${YELLOW}   ⚠ Flag --no-claude: pulando CLAUDE.md${RESET}"
+elif [ -f "CLAUDE.md" ]; then
+  # CLAUDE.md já existe
+  if [ "$MERGE_MODE" = true ]; then
+    # Modo merge: adicionar ao final
+    echo "" >> CLAUDE.md
+    echo "---" >> CLAUDE.md
+    cat vibe-coding/CLAUDE-INSTRUCTIONS.md >> CLAUDE.md
+    echo -e "${GREEN}   ✓ Instruções adicionadas ao CLAUDE.md (--merge)${RESET}"
+  elif [ "$SEPARATE_MODE" = true ]; then
+    # Modo separado explícito
+    cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.vibe-coding.md
+    echo -e "${GREEN}   ✓ CLAUDE.vibe-coding.md criado (--separate)${RESET}"
+  else
+    # Comportamento padrão quando já existe: criar separado
+    cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.vibe-coding.md
+    echo -e "${YELLOW}   ⚠ CLAUDE.md já existe${RESET}"
+    echo -e "${GREEN}   ✓ CLAUDE.vibe-coding.md criado${RESET}"
+    echo -e "${BLUE}   Dica: Adicione 'Consulte também: CLAUDE.vibe-coding.md' ao seu CLAUDE.md${RESET}"
+  fi
+else
+  # CLAUDE.md não existe - criar completo
 cat > CLAUDE.md << 'CLAUDEMD'
 # CLAUDE.md - Orquestrador do Projeto
 
@@ -371,8 +458,6 @@ Você deve:
 
 CLAUDEMD
 echo -e "${GREEN}   ✓ CLAUDE.md criado na raiz do projeto${RESET}"
-else
-echo -e "${YELLOW}   ⚠ CLAUDE.md já existe, mantendo arquivo atual${RESET}"
 fi
 
 # Resumo

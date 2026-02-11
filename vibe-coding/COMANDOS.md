@@ -28,14 +28,51 @@ Digite o comando no Claude Code para ativar a função correspondente.
 | `*arquitetura` | Atualizar arquitetura | Edita ARCHITECTURE.md |
 | `*status` | Ver status do projeto | Resumo de onde o projeto está |
 
-## Comandos Avançados
+## Comandos de Design & UX
 
 | Comando | Função | O que acontece |
 |---------|--------|----------------|
-| `*agentes` | Usar Agent Teams | Cria equipe de agentes para tarefas complexas |
+| `*design` | Design System | Configura cores, tipografia, tokens, Tailwind |
+| `*ux` | UX Design | Aplica heurísticas de Nielsen, estados, acessibilidade |
+
+## Comandos de Qualidade
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*seguranca` | Auditoria de segurança | Checklist OWASP Top 10, RLS, npm audit |
+| `*qualidade` | Checar qualidade | Code smells, SOLID, métricas, cobertura |
+| `*garantir` | Garantidor de qualidade | **Único que pode aprovar mudanças** |
 | `*revisar` | Code review | Revisão completa do código |
-| `*melhorar` | Refatorar código | Sugere melhorias no código |
+
+## Comandos de Infra & Banco
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*banco` | Saúde do banco | Queries de diagnóstico, índices, VACUUM |
+| `*supabase` | Configurar Supabase | CLI setup, MCP config, RLS |
+
+## Comandos de Automação
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*workflow` | Criar workflows | GitHub Actions, CI/CD, automações |
+| `*orquestrar` | Orquestrar comandos | Combina múltiplos comandos |
+| `*tarefas` | Gerenciar tarefas | TaskCreate/Update/Get/List do Claude Code |
+
+## Comandos de Planejamento
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*planejar` | Planejamento detalhado | WBS, estimativas, riscos, critérios |
 | `*especificar` | Criar spec de feature | Cria docs/specs/nome-da-feature.md |
+
+## Comandos de Especialistas
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*nerd` | Problemas complexos | Debug profundo, profiling, otimização |
+| `*agentes` | Usar Agent Teams | Cria equipe de agentes para tarefas complexas |
+| `*melhorar` | Refatorar código | Sugere melhorias no código |
 
 ## Comando de Ajuda
 
@@ -70,6 +107,17 @@ Vamos usar PostgreSQL ao invés de MongoDB
 *status
 ```
 
+### Auditoria de segurança
+```
+*seguranca
+```
+
+### Orquestrar solução complexa
+```
+*orquestrar
+Meu app está lento e não sei por quê
+```
+
 ### Usar agentes para bug complexo
 ```
 *agentes
@@ -83,5 +131,22 @@ O app está lento e não sei por quê
 1. `*começar` → Planeja o projeto
 2. `*desenvolver` → Desenvolve features
 3. `*mudança` → Documenta cada mudança
-4. `*bug` → Quando encontrar problemas
-5. `*lançar` → Antes de publicar
+4. `*seguranca` → Verifica segurança
+5. `*garantir` → Aprova mudanças
+6. `*lançar` → Publica o projeto
+
+---
+
+## Resumo por Categoria
+
+| Categoria | Qtd | Comandos |
+|-----------|-----|----------|
+| Principais | 7 | começar, desenvolver, bug, erro, termo, comando, lançar |
+| Documentação | 5 | roadmap, decisão, mudança, arquitetura, status |
+| Design & UX | 2 | design, ux |
+| Qualidade | 4 | seguranca, qualidade, garantir, revisar |
+| Infra & Banco | 2 | banco, supabase |
+| Automação | 3 | workflow, orquestrar, tarefas |
+| Planejamento | 2 | planejar, especificar |
+| Especialistas | 3 | nerd, agentes, melhorar |
+| **TOTAL** | **28** | |
