@@ -22,35 +22,27 @@ echo ""
 # Criar estrutura de pastas
 echo -e "${BLUE}📁 Criando estrutura de pastas...${RESET}"
 
-# Criar pasta da skill
-mkdir -p .claude/skills/empire-vibe-coding
-
 # Criar pasta de documentação de referência (vibe-coding)
 mkdir -p vibe-coding/PROTOCOLOS
 
 # Criar pasta de documentação do PROJETO (docs)
 mkdir -p docs/specs
 
-# Instalar Skill
-echo ""
-echo -e "${YELLOW}🔧 Instalando Claude Skill...${RESET}"
-curl -fsSL "$GITHUB_RAW/claude-skill/SKILL.md" -o .claude/skills/empire-vibe-coding/SKILL.md
-echo -e "${GREEN}   ✓ Skill instalada em: .claude/skills/empire-vibe-coding/${RESET}"
-
 # Baixar documentação de referência
 echo ""
 echo -e "${YELLOW}📚 Baixando documentação de referência...${RESET}"
 
-curl -fsSL "$GITHUB_RAW/docs/README.md" -o vibe-coding/README.md && echo -e "${GREEN}   ✓ vibe-coding/README.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/GUIA-DO-INICIANTE.md" -o vibe-coding/GUIA-DO-INICIANTE.md && echo -e "${GREEN}   ✓ vibe-coding/GUIA-DO-INICIANTE.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/BANDEIRAS-VERMELHAS.md" -o vibe-coding/BANDEIRAS-VERMELHAS.md && echo -e "${GREEN}   ✓ vibe-coding/BANDEIRAS-VERMELHAS.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/TROUBLESHOOTING.md" -o vibe-coding/TROUBLESHOOTING.md && echo -e "${GREEN}   ✓ vibe-coding/TROUBLESHOOTING.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md" -o vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/01-DESENVOLVIMENTO.md" -o vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/02-CORRECAO-BUGS.md" -o vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/03-APRIMORAMENTO.md" -o vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md" -o vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/04-MANUTENCAO-PROJETOS-PRONTOS.md${RESET}"
-curl -fsSL "$GITHUB_RAW/docs/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md" -o vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/COMANDOS.md" -o vibe-coding/COMANDOS.md && echo -e "${GREEN}   ✓ vibe-coding/COMANDOS.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/COMUNICACAO.md" -o vibe-coding/COMUNICACAO.md && echo -e "${GREEN}   ✓ vibe-coding/COMUNICACAO.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/GLOSSARIO.md" -o vibe-coding/GLOSSARIO.md && echo -e "${GREEN}   ✓ vibe-coding/GLOSSARIO.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/BANDEIRAS-VERMELHAS.md" -o vibe-coding/BANDEIRAS-VERMELHAS.md && echo -e "${GREEN}   ✓ vibe-coding/BANDEIRAS-VERMELHAS.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/TROUBLESHOOTING.md" -o vibe-coding/TROUBLESHOOTING.md && echo -e "${GREEN}   ✓ vibe-coding/TROUBLESHOOTING.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/00-INICIAR.md" -o vibe-coding/PROTOCOLOS/00-INICIAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-INICIAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-DESENVOLVER.md" -o vibe-coding/PROTOCOLOS/01-DESENVOLVER.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-DESENVOLVER.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/02-BUGS.md" -o vibe-coding/PROTOCOLOS/02-BUGS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/02-BUGS.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/03-MELHORAR.md" -o vibe-coding/PROTOCOLOS/03-MELHORAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/03-MELHORAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/04-MANUTENCAO.md" -o vibe-coding/PROTOCOLOS/04-MANUTENCAO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/04-MANUTENCAO.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/05-LANCAR.md" -o vibe-coding/PROTOCOLOS/05-LANCAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/05-LANCAR.md${RESET}"
 
 # Criar templates de documentação do projeto
 echo ""
@@ -96,9 +88,9 @@ else
 echo -e "${YELLOW}   ⚠ docs/PRD.md já existe${RESET}"
 fi
 
-# ARCHITECTURE.md
-if [ ! -f "docs/ARCHITECTURE.md" ]; then
-cat > docs/ARCHITECTURE.md << 'EOF'
+# ARQUITETURA.md
+if [ ! -f "docs/ARQUITETURA.md" ]; then
+cat > docs/ARQUITETURA.md << 'EOF'
 # Arquitetura do Sistema
 
 ## Stack Tecnológica
@@ -113,7 +105,7 @@ cat > docs/ARCHITECTURE.md << 'EOF'
 ```
 
 ## Decisões Arquiteturais
-Ver arquivo DECISIONS.md
+Ver arquivo DECISOES.md
 
 ## Diagrama
 [Inserir diagrama ou link se necessário]
@@ -125,14 +117,14 @@ Ver arquivo DECISIONS.md
 ## Data de criação
 [Data]
 EOF
-echo -e "${GREEN}   ✓ docs/ARCHITECTURE.md${RESET}"
+echo -e "${GREEN}   ✓ docs/ARQUITETURA.md${RESET}"
 else
-echo -e "${YELLOW}   ⚠ docs/ARCHITECTURE.md já existe${RESET}"
+echo -e "${YELLOW}   ⚠ docs/ARQUITETURA.md já existe${RESET}"
 fi
 
-# DECISIONS.md
-if [ ! -f "docs/DECISIONS.md" ]; then
-cat > docs/DECISIONS.md << 'EOF'
+# DECISOES.md
+if [ ! -f "docs/DECISOES.md" ]; then
+cat > docs/DECISOES.md << 'EOF'
 # Architecture Decision Records (ADRs)
 
 Formato de cada decisão:
@@ -155,14 +147,14 @@ Formato de cada decisão:
 **Consequências:** [impacto]
 
 EOF
-echo -e "${GREEN}   ✓ docs/DECISIONS.md${RESET}"
+echo -e "${GREEN}   ✓ docs/DECISOES.md${RESET}"
 else
-echo -e "${YELLOW}   ⚠ docs/DECISIONS.md já existe${RESET}"
+echo -e "${YELLOW}   ⚠ docs/DECISOES.md já existe${RESET}"
 fi
 
-# CHANGELOG.md
-if [ ! -f "docs/CHANGELOG.md" ]; then
-cat > docs/CHANGELOG.md << 'EOF'
+# MUDANCAS.md
+if [ ! -f "docs/MUDANCAS.md" ]; then
+cat > docs/MUDANCAS.md << 'EOF'
 # Changelog
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/)
@@ -187,9 +179,9 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/)
 - Versão inicial do projeto
 
 EOF
-echo -e "${GREEN}   ✓ docs/CHANGELOG.md${RESET}"
+echo -e "${GREEN}   ✓ docs/MUDANCAS.md${RESET}"
 else
-echo -e "${YELLOW}   ⚠ docs/CHANGELOG.md já existe${RESET}"
+echo -e "${YELLOW}   ⚠ docs/MUDANCAS.md já existe${RESET}"
 fi
 
 # ROADMAP.md
@@ -239,22 +231,22 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
-| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`, guie o planejamento, preencha `docs/PRD.md` |
-| `*desenvolver` | Modo dev | Leia `vibe-coding/PROTOCOLOS/01-DESENVOLVIMENTO.md`, ative protocolo de desenvolvimento |
-| `*bug` | Resolver bug | Leia `vibe-coding/PROTOCOLOS/02-CORRECAO-BUGS.md`, investigue e corrija |
+| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-INICIAR.md`, guie o planejamento, preencha `docs/PRD.md` |
+| `*desenvolver` | Modo dev | Leia `vibe-coding/PROTOCOLOS/01-DESENVOLVER.md`, ative protocolo de desenvolvimento |
+| `*bug` | Resolver bug | Leia `vibe-coding/PROTOCOLOS/02-BUGS.md`, investigue e corrija |
 | `*erro` | Resolver erro | Leia `vibe-coding/TROUBLESHOOTING.md`, ajude passo a passo |
-| `*termo` | Explicar termo | Leia `vibe-coding/GUIA-DO-INICIANTE.md`, explique com analogias |
+| `*termo` | Explicar termo | Leia `vibe-coding/GLOSSARIO.md`, explique com analogias |
 | `*comando` | Verificar comando | Leia `vibe-coding/BANDEIRAS-VERMELHAS.md`, diga se é perigoso |
-| `*lançar` | Preparar lançamento | Leia `vibe-coding/PROTOCOLOS/05-CHECKLIST-LANCAMENTO.md`, execute checklist |
+| `*lançar` | Preparar lançamento | Leia `vibe-coding/PROTOCOLOS/05-LANCAR.md`, execute checklist |
 
 ### COMANDOS DE DOCUMENTAÇÃO
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
 | `*roadmap` | Ver/atualizar roadmap | Mostre `docs/ROADMAP.md`, pergunte o que atualizar |
-| `*decisão` | Registrar decisão | Adicione ADR em `docs/DECISIONS.md` |
-| `*mudança` | Registrar mudança | Adicione entrada em `docs/CHANGELOG.md` |
-| `*arquitetura` | Atualizar arquitetura | Edite `docs/ARCHITECTURE.md` |
+| `*decisão` | Registrar decisão | Adicione ADR em `docs/DECISOES.md` |
+| `*mudança` | Registrar mudança | Adicione entrada em `docs/MUDANCAS.md` |
+| `*arquitetura` | Atualizar arquitetura | Edite `docs/ARQUITETURA.md` |
 | `*status` | Ver status do projeto | Resuma: onde está, o que falta, próximos passos |
 
 ### COMANDOS AVANÇADOS
@@ -263,7 +255,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 |---------|------|-------------|
 | `*agentes` | Usar Agent Teams | Crie equipe de agentes para tarefa complexa |
 | `*revisar` | Code review | Faça revisão completa do código |
-| `*melhorar` | Refatorar | Leia `vibe-coding/PROTOCOLOS/03-APRIMORAMENTO.md` |
+| `*melhorar` | Refatorar | Leia `vibe-coding/PROTOCOLOS/03-MELHORAR.md` |
 | `*especificar` | Criar spec | Crie `docs/specs/nome-da-feature.md` |
 
 ### COMANDO DE AJUDA
@@ -278,10 +270,10 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 
 **SEMPRE que fizer qualquer mudança significativa, VOCÊ DEVE atualizar a documentação:**
 
-1. **Mudança implementada** → `docs/CHANGELOG.md`
-2. **Decisão técnica tomada** → `docs/DECISIONS.md`
+1. **Mudança implementada** → `docs/MUDANCAS.md`
+2. **Decisão técnica tomada** → `docs/DECISOES.md`
 3. **Tarefa concluída** → `docs/ROADMAP.md`
-4. **Arquitetura mudou** → `docs/ARCHITECTURE.md`
+4. **Arquitetura mudou** → `docs/ARQUITETURA.md`
 
 **NUNCA deixe de documentar!**
 
@@ -294,18 +286,18 @@ projeto/
 ├── CLAUDE.md              ← VOCÊ ESTÁ AQUI (orquestrador)
 ├── docs/                   ← DO PROJETO (sempre atualize!)
 │   ├── PRD.md
-│   ├── ARCHITECTURE.md
-│   ├── DECISIONS.md
-│   ├── CHANGELOG.md
+│   ├── ARQUITETURA.md
+│   ├── DECISOES.md
+│   ├── MUDANCAS.md
 │   ├── ROADMAP.md
 │   └── specs/
-├── vibe-coding/            ← REFERÊNCIA (consulte, não edite)
-│   ├── README.md
-│   ├── GUIA-DO-INICIANTE.md
-│   ├── BANDEIRAS-VERMELHAS.md
-│   ├── TROUBLESHOOTING.md
-│   └── PROTOCOLOS/
-└── .claude/skills/
+└── vibe-coding/            ← REFERÊNCIA (consulte, não edite)
+    ├── COMANDOS.md
+    ├── COMUNICACAO.md
+    ├── GLOSSARIO.md
+    ├── BANDEIRAS-VERMELHAS.md
+    ├── TROUBLESHOOTING.md
+    └── PROTOCOLOS/
 ```
 
 **docs/** = Documentação DO PROJETO (crie, edite, mantenha atualizada!)
@@ -314,6 +306,8 @@ projeto/
 ═══════════════════════════════════════════════════════════════════════════════
 ## 💬 REGRAS DE COMUNICAÇÃO
 ═══════════════════════════════════════════════════════════════════════════════
+
+Consulte `vibe-coding/COMUNICACAO.md` para regras completas.
 
 ### NUNCA use tecniquês
 
@@ -353,10 +347,10 @@ projeto/
 
 Após implementar, verificar:
 
-- [ ] Atualizei `docs/CHANGELOG.md`?
-- [ ] Se foi decisão → `docs/DECISIONS.md`?
+- [ ] Atualizei `docs/MUDANCAS.md`?
+- [ ] Se foi decisão → `docs/DECISOES.md`?
 - [ ] Se completei tarefa → `docs/ROADMAP.md`?
-- [ ] Se mudei arquitetura → `docs/ARCHITECTURE.md`?
+- [ ] Se mudei arquitetura → `docs/ARQUITETURA.md`?
 
 ═══════════════════════════════════════════════════════════════════════════════
 ## 🚀 INÍCIO RÁPIDO
@@ -370,7 +364,7 @@ Para começar um projeto do zero, o usuário deve digitar:
 
 Você deve:
 1. Perguntar qual é a ideia do projeto
-2. Ler `vibe-coding/PROTOCOLOS/00-PLANEJAMENTO-INICIAL.md`
+2. Ler `vibe-coding/PROTOCOLOS/00-INICIAR.md`
 3. Seguir o protocolo de planejamento
 4. Preencher `docs/PRD.md` com as informações
 5. Criar `docs/ROADMAP.md` com os próximos passos
@@ -390,18 +384,23 @@ echo ""
 echo -e "${BLUE}📋 Estrutura criada:${RESET}"
 echo "   ├── docs/                 ← Documentação do PROJETO (mantenha atualizada!)"
 echo "   │   ├── PRD.md"
-echo "   │   ├── ARCHITECTURE.md"
-echo "   │   ├── DECISIONS.md"
-echo "   │   ├── CHANGELOG.md"
+echo "   │   ├── ARQUITETURA.md"
+echo "   │   ├── DECISOES.md"
+echo "   │   ├── MUDANCAS.md"
 echo "   │   ├── ROADMAP.md"
 echo "   │   └── specs/"
 echo "   ├── vibe-coding/          ← Referência (consulte quando precisar)"
-echo "   ├── .claude/skills/       ← Skill do Claude"
+echo "   │   ├── COMANDOS.md"
+echo "   │   ├── COMUNICACAO.md"
+echo "   │   ├── GLOSSARIO.md"
+echo "   │   ├── BANDEIRAS-VERMELHAS.md"
+echo "   │   ├── TROUBLESHOOTING.md"
+echo "   │   └── PROTOCOLOS/"
 echo "   └── CLAUDE.md             ← Instruções para o Claude"
 echo ""
 echo -e "${BLUE}🚀 Próximos passos:${RESET}"
 echo "   1. Reinicie o Claude Code se estiver aberto"
-echo "   2. Digite: \"quero começar um projeto\""
+echo "   2. Digite: *começar"
 echo "   3. O Claude vai te guiar e documentar tudo em docs/"
 echo ""
 echo -e "${YELLOW}⚠️  IMPORTANTE: Toda mudança deve ser documentada em docs/${RESET}"

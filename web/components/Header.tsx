@@ -1,14 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { BookOpen, Github, Menu, X, Sparkles, Terminal } from 'lucide-react'
+import { BookOpen, Github, Menu, X, Terminal } from 'lucide-react'
 import { useState } from 'react'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navLinks = [
-    { href: '/skills', label: 'Instalar Skills', highlight: true },
     { href: '/commands', label: 'Comandos', icon: Terminal },
     { href: '/glossary', label: 'Glossário' },
     { href: '/flags', label: 'Bandeiras Vermelhas' },
@@ -32,13 +31,8 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={
-                  link.highlight
-                    ? 'inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 font-medium rounded-full hover:bg-primary-200 transition-colors'
-                    : 'inline-flex items-center text-gray-700 hover:text-primary-600 transition-colors'
-                }
+                className="inline-flex items-center text-gray-700 hover:text-primary-600 transition-colors"
               >
-                {link.highlight && <Sparkles className="h-4 w-4 mr-1" />}
                 {link.icon && <link.icon className="h-4 w-4 mr-1" />}
                 {link.label}
               </Link>
@@ -76,14 +70,9 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={
-                  link.highlight
-                    ? 'inline-flex items-center px-3 py-2 bg-primary-100 text-primary-700 font-medium rounded-lg'
-                    : 'block text-gray-700 hover:text-primary-600 transition-colors py-2'
-                }
+                className="block text-gray-700 hover:text-primary-600 transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {link.highlight && <Sparkles className="h-4 w-4 mr-2" />}
                 {link.label}
               </Link>
             ))}

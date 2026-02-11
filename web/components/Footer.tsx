@@ -11,11 +11,11 @@ export function Footer() {
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <Sparkles className="h-6 w-6 text-primary-400" />
-              <span className="text-lg font-bold text-white">Claude Skills</span>
+              <BookOpen className="h-6 w-6 text-primary-400" />
+              <span className="text-lg font-bold text-white">Vibe Coding Docs</span>
             </div>
             <p className="text-sm text-gray-400">
-              Claude Skills para desenvolvimento com IA. Instale e comece a programar sem saber programar.
+              Empire Vibe Coding - desenvolvimento com IA para iniciantes. Comece a programar sem saber programar.
             </p>
           </div>
 
@@ -23,12 +23,6 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Documentação</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/skills" className="flex items-center space-x-1 text-primary-400 font-medium">
-                  <Sparkles className="h-4 w-4" />
-                  <span>Instalar Skills</span>
-                </Link>
-              </li>
               <li>
                 <Link href="/commands" className="flex items-center space-x-1 hover:text-primary-400 transition-colors">
                   <Terminal className="h-4 w-4" />

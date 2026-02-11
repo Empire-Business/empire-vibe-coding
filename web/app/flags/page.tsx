@@ -6,7 +6,7 @@ import { SearchBar } from '@/components/SearchBar'
 import { Alert } from '@/components/Alert'
 import { CodeBlock } from '@/components/CodeBlock'
 
-// Dados de bandeiras vermelhas (do arquivo docs/BANDEIRAS-VERMELHAS.md)
+// Dados de bandeiras vermelhas (do arquivo vibe-coding/BANDEIRAS-VERMELHAS.md)
 const RED_FLAGS = [
   {
     id: 'rm-rf',

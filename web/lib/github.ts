@@ -46,9 +46,8 @@ export function getNewIssueUrl(): string {
  */
 export const GITHUB_LINKS = {
   repo: GITHUB_REPO,
-  docs: `${GITHUB_REPO}/tree/main/docs`,
+  vibeCoding: `${GITHUB_REPO}/tree/main/vibe-coding`,
   web: `${GITHUB_REPO}/tree/main/web`,
-  skill: `${GITHUB_REPO}/tree/main/claude-skill`,
   issues: `${GITHUB_REPO}/issues`,
   releases: `${GITHUB_REPO}/releases`,
   wiki: `${GITHUB_REPO}/wiki`,
@@ -77,44 +76,34 @@ export function formatGitHubReadmeUrl(path: string): string {
  */
 export const SECTION_LINKS = {
   glossary: {
-    path: 'docs/GUIA-DO-INICIANTE.md',
-    title: 'Guia do Iniciante',
+    path: 'vibe-coding/GLOSSARIO.md',
+    title: 'Glossário',
     description: 'Glossário de termos técnicos',
   },
   flags: {
-    path: 'docs/BANDEIRAS-VERMELHAS.md',
+    path: 'vibe-coding/BANDEIRAS-VERMELHAS.md',
     title: 'Bandeiras Vermelhas',
     description: 'Comandos perigosos',
   },
   troubleshooting: {
-    path: 'docs/TROUBLESHOOTING.md',
+    path: 'vibe-coding/TROUBLESHOOTING.md',
     title: 'Troubleshooting',
     description: 'Solução de erros',
   },
   protocols: {
-    path: 'docs/PROTOCOLOS',
+    path: 'vibe-coding/PROTOCOLOS',
     title: 'Protocolos',
     description: 'Guias de processo',
   },
-  architecture: {
-    path: 'docs/ARQUITETURA',
-    title: 'Arquitetura',
-    description: 'Organização de código',
+  commands: {
+    path: 'vibe-coding/COMANDOS.md',
+    title: 'Comandos',
+    description: 'Lista de comandos',
   },
-  design: {
-    path: 'docs/DESIGN',
-    title: 'Design System',
-    description: 'Componentes e tokens',
-  },
-  security: {
-    path: 'docs/SEGURANCA',
-    title: 'Segurança',
-    description: 'Boas práticas de segurança',
-  },
-  quality: {
-    path: 'docs/QUALIDADE',
-    title: 'Qualidade',
-    description: 'Padrões de código',
+  comunicacao: {
+    path: 'vibe-coding/COMUNICACAO.md',
+    title: 'Comunicação',
+    description: 'Regras de comunicação',
   },
 }
 

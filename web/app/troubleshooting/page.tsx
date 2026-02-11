@@ -6,7 +6,7 @@ import { SearchBar } from '@/components/SearchBar'
 import { Alert } from '@/components/Alert'
 import { CodeBlock } from '@/components/CodeBlock'
 
-// Dados de troubleshooting (do arquivo docs/TROUBLESHOOTING.md)
+// Dados de troubleshooting (do arquivo vibe-coding/TROUBLESHOOTING.md)
 const ERROR_GUIDES = [
   {
     id: 'npm-install-failed',

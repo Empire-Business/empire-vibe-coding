@@ -260,12 +260,12 @@ export function extractErrorGuides(content: string): ErrorGuide[] {
  * Lista de seções de protocolos disponíveis
  */
 export const PROTOCOL_SECTIONS = [
-  { id: 'planning', title: 'Planejamento Inicial', path: '00-PLANEJAMENTO-INICIAL.md' },
-  { id: 'development', title: 'Desenvolvimento', path: '01-DESENVOLVIMENTO.md' },
-  { id: 'bugs', title: 'Correção de Bugs', path: '02-CORRECAO-BUGS.md' },
-  { id: 'improvement', title: 'Aprimoramento', path: '03-APRIMORAMENTO.md' },
-  { id: 'maintenance', title: 'Manutenção', path: '04-MANUTENCAO-PROJETOS-PRONTOS.md' },
-  { id: 'launch', title: 'Checklist de Lançamento', path: '05-CHECKLIST-LANCAMENTO.md' },
+  { id: 'iniciar', title: 'Iniciar Projeto', path: '00-INICIAR.md' },
+  { id: 'desenvolver', title: 'Desenvolvimento', path: '01-DESENVOLVER.md' },
+  { id: 'bugs', title: 'Correção de Bugs', path: '02-BUGS.md' },
+  { id: 'melhorar', title: 'Melhorar Código', path: '03-MELHORAR.md' },
+  { id: 'manutencao', title: 'Manutenção', path: '04-MANUTENCAO.md' },
+  { id: 'lancar', title: 'Lançar Projeto', path: '05-LANCAR.md' },
 ]
 
 /**

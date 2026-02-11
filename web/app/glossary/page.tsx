@@ -5,7 +5,7 @@ import { BookOpen, Search, Info } from 'lucide-react'
 import { SearchBar } from '@/components/SearchBar'
 import { Alert } from '@/components/Alert'
 
-// Dados do glossário (em produção, isso viria do arquivo docs/GUIA-DO-INICIANTE.md)
+// Dados do glossário (em produção, isso viria do arquivo vibe-coding/GLOSSARIO.md)
 const GLOSSARY_TERMS = [
   {
     id: 'api',
