@@ -1,3 +1,10 @@
+---
+## PARA CLAUDE (AI INSTRUCTIONS)
+
+Este protocolo é invocado pelo comando `*lançar` no CLAUDE.md.
+Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
+---
+
 # 05-CHECKLIST-LANCAMENTO.md
 
 ## Protocolo: Checklist de Lançamento

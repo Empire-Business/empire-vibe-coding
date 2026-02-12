@@ -1,3 +1,10 @@
+---
+## PARA CLAUDE (AI INSTRUCTIONS)
+
+Este protocolo é invocado pelo comando `*planejar` no CLAUDE.md.
+Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
+---
+
 # Protocolo de Planejamento (*planejar)
 
 ## Quando Usar

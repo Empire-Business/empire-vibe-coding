@@ -1,3 +1,10 @@
+---
+## PARA CLAUDE (AI INSTRUCTIONS)
+
+Este protocolo é invocado pelo comando `*melhorar` no CLAUDE.md.
+Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
+---
+
 # 03-APRIMORAMENTO.md
 
 ## Protocolo: Aprimoramento e Refatoração

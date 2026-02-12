@@ -438,7 +438,25 @@ Esta seção deve ser compreensível por qualquer pessoa, sem conhecimento técn
 ```markdown
 ## 11. Integrações e APIs
 
-### Endpoints Sugeridos
+### APIs Externas Detectadas
+
+**IMPORTANTE:** Para cada API externa identificada, execute `*api [nome]` ANTES de desenvolver.
+
+| API | Categoria | Status | Documentação |
+|-----|-----------|--------|--------------|
+| [Nome] | [Categoria] | [ ] Pendente | docs/APIS-DOCS/[nome].md |
+
+**Categorias comuns:** IA, Pagamentos, Auth, Email, SMS, Storage, Analytics
+
+#### Checklist por API
+Para cada API detectada:
+- [ ] Executar `*api [nome]` para documentar
+- [ ] Adicionar variáveis ao .env.template
+- [ ] Estimar custos mensais
+- [ ] Verificar rate limits
+- [ ] Definir estratégia de retry/fallback
+
+### Endpoints da API Interna
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | POST | /api/v1/[recurso] | [Descrição] |
@@ -468,6 +486,37 @@ Esta seção deve ser compreensível por qualquer pessoa, sem conhecimento técn
 |--------|----------------|---------|
 | [evento.created] | [Quando] | [Dados] |
 ```
+
+#### Detecção Automática de APIs
+
+Durante a geração do PRD, identificar menções a serviços externos:
+
+```
+Palavras-chave → APIs prováveis:
+- "pagamento", "cobrar", "cartão" → Stripe, Mercado Pago
+- "login social", "Google login", "OAuth" → Auth0, Clerk
+- "email", "enviar email", "newsletter" → SendGrid, Resend
+- "IA", "chat", "GPT", "gerar texto" → OpenAI, Anthropic
+- "mapa", "localização", "endereço" → Google Maps, Mapbox
+- "SMS", "WhatsApp", "notificação" → Twilio
+- "busca", "pesquisar", "filtro avançado" → Algolia
+- "armazenar arquivos", "upload", "imagens" → AWS S3, Cloudflare R2
+- "analytics", "métricas", "tracking" → Mixpanel, PostHog
+```
+
+**Ação Obrigatória:** Se detectar APIs, criar tarefa automática:
+
+```
+⚠️ APIs detectadas: [lista]
+
+Tarefas criadas automaticamente:
+├── [ ] *api [nome1] - Documentar API antes de desenvolver
+├── [ ] *api [nome2] - Documentar API antes de desenvolver
+
+⚠️ EXECUTE *api PARA CADA API ANTES DE *desenvolver
+```
+
+---
 
 ---
 

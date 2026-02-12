@@ -1,3 +1,10 @@
+---
+## PARA CLAUDE (AI INSTRUCTIONS)
+
+Este protocolo é invocado pelo comando `*workflow` no CLAUDE.md.
+Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
+---
+
 # Protocolo de Workflows (*workflow)
 
 ## Quando Usar

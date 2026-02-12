@@ -67,6 +67,12 @@ Digite o comando no Claude Code para ativar a função correspondente.
 | `*especificar` | Criar spec de feature | Cria docs/specs/nome-da-feature.md |
 | `*prd` | Gerar PRD completo | PRD com seção leiga e técnica |
 
+## Comandos de Integração
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*api` | Documentar API externa | Pesquisa e documenta API em docs/APIS-DOCS/, **sempre antes de integrar** |
+
 ## Comandos de Especialistas
 
 | Comando | Função | O que acontece |

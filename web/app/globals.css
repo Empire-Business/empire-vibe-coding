@@ -38,8 +38,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Code highlight */
-code {
+/* Code highlight - only for inline code in light contexts */
+:not(.bg-gray-900):not(.bg-black):not(.bg-gray-800):not([data-dark]) > code {
   @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800;
 }
 

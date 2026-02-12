@@ -166,7 +166,7 @@ export default function ComoFuncionaPage() {
                   <MessageSquare className="h-6 w-6" />
                   <h4 className="font-bold">VOCÊ</h4>
                 </div>
-                <p className="text-blue-100 text-sm mb-3">
+                <p className="text-blue-50 text-sm mb-3">
                   Digita comandos simples começando com <code className="bg-white/20 px-1.5 py-0.5 rounded">*</code>
                 </p>
                 <div className="bg-white/10 rounded-lg p-3 font-mono text-sm">
@@ -182,7 +182,7 @@ export default function ComoFuncionaPage() {
                   <Bot className="h-6 w-6" />
                   <h4 className="font-bold">CLAUDE (IA)</h4>
                 </div>
-                <p className="text-blue-100 text-sm mb-3">
+                <p className="text-blue-50 text-sm mb-3">
                   Lê protocolos e executa o que foi pedido
                 </p>
                 <div className="bg-white/10 rounded-lg p-3 text-sm">
@@ -207,7 +207,7 @@ export default function ComoFuncionaPage() {
                   <Sparkles className="h-6 w-6" />
                   <h4 className="font-bold">RESULTADO</h4>
                 </div>
-                <p className="text-blue-100 text-sm mb-3">
+                <p className="text-blue-50 text-sm mb-3">
                   Código funcional + documentação completa
                 </p>
                 <div className="bg-white/10 rounded-lg p-3 text-sm">

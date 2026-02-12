@@ -72,6 +72,12 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | `*especificar` | Criar spec | Crie `docs/specs/nome-da-feature.md` |
 | `*prd` | Gerar PRD completo | Leia `vibe-coding/PROTOCOLOS/18-PRD.md`, gere PRD com seção leiga e técnica |
 
+#### COMANDOS DE INTEGRAÇÃO (1)
+
+| Comando | Ação | O que fazer |
+|---------|------|-------------|
+| `*api` | Documentar API externa | Leia `vibe-coding/PROTOCOLOS/19-API.md`, pesquise e documente API em `docs/APIS-DOCS/`, **SEMPRE antes de integrar** |
+
 #### COMANDOS DE ESPECIALISTAS (3)
 
 | Comando | Ação | O que fazer |
@@ -207,7 +213,7 @@ Após implementar, verificar:
 - [ ] Passei por `*garantir` (se necessário)?
 
 ═══════════════════════════════════════════════════════════════════════════════
-### RESUMO DOS 28 COMANDOS
+### RESUMO DOS 30 COMANDOS
 ═══════════════════════════════════════════════════════════════════════════════
 
 | Categoria | Comandos |
@@ -219,6 +225,7 @@ Após implementar, verificar:
 | Infra & Banco (2) | banco, supabase |
 | Automação (3) | workflow, orquestrar, tarefas |
 | Planejamento (3) | planejar, especificar, prd |
+| Integração (1) | api |
 | Especialistas (3) | nerd, agentes, melhorar |
 
 ═══════════════════════════════════════════════════════════════════════════════

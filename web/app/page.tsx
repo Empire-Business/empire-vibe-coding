@@ -417,7 +417,7 @@ export default function HomePage() {
                 <h3 className="text-lg sm:text-xl font-bold">Comece seu projeto!</h3>
               </div>
 
-              <p className="text-blue-100 text-sm mb-4">
+              <p className="text-blue-50 text-sm mb-4">
                 Agora é só digitar o comando mágico e descrever sua ideia:
               </p>
 
@@ -425,11 +425,11 @@ export default function HomePage() {
                 <code className="text-yellow-300 text-lg">*começar</code>
               </div>
 
-              <p className="text-blue-100 text-sm">
+              <p className="text-blue-50 text-sm">
                 Exemplo: <span className="text-white font-medium">&quot;Quero criar um app de tarefas para organizar meu dia a dia&quot;</span>
               </p>
 
-              <p className="text-blue-200 text-sm mt-4">
+              <p className="text-blue-100 text-sm mt-4">
                 A IA vai fazer perguntas, planejar tudo, criar documentação e começar a programar junto com você!
               </p>
             </div>
