@@ -168,37 +168,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Image
-                src="/logo.png"
-                alt="Empire"
-                width={40}
-                height={40}
-                className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0"
-                style={{ objectFit: 'contain' }}
-              />
-              <div className="min-w-0">
-                <h1 className="font-bold text-gray-900 text-sm sm:text-base truncate">Empire Vibe Coding</h1>
-                <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">{totalCommands} comandos para desenvolver com IA</p>
-              </div>
-            </div>
-            <a
-              href="https://github.com/Empire-Business/empire-vibe-coding"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-xs sm:text-sm font-medium flex-shrink-0"
-            >
-              <Github className="h-4 w-4" />
-              <span className="hidden sm:inline">GitHub</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-blue-50 to-white py-12 sm:py-20 lg:py-28">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
