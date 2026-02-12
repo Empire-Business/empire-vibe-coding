@@ -226,6 +226,22 @@ export default function HomePage() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* ===== SEÇÃO 1: COMO INSTALAR ===== */}
         <section id="instalar" className="mb-10 sm:mb-16">
+          {/* Aviso importante */}
+          <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 bg-amber-200 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-amber-700 font-bold text-xs">!</span>
+              </div>
+              <div>
+                <h4 className="font-bold text-amber-900 text-sm mb-1">Instalação por Projeto</h4>
+                <p className="text-amber-800 text-xs sm:text-sm">
+                  O Empire Vibe Coding se instala <strong>dentro de cada projeto</strong>, não no computador.
+                  Repita a instalação para cada projeto novo.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <Download className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
@@ -290,10 +306,16 @@ export default function HomePage() {
               <p className="text-gray-600 text-xs sm:text-sm mb-1 sm:mb-2">
                 Digite no terminal:
               </p>
-              <div className="bg-gray-100 rounded-lg p-2 sm:p-3 flex items-center justify-between">
+              <div className="bg-gray-100 rounded-lg p-2 sm:p-3 flex items-center justify-between mb-2">
                 <code className="text-gray-800 text-sm">claude</code>
                 <CopyButton text="claude" />
               </div>
+              <p className="text-gray-500 text-xs">
+                Não tem o Claude Code?{' '}
+                <a href="https://docs.anthropic.com/claude-code" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                  Veja como instalar aqui
+                </a>
+              </p>
             </InstallStep>
 
             <div className="flex gap-3 sm:gap-4 pl-10 sm:pl-12">
