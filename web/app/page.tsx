@@ -58,6 +58,7 @@ const automationCommands: Command[] = [
 const planningCommands: Command[] = [
   { cmd: '*planejar', name: 'Planejamento Detalhado', description: 'WBS, estimativas, riscos, critérios', example: '*planejar\n\nSistema de pagamentos', icon: Calendar, color: 'bg-blue-100 text-blue-600' },
   { cmd: '*especificar', name: 'Criar Spec', description: 'Cria especificação técnica de uma feature', example: '*especificar\n\nSistema de pagamento', icon: FileText, color: 'bg-slate-100 text-slate-600' },
+  { cmd: '*prd', name: 'Gerar PRD Completo', description: 'PRD com seção leiga e técnica, 20 seções', example: '*prd\n\nApp de gestão financeira', icon: FileText, color: 'bg-cyan-100 text-cyan-600' },
 ]
 
 const specialistCommands: Command[] = [

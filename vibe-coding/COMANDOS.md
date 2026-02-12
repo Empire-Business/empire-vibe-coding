@@ -65,6 +65,7 @@ Digite o comando no Claude Code para ativar a função correspondente.
 |---------|--------|----------------|
 | `*planejar` | Planejamento detalhado | WBS, estimativas, riscos, critérios |
 | `*especificar` | Criar spec de feature | Cria docs/specs/nome-da-feature.md |
+| `*prd` | Gerar PRD completo | PRD com seção leiga e técnica |
 
 ## Comandos de Especialistas
 
@@ -147,6 +148,6 @@ O app está lento e não sei por quê
 | Qualidade | 4 | seguranca, qualidade, garantir, revisar |
 | Infra & Banco | 2 | banco, supabase |
 | Automação | 3 | workflow, orquestrar, tarefas |
-| Planejamento | 2 | planejar, especificar |
+| Planejamento | 3 | planejar, especificar, prd |
 | Especialistas | 3 | nerd, agentes, melhorar |
-| **TOTAL** | **28** | |
+| **TOTAL** | **29** | |

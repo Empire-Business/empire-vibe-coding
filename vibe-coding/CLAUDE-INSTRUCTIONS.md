@@ -15,7 +15,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
-| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-INICIAR.md`, guie o planejamento, preencha `docs/PRD.md` |
+| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-INICIAR.md` e `vibe-coding/PROTOCOLOS/18-PRD.md`, guie o planejamento, preencha `docs/PRD.md` |
 | `*desenvolver` | Modo dev | Leia `vibe-coding/PROTOCOLOS/01-DESENVOLVER.md`, ative protocolo de desenvolvimento |
 | `*bug` | Resolver bug | Leia `vibe-coding/PROTOCOLOS/02-BUGS.md`, investigue e corrija |
 | `*erro` | Resolver erro | Leia `vibe-coding/TROUBLESHOOTING.md`, ajude passo a passo |
@@ -70,6 +70,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 |---------|------|-------------|
 | `*planejar` | Planejamento detalhado | Leia `vibe-coding/PROTOCOLOS/16-PLANEJAR.md`, crie WBS, estimativas, riscos |
 | `*especificar` | Criar spec | Crie `docs/specs/nome-da-feature.md` |
+| `*prd` | Gerar PRD completo | Leia `vibe-coding/PROTOCOLOS/18-PRD.md`, gere PRD com seção leiga e técnica |
 
 #### COMANDOS DE ESPECIALISTAS (3)
 
@@ -147,7 +148,8 @@ projeto/
 │       ├── 14-ORQUESTRAR.md
 │       ├── 15-TAREFAS.md
 │       ├── 16-PLANEJAR.md
-│       └── 17-NERD.md
+│       ├── 17-NERD.md
+│       └── 18-PRD.md
 └── .env.local              ← CREDENCIAIS (nunca commitar!)
 ```
 
@@ -216,7 +218,7 @@ Após implementar, verificar:
 | Qualidade (4) | seguranca, qualidade, garantir, revisar |
 | Infra & Banco (2) | banco, supabase |
 | Automação (3) | workflow, orquestrar, tarefas |
-| Planejamento (2) | planejar, especificar |
+| Planejamento (3) | planejar, especificar, prd |
 | Especialistas (3) | nerd, agentes, melhorar |
 
 ═══════════════════════════════════════════════════════════════════════════════
