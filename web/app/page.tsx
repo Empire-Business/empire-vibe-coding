@@ -199,9 +199,56 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-blue-50 to-white py-12 sm:py-20 lg:py-28">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-6 sm:mb-8 flex justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-200 rounded-full blur-3xl opacity-30 scale-150"></div>
+              <Image
+                src="/logo.png"
+                alt="Empire"
+                width={180}
+                height={180}
+                className="relative h-32 w-32 sm:h-40 sm:w-40 lg:h-48 lg:w-48 mx-auto"
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </div>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
+            Empire Vibe Coding
+          </h1>
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto">
+            Desenvolva software com IA sem saber programar
+          </p>
+          <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8">
+            {totalCommands} comandos para transformar suas ideias em código
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <a
+              href="#instalar"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold shadow-lg shadow-blue-500/25"
+            >
+              <Download className="h-5 w-5" />
+              Instalar Agora
+            </a>
+            <a
+              href="https://github.com/Empire-Business/empire-vibe-coding"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 rounded-xl hover:bg-gray-50 transition-colors text-base sm:text-lg font-semibold border border-gray-200"
+            >
+              <Github className="h-5 w-5" />
+              Ver no GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* ===== SEÇÃO 1: COMO INSTALAR ===== */}
-        <section className="mb-10 sm:mb-16">
+        <section id="instalar" className="mb-10 sm:mb-16">
           <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <Download className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
@@ -310,26 +357,6 @@ export default function HomePage() {
             <p className="text-blue-200 mt-2 sm:mt-3 text-xs sm:text-sm">
               O Claude vai te guiar pelo planejamento, criar o PRD e o roadmap.
             </p>
-          </div>
-
-          {/* GitHub Destaque */}
-          <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 text-white mb-6 sm:mb-8">
-            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-              <Github className="h-5 w-5 sm:h-6 sm:w-6" />
-              <h3 className="text-lg sm:text-xl font-bold">Contribua no GitHub</h3>
-            </div>
-            <p className="text-gray-300 mb-3 sm:mb-4 text-xs sm:text-sm">
-              Empire Vibe Coding é open source! Ajude a melhorar o projeto:
-            </p>
-            <a
-              href="https://github.com/Empire-Business/empire-vibe-coding"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base font-semibold"
-            >
-              <Github className="h-4 w-4 sm:h-5 sm:w-5" />
-              Ver no GitHub
-            </a>
           </div>
 
           {/* Comandos Principais */}
