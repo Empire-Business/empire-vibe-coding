@@ -258,14 +258,36 @@ export default function HomePage() {
               <Terminal className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
               <h3 className="text-base sm:text-lg font-semibold text-white">Instalação Rápida</h3>
             </div>
-            <p className="text-gray-300 mb-3 sm:mb-4 text-xs sm:text-sm">
-              Abra o terminal na pasta do seu projeto e execute:
-            </p>
-            <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-              <code className="text-green-400 text-xs sm:text-sm overflow-x-auto flex-1">
-                curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
-              </code>
-              <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
+
+            {/* Opção 1: npx */}
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded font-medium">RECOMENDADO</span>
+                <span className="text-gray-400 text-sm">Mais simples</span>
+              </div>
+              <p className="text-gray-300 mb-2 text-xs sm:text-sm">
+                Abra o terminal na pasta do projeto e execute:
+              </p>
+              <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+                <code className="text-blue-400 text-xs sm:text-sm overflow-x-auto flex-1">
+                  npx create-empire-vibe-coding
+                </code>
+                <CopyButton text="npx create-empire-vibe-coding" dark />
+              </div>
+            </div>
+
+            {/* Opção 2: curl */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="bg-gray-600 text-white text-xs px-2 py-0.5 rounded font-medium">ALTERNATIVO</span>
+                <span className="text-gray-400 text-sm">Linux/Mac</span>
+              </div>
+              <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+                <code className="text-green-400 text-xs sm:text-sm overflow-x-auto flex-1">
+                  curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+                </code>
+                <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
+              </div>
             </div>
           </div>
 

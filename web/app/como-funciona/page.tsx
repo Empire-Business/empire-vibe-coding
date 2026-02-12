@@ -653,17 +653,36 @@ SEMPRE que fizer mudança:
                   <p className="text-gray-600 text-sm mb-3">
                     Esse comando baixa todos os arquivos do Empire Vibe Coding para dentro da sua pasta.
                   </p>
-                  <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
-                    <div className="flex items-center gap-2">
-                      <code className="text-green-400 text-sm flex-1">
-                        curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
-                      </code>
-                      <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" />
+
+                  {/* Opção 1: npx */}
+                  <div className="mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded font-medium">RECOMENDADO</span>
+                    </div>
+                    <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
+                      <div className="flex items-center gap-2">
+                        <code className="text-blue-400 text-sm flex-1">
+                          npx create-empire-vibe-coding
+                        </code>
+                        <CopyButton text="npx create-empire-vibe-coding" />
+                      </div>
                     </div>
                   </div>
-                  <p className="text-gray-500 text-xs mt-2">
-                    O que esse comando faz: baixa o script de instalação e executa automaticamente.
-                  </p>
+
+                  {/* Opção 2: curl */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="bg-gray-500 text-white text-xs px-2 py-0.5 rounded font-medium">ALTERNATIVO</span>
+                    </div>
+                    <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
+                      <div className="flex items-center gap-2">
+                        <code className="text-green-400 text-sm flex-1">
+                          curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+                        </code>
+                        <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -747,27 +766,6 @@ SEMPRE que fizer mudança:
                 <p className="text-gray-600 text-xs mt-1">Manuais de referência</p>
               </div>
             </div>
-          </div>
-
-          {/* Futuro: npx */}
-          <div className="bg-gray-100 border border-gray-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded font-medium">EM BREVE</span>
-            </div>
-            <h4 className="font-bold text-gray-900 mb-2">Instalação via npx (mais simples)</h4>
-            <p className="text-gray-600 text-sm mb-3">
-              Estamos trabalhando em uma versão ainda mais simples:
-            </p>
-            <div className="bg-gray-900 rounded-lg p-3 font-mono text-sm opacity-60">
-              <span className="text-gray-400">$</span>{' '}
-              <span className="text-blue-300">npx create-empire-vibe-coding</span>
-            </div>
-            <p className="text-gray-500 text-xs mt-2">
-              Para isso funcionar, precisamos criar e publicar um pacote npm. Quer ajudar?{' '}
-              <a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                Contribua no GitHub
-              </a>
-            </p>
           </div>
         </section>
 

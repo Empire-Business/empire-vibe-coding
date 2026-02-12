@@ -1,0 +1,40 @@
+{
+  "name": "create-empire-vibe-coding",
+  "version": "1.0.0",
+  "description": "Create a new Empire Vibe Coding project - desenvolva software com IA sem saber programar",
+  "keywords": [
+    "vibe-coding",
+    "ai",
+    "claude",
+    "cursor",
+    "copilot",
+    "code-generation",
+    "no-code",
+    "low-code"
+  ],
+  "author": "Empire Business",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Empire-Business/empire-vibe-coding"
+  },
+  "bugs": {
+    "url": "https://github.com/Empire-Business/empire-vibe-coding/issues"
+  },
+  "homepage": "https://github.com/Empire-Business/empire-vibe-coding#readme",
+  "bin": {
+    "create-empire-vibe-coding": "./bin/create.js"
+  },
+  "files": [
+    "bin",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "prompts": "^2.4.2"
+  }
+}
