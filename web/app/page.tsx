@@ -256,77 +256,112 @@ export default function HomePage() {
           <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 mb-4 sm:mb-8">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
               <Terminal className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
-              <h3 className="text-base sm:text-lg font-semibold text-white">Instalação Rápida</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Comando de Instalação</h3>
             </div>
-
-            {/* Opção 1: npx */}
-            <div className="mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded font-medium">RECOMENDADO</span>
-                <span className="text-gray-400 text-sm">Mais simples</span>
-              </div>
-              <p className="text-gray-300 mb-2 text-xs sm:text-sm">
-                Abra o terminal na pasta do projeto e execute:
-              </p>
-              <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-                <code className="text-blue-400 text-xs sm:text-sm overflow-x-auto flex-1">
-                  npx create-empire-vibe-coding
-                </code>
-                <CopyButton text="npx create-empire-vibe-coding" dark />
-              </div>
+            <p className="text-gray-300 mb-3 sm:mb-4 text-xs sm:text-sm">
+              Abra o terminal na pasta do seu projeto e execute:
+            </p>
+            <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+              <code className="text-green-400 text-xs sm:text-sm overflow-x-auto flex-1">
+                curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+              </code>
+              <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
             </div>
-
-            {/* Opção 2: curl */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-gray-600 text-white text-xs px-2 py-0.5 rounded font-medium">ALTERNATIVO</span>
-                <span className="text-gray-400 text-sm">Linux/Mac</span>
-              </div>
-              <div className="bg-gray-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-                <code className="text-green-400 text-xs sm:text-sm overflow-x-auto flex-1">
-                  curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
-                </code>
-                <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
-              </div>
-            </div>
+            <p className="text-gray-400 text-xs mt-3">
+              <strong>Windows:</strong> Use o Git Bash ou PowerShell. Veja instruções detalhadas abaixo.
+            </p>
           </div>
 
           {/* Passo a Passo */}
           <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Passo a Passo</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Passo a Passo Detalhado</h3>
 
-            <InstallStep number={1} title="Abra o terminal na pasta do seu projeto">
-              <p className="text-gray-600 text-xs sm:text-sm mb-1 sm:mb-2">
-                No VS Code: <kbd className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 rounded text-[10px] sm:text-xs">Ctrl + `</kbd> ou menu Terminal
+            <InstallStep number={1} title="Crie uma pasta para seu projeto (se não tiver)">
+              <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                Abra o terminal e digite:
               </p>
-              <p className="text-gray-600 text-xs sm:text-sm">
-                Ou navegue: <code className="bg-gray-100 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-sm">cd caminho/do/projeto</code>
+              <div className="bg-gray-100 rounded-lg p-2 sm:p-3 overflow-x-auto mb-3">
+                <code className="text-gray-800 text-sm">mkdir meu-projeto &amp;&amp; cd meu-projeto</code>
+              </div>
+              <p className="text-gray-500 text-xs">
+                Isso cria uma pasta chamada &quot;meu-projeto&quot; e entra nela.
               </p>
             </InstallStep>
 
             <InstallStep number={2} title="Execute o comando de instalação">
-              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">
-                O script vai:
+              <div className="space-y-3">
+                {/* Mac/Linux */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded">Mac / Linux</span>
+                  </div>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                    No Terminal, execute:
+                  </p>
+                  <div className="bg-gray-900 rounded-lg p-2 sm:p-3 flex items-center justify-between gap-2">
+                    <code className="text-green-400 text-xs sm:text-sm overflow-x-auto flex-1">
+                      curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+                    </code>
+                    <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" />
+                  </div>
+                </div>
+
+                {/* Windows */}
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded">Windows</span>
+                  </div>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                    <strong>Opção A:</strong> Abra o <strong>Git Bash</strong> (vem com o Git) e execute o mesmo comando acima.
+                  </p>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                    <strong>Opção B:</strong> No <strong>PowerShell</strong>, execute:
+                  </p>
+                  <div className="bg-gray-900 rounded-lg p-2 sm:p-3 flex items-center justify-between gap-2 mb-2">
+                    <code className="text-blue-400 text-xs sm:text-sm overflow-x-auto flex-1">
+                      Invoke-WebRequest -Uri &quot;https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh&quot; | bash
+                    </code>
+                    <CopyButton text='Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh" | bash' />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <h4 className="font-medium text-amber-900 text-xs sm:text-sm mb-2">O que esse comando faz?</h4>
+                <ul className="text-amber-800 text-xs space-y-1">
+                  <li><code className="bg-amber-100 px-1 rounded">curl</code> = Baixa um arquivo da internet</li>
+                  <li><code className="bg-amber-100 px-1 rounded">-fsSL</code> = Flags para baixar silenciosamente</li>
+                  <li><code className="bg-amber-100 px-1 rounded">| bash</code> = Executa o arquivo baixado</li>
+                </ul>
+              </div>
+            </InstallStep>
+
+            <InstallStep number={3} title="Aguarde a instalação terminar">
+              <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                O script vai baixar e criar:
               </p>
-              <ul className="text-xs sm:text-sm text-gray-600 space-y-1">
+              <ul className="text-xs sm:text-sm text-gray-600 space-y-1 mb-3">
                 <li className="flex items-center gap-2">
                   <FolderOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                  <span>Criar pasta <code className="bg-gray-100 px-1 rounded text-[10px] sm:text-xs">vibe-coding/</code></span>
+                  <span><code className="bg-gray-100 px-1 rounded">vibe-coding/</code> - Manuais de referência</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <FolderOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                  <span>Criar pasta <code className="bg-gray-100 px-1 rounded text-[10px] sm:text-xs">docs/</code></span>
+                  <span><code className="bg-gray-100 px-1 rounded">docs/</code> - Documentação do seu projeto</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                  <span>Criar <code className="bg-gray-100 px-1 rounded text-[10px] sm:text-xs">CLAUDE.md</code> na raiz</span>
+                  <span><code className="bg-gray-100 px-1 rounded">CLAUDE.md</code> - Instruções para a IA</span>
                 </li>
               </ul>
+              <p className="text-green-600 text-xs font-medium">
+                Quando aparecer &quot;INSTALAÇÃO CONCLUÍDA!&quot;, está pronto!
+              </p>
             </InstallStep>
 
-            <InstallStep number={3} title="Abra o Claude Code na pasta">
-              <p className="text-gray-600 text-xs sm:text-sm mb-1 sm:mb-2">
-                Digite no terminal:
+            <InstallStep number={4} title="Abra o Claude Code">
+              <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                No mesmo terminal, digite:
               </p>
               <div className="bg-gray-100 rounded-lg p-2 sm:p-3 flex items-center justify-between mb-2">
                 <code className="text-gray-800 text-sm">claude</code>
@@ -343,9 +378,13 @@ export default function HomePage() {
             <div className="flex gap-3 sm:gap-4 pl-10 sm:pl-12">
               <div className="flex-1 pb-0">
                 <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">Pronto!</h3>
-                <p className="text-gray-600 text-xs sm:text-sm">
-                  Agora digite <code className="bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 rounded font-bold text-xs sm:text-sm">*começar</code> e descreva sua ideia.
+                <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                  Digite <code className="bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 rounded font-bold text-xs sm:text-sm">*começar</code> e descreva sua ideia:
                 </p>
+                <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-xs sm:text-sm text-gray-600">
+                  <code className="text-blue-600">*começar</code><br/>
+                  <span className="text-gray-500">Quero criar um app de tarefas para organizar meu dia</span>
+                </div>
               </div>
             </div>
           </div>

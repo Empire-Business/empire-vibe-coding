@@ -654,25 +654,10 @@ SEMPRE que fizer mudança:
                     Esse comando baixa todos os arquivos do Empire Vibe Coding para dentro da sua pasta.
                   </p>
 
-                  {/* Opção 1: npx */}
+                  {/* Mac/Linux */}
                   <div className="mb-3">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded font-medium">RECOMENDADO</span>
-                    </div>
-                    <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
-                      <div className="flex items-center gap-2">
-                        <code className="text-blue-400 text-sm flex-1">
-                          npx create-empire-vibe-coding
-                        </code>
-                        <CopyButton text="npx create-empire-vibe-coding" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Opção 2: curl */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="bg-gray-500 text-white text-xs px-2 py-0.5 rounded font-medium">ALTERNATIVO</span>
+                      <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded font-medium">Mac / Linux</span>
                     </div>
                     <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
                       <div className="flex items-center gap-2">
@@ -682,6 +667,37 @@ SEMPRE que fizer mudança:
                         <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Windows */}
+                  <div className="mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded font-medium">Windows</span>
+                    </div>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                      <strong>Opção A:</strong> Abra o <strong>Git Bash</strong> e execute o mesmo comando acima.
+                    </p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                      <strong>Opção B:</strong> No <strong>PowerShell</strong>:
+                    </p>
+                    <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
+                      <div className="flex items-center gap-2">
+                        <code className="text-blue-400 text-xs sm:text-sm flex-1">
+                          Invoke-WebRequest -Uri &quot;https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh&quot; | bash
+                        </code>
+                        <CopyButton text='Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh" | bash' />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Explicação do comando */}
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <h5 className="font-medium text-amber-900 text-xs sm:text-sm mb-2">O que esse comando faz?</h5>
+                    <ul className="text-amber-800 text-xs space-y-1">
+                      <li><code className="bg-amber-100 px-1 rounded">curl</code> = Baixa um arquivo da internet</li>
+                      <li><code className="bg-amber-100 px-1 rounded">-fsSL</code> = Baixa silenciosamente (sem barra de progresso)</li>
+                      <li><code className="bg-amber-100 px-1 rounded">| bash</code> = Executa o arquivo baixado imediatamente</li>
+                    </ul>
                   </div>
                 </div>
               </div>
