@@ -1,6 +1,6 @@
 'use client'
 
-import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, Copy, Check, Terminal, Github, Download, FolderOpen, ChevronDown, ChevronUp, Palette, MousePointer, Star, CheckCircle, Database, Layers, GitBranch, ListTodo, Calendar, Brain } from 'lucide-react'
+import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, Copy, Check, Terminal, Github, Download, FolderOpen, ChevronDown, ChevronUp, Palette, MousePointer, Star, CheckCircle, Database, Layers, GitBranch, ListTodo, Calendar, Brain, HelpCircle } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 
@@ -204,13 +204,20 @@ export default function HomePage() {
               Instalar Agora
             </a>
             <a
+              href="/como-funciona"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 rounded-xl hover:bg-gray-50 transition-colors text-base sm:text-lg font-semibold border border-gray-200"
+            >
+              <HelpCircle className="h-5 w-5" />
+              Como Funciona
+            </a>
+            <a
               href="https://github.com/Empire-Business/empire-vibe-coding"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 rounded-xl hover:bg-gray-50 transition-colors text-base sm:text-lg font-semibold border border-gray-200"
+              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base font-medium"
             >
               <Github className="h-5 w-5" />
-              Ver no GitHub
+              GitHub
             </a>
           </div>
         </div>
