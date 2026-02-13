@@ -1,0 +1,76 @@
+{
+  "name": "Squad Frontend",
+  "description": "Time especializado em desenvolvimento de interfaces e experiência do usuário",
+  "version": "1.0.0",
+  "agents": [
+    {
+      "name": "ui-designer",
+      "role": "Designer de Interface",
+      "description": "Cria interfaces visuais, define layout, cores, tipografia e componentes",
+      "tools": ["Read", "Write", "Edit"],
+      "focus": "Design System, componentes UI, layouts responsivos, acessibilidade visual",
+      "outputs": ["Componentes visuais", "Design tokens", "Layouts"]
+    },
+    {
+      "name": "frontend-dev",
+      "role": "Desenvolvedor Frontend",
+      "description": "Implementa componentes React/Vue/etc com código limpo e performático",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "Componentes React, estado, hooks, otimização de performance",
+      "outputs": ["Código de componentes", "Hooks", "Utils"]
+    },
+    {
+      "name": "tester",
+      "role": "QA Frontend",
+      "description": "Testa componentes, verifica acessibilidade, valida responsividade",
+      "tools": ["Read", "Bash"],
+      "focus": "Testes unitários, testes de integração, acessibilidade, responsividade",
+      "outputs": ["Testes", "Relatórios de bugs", "Checklist de QA"]
+    }
+  ],
+  "workflow": [
+    {
+      "step": 1,
+      "agent": "ui-designer",
+      "action": "Analisa requisitos e cria design dos componentes",
+      "dependencies": []
+    },
+    {
+      "step": 2,
+      "agent": "frontend-dev",
+      "action": "Implementa os componentes baseado no design",
+      "dependencies": ["step 1"]
+    },
+    {
+      "step": 3,
+      "agent": "tester",
+      "action": "Testa os componentes implementados",
+      "dependencies": ["step 2"]
+    },
+    {
+      "step": 4,
+      "agent": "frontend-dev",
+      "action": "Corrige problemas encontrados nos testes",
+      "dependencies": ["step 3"]
+    }
+  ],
+  "outputs": [
+    "Componentes React/Vue funcionais",
+    "Testes unitários",
+    "Documentação de componentes",
+    "Design tokens utilizados"
+  ],
+  "bestFor": [
+    "Criação de novas páginas",
+    "Desenvolvimento de componentes",
+    "Refatoração de UI",
+    "Implementação de Design System",
+    "Melhoria de UX"
+  ],
+  "notFor": [
+    "Lógica de backend",
+    "Banco de dados",
+    "Infraestrutura",
+    "APIs"
+  ]
+}

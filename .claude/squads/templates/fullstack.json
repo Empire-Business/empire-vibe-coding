@@ -1,0 +1,114 @@
+{
+  "name": "Squad Fullstack",
+  "description": "Time completo para desenvolvimento end-to-end de features",
+  "version": "1.0.0",
+  "agents": [
+    {
+      "name": "ui-designer",
+      "role": "Designer de Interface",
+      "description": "Cria interfaces visuais, define layout e experiência",
+      "tools": ["Read", "Write", "Edit"],
+      "focus": "Design System, UI/UX, protótipos",
+      "outputs": ["Design", "Protótipos", "Design tokens"]
+    },
+    {
+      "name": "frontend-dev",
+      "role": "Desenvolvedor Frontend",
+      "description": "Implementa interface e componentes",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "React/Vue, estado, componentes",
+      "outputs": ["Componentes", "Páginas", "Hooks"]
+    },
+    {
+      "name": "backend-dev",
+      "role": "Desenvolvedor Backend",
+      "description": "Implementa APIs e lógica de servidor",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "APIs, autenticação, regras de negócio",
+      "outputs": ["APIs", "Services", "Middlewares"]
+    },
+    {
+      "name": "dba",
+      "role": "Database Administrator",
+      "description": "Modela e gerencia banco de dados",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "Schema, migrations, queries",
+      "outputs": ["Migrations", "Schema", "Queries"]
+    },
+    {
+      "name": "tester",
+      "role": "QA Engineer",
+      "description": "Testa toda a aplicação end-to-end",
+      "tools": ["Read", "Bash"],
+      "focus": "Testes E2E, integração, acessibilidade",
+      "outputs": ["Testes", "Relatórios", "Bug reports"]
+    }
+  ],
+  "workflow": [
+    {
+      "step": 1,
+      "agent": "ui-designer",
+      "action": "Cria design da feature completa",
+      "dependencies": []
+    },
+    {
+      "step": 2,
+      "agent": "dba",
+      "action": "Modela dados necessários",
+      "dependencies": []
+    },
+    {
+      "step": 3,
+      "agent": "backend-dev",
+      "action": "Implementa APIs e lógica",
+      "dependencies": ["step 2"]
+    },
+    {
+      "step": 4,
+      "agent": "frontend-dev",
+      "action": "Implementa interface",
+      "dependencies": ["step 1", "step 3"]
+    },
+    {
+      "step": 5,
+      "agent": "tester",
+      "action": "Testa feature completa",
+      "dependencies": ["step 4"]
+    },
+    {
+      "step": 6,
+      "agent": "frontend-dev",
+      "action": "Corrige issues de frontend",
+      "dependencies": ["step 5"]
+    },
+    {
+      "step": 7,
+      "agent": "backend-dev",
+      "action": "Corrige issues de backend",
+      "dependencies": ["step 5"]
+    }
+  ],
+  "outputs": [
+    "Feature completa end-to-end",
+    "APIs documentadas",
+    "Testes automatizados",
+    "Migrations de banco",
+    "Documentação"
+  ],
+  "bestFor": [
+    "Features novas completas",
+    "MVPs",
+    "Projetos do zero",
+    "Features complexas que tocam todas as camadas"
+  ],
+  "notFor": [
+    "Tarefas simples de uma área só",
+    "Bugs específicos",
+    "Pequenas correções"
+  ],
+  "notes": [
+    "Este squad é mais lento mas mais completo",
+    "Use para features que precisam de frontend E backend",
+    "Para tarefas simples, prefira squads especializados"
+  ]
+}

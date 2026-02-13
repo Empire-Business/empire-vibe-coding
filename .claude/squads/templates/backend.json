@@ -1,0 +1,75 @@
+{
+  "name": "Squad Backend",
+  "description": "Time especializado em desenvolvimento de servidor, APIs e banco de dados",
+  "version": "1.0.0",
+  "agents": [
+    {
+      "name": "backend-dev",
+      "role": "Desenvolvedor Backend",
+      "description": "Implementa lógica de servidor, APIs, autenticação e regras de negócio",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "APIs REST/GraphQL, autenticação, validação, middleware",
+      "outputs": ["Endpoints", "Middlewares", "Services"]
+    },
+    {
+      "name": "dba",
+      "role": "Database Administrator",
+      "description": "Modela banco de dados, cria migrations, otimiza queries",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "Schema design, migrations, índices, performance de queries",
+      "outputs": ["Migrations", "Schema", "Queries otimizadas"]
+    },
+    {
+      "name": "devops",
+      "role": "DevOps Engineer",
+      "description": "Configura infraestrutura, CI/CD, monitoramento e deploy",
+      "tools": ["Read", "Write", "Edit", "Bash"],
+      "focus": "Docker, CI/CD, variáveis de ambiente, monitoring",
+      "outputs": ["Dockerfiles", "CI/CD configs", "Scripts de deploy"]
+    }
+  ],
+  "workflow": [
+    {
+      "step": 1,
+      "agent": "dba",
+      "action": "Modela entidades e cria schema do banco",
+      "dependencies": []
+    },
+    {
+      "step": 2,
+      "agent": "backend-dev",
+      "action": "Implementa APIs e lógica de negócio",
+      "dependencies": ["step 1"]
+    },
+    {
+      "step": 3,
+      "agent": "devops",
+      "action": "Configura ambiente e CI/CD",
+      "dependencies": ["step 2"]
+    },
+    {
+      "step": 4,
+      "agent": "backend-dev",
+      "action": "Testa APIs e integrações",
+      "dependencies": ["step 3"]
+    }
+  ],
+  "outputs": [
+    "APIs funcionais",
+    "Migrations de banco",
+    "Configuração de ambiente",
+    "Documentação de API"
+  ],
+  "bestFor": [
+    "Criação de APIs",
+    "Modelagem de banco de dados",
+    "Autenticação e autorização",
+    "Integrações com serviços externos",
+    "Configuração de infraestrutura"
+  ],
+  "notFor": [
+    "Interface de usuário",
+    "Componentes visuais",
+    "Frontend"
+  ]
+}
