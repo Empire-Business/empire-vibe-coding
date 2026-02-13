@@ -15,7 +15,7 @@ interface Command {
 }
 
 const mainCommands: Command[] = [
-  { cmd: '*começar', name: 'Iniciar Projeto', description: 'Planeja o projeto do zero, preenche o PRD e cria o roadmap', example: '*começar\n\nQuero criar um app de tarefas', icon: Rocket, color: 'bg-blue-100 text-blue-600' },
+  { cmd: '*começar', name: 'Tutorial Inicial', description: 'Mostra tutorial de como começar. Explica os próximos passos: digite *PRD para criar requisitos, depois *arquitetura. NÃO executa desenvolvimento.', example: '*começar', icon: Rocket, color: 'bg-blue-100 text-blue-600' },
   { cmd: '*desenvolver', name: 'Modo Desenvolvimento', description: 'Ativa o protocolo de desenvolvimento diário', icon: Code, color: 'bg-green-100 text-green-600' },
   { cmd: '*bug', name: 'Resolver Bug', description: 'Investiga e corrige problemas no código', example: '*bug\n\nO login não funciona', icon: Bug, color: 'bg-red-100 text-red-600' },
   { cmd: '*erro', name: 'Resolver Erro', description: 'Ajuda a resolver erros e mensagens de erro do terminal', example: '*erro\n\nnpm ERR! code ERESOLVE', icon: AlertCircle, color: 'bg-orange-100 text-orange-600' },
@@ -430,7 +430,7 @@ export default function HomePage() {
               </p>
 
               <p className="text-blue-100 text-sm mt-4">
-                A IA vai fazer perguntas, planejar tudo, criar documentação e começar a programar junto com você!
+                O Claude vai explicar os próximos passos: digite *PRD para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
               </p>
             </div>
 
@@ -462,7 +462,7 @@ export default function HomePage() {
               *começar
             </div>
             <p className="text-blue-200 mt-2 sm:mt-3 text-xs sm:text-sm">
-              O Claude vai te guiar pelo planejamento, criar o PRD e o roadmap.
+              O Claude vai explicar os próximos passos: digite *PRD para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
             </p>
           </div>
 
@@ -495,7 +495,7 @@ export default function HomePage() {
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Fluxo Recomendado</h3>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
               {[
-                { cmd: '*começar', desc: 'Planejar' },
+                { cmd: '*começar', desc: 'Tutorial' },
                 { cmd: '*desenvolver', desc: 'Criar' },
                 { cmd: '*seguranca', desc: 'Verificar' },
                 { cmd: '*garantir', desc: 'Aprovar' },
