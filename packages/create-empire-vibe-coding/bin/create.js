@@ -41,7 +41,8 @@ const FILES_TO_DOWNLOAD = {
   'vibe-coding/CLAUDE-INSTRUCTIONS.md': 'vibe-coding/CLAUDE-INSTRUCTIONS.md',
 
   // Protocolos
-  'vibe-coding/PROTOCOLOS/00-INICIAR.md': 'vibe-coding/PROTOCOLOS/00-INICIAR.md',
+  'vibe-coding/PROTOCOLOS/00-COMEÇAR.md': 'vibe-coding/PROTOCOLOS/00-COMEÇAR.md',
+  'vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md': 'vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md',
   'vibe-coding/PROTOCOLOS/01-DESENVOLVER.md': 'vibe-coding/PROTOCOLOS/01-DESENVOLVER.md',
   'vibe-coding/PROTOCOLOS/02-BUGS.md': 'vibe-coding/PROTOCOLOS/02-BUGS.md',
   'vibe-coding/PROTOCOLOS/03-MELHORAR.md': 'vibe-coding/PROTOCOLOS/03-MELHORAR.md',
@@ -61,6 +62,20 @@ const FILES_TO_DOWNLOAD = {
   'vibe-coding/PROTOCOLOS/17-NERD.md': 'vibe-coding/PROTOCOLOS/17-NERD.md',
   'vibe-coding/PROTOCOLOS/18-PRD.md': 'vibe-coding/PROTOCOLOS/18-PRD.md',
   'vibe-coding/PROTOCOLOS/19-API.md': 'vibe-coding/PROTOCOLOS/19-API.md',
+  'vibe-coding/PROTOCOLOS/20-AGENTES.md': 'vibe-coding/PROTOCOLOS/20-AGENTES.md',
+
+  // Claude configuration
+  '.claude/custom_instructions.md': '.claude/custom_instructions.md',
+
+  // Squads
+  'squads/README.md': 'squads/README.md',
+  'squads/ARCHITECT.md': 'squads/ARCHITECT.md',
+  'squads/DEVELOPER.md': 'squads/DEVELOPER.md',
+  'squads/REVIEWER.md': 'squads/REVIEWER.md',
+  'squads/QA.md': 'squads/QA.md',
+  'squads/SECURITY.md': 'squads/SECURITY.md',
+  'squads/DESIGNER.md': 'squads/DESIGNER.md',
+  'squads/DATA.md': 'squads/DATA.md',
 
   // Template de ambiente
   '.env.template': '.env.template',
@@ -558,7 +573,9 @@ async function main() {
     const folders = [
       'vibe-coding/PROTOCOLOS',
       'docs/specs',
-      'docs/APIS-DOCS'
+      'docs/APIS-DOCS',
+      '.claude',
+      'squads/custom'
     ]
 
     for (const folder of folders) {

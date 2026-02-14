@@ -5,6 +5,70 @@
 Este projeto usa **Empire Vibe Coding** - desenvolvimento com IA para iniciantes.
 Consulte a pasta `vibe-coding/` para documentação completa.
 
+---
+
+## LEIS FUNDAMENTAIS
+
+> Consulte `.claude/custom_instructions.md` para detalhes completos.
+
+### LEI #1: NUNCA PULE ETAPAS
+Antes de implementar código: documente, pergunte, confirme.
+
+### LEI #2: DOCUMENTAÇÃO PRIMEIRO
+PRIMEIRO criar documentação, DEPOIS implementar código.
+
+### LEI #3: CHECKPOINT OBRIGATÓRIO
+Antes de cada ação: explique O QUE vai fazer, O QUE NÃO vai fazer, peça confirmação.
+
+### LEI #4: COMANDOS NÃO SÃO AUTOMÁTICOS
+Comandos são GUIAS, não autorizações para fazer tudo automaticamente.
+
+### LEI #5: DESENVOLVIMENTO BLOQUEADO SEM PRÉ-REQUISITOS
+
+```
+ANTES DE *desenvolver, VERIFICAR:
+
+1. [ ] docs/PRD.md existe?
+2. [ ] docs/ARQUITETURA.md existe?
+3. [ ] docs/ROADMAP.md existe?
+4. [ ] Design System definido?
+
+Se QUALQUER item faltar:
+🛑 BLOQUEAR desenvolvimento
+→ Mostrar o que falta
+→ Direcionar para comando correto
+→ NÃO PROSSEGUIR até resolver
+
+EXCEÇÕES: *bug, *erro, manutenção simples
+```
+
+---
+
+## CICLO DE TRABALHO OBRIGATÓRIO
+
+```
+1. ENTENDIMENTO → O que o usuário quer?
+2. LEITURA      → Ler o protocolo correspondente
+3. CHECKPOINT   → Explicar + Pedir confirmação
+4. EXECUÇÃO     → Seguir protocolo EXATAMENTE + PARAR em Stop Points
+5. VERIFICAÇÃO  → Documentação atualizada? Checklist completo?
+```
+
+---
+
+## CHECKLIST PÓS-AÇÃO (OBRIGATÓRIO)
+
+Após CADA implementação:
+
+- [ ] Atualizei `docs/MUDANCAS.md`?
+- [ ] Se foi decisão → `docs/DECISOES.md`?
+- [ ] Se completei tarefa → `docs/ROADMAP.md`?
+- [ ] Se mudei arquitetura → `docs/ARQUITETURA.md`?
+- [ ] Pedi confirmação antes de implementar?
+- [ ] Parei em todos os STOP POINTS?
+
+---
+
 ═══════════════════════════════════════════════════════════════════════════════
 ### COMANDOS DO USUÁRIO (começam com *)
 ═══════════════════════════════════════════════════════════════════════════════
@@ -15,7 +79,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
-| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-INICIAR.md` e `vibe-coding/PROTOCOLOS/18-PRD.md`, guie o planejamento, preencha `docs/PRD.md` |
+| `*começar` | Iniciar projeto | Leia `vibe-coding/PROTOCOLOS/00-COMEÇAR.md` - **Tutorial interativo, NÃO criar arquivos automaticamente** |
 | `*desenvolver` | Modo dev | Leia `vibe-coding/PROTOCOLOS/01-DESENVOLVER.md`, ative protocolo de desenvolvimento |
 | `*bug` | Resolver bug | Leia `vibe-coding/PROTOCOLOS/02-BUGS.md`, investigue e corrija |
 | `*erro` | Resolver erro | Leia `vibe-coding/TROUBLESHOOTING.md`, ajude passo a passo |
@@ -64,13 +128,13 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | `*orquestrar` | Orquestrar comandos | Leia `vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md`, combine múltiplos comandos |
 | `*tarefas` | Gerenciar tarefas | Leia `vibe-coding/PROTOCOLOS/15-TAREFAS.md`, use TaskCreate/Update/Get/List |
 
-#### COMANDOS DE PLANEJAMENTO (2)
+#### COMANDOS DE PLANEJAMENTO (3)
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
 | `*planejar` | Planejamento detalhado | Leia `vibe-coding/PROTOCOLOS/16-PLANEJAR.md`, crie WBS, estimativas, riscos |
 | `*especificar` | Criar spec | Crie `docs/specs/nome-da-feature.md` |
-| `*prd` | Gerar PRD completo | Leia `vibe-coding/PROTOCOLOS/18-PRD.md`, gere PRD com seção leiga e técnica |
+| `*prd` | Gerar PRD completo | Leia `vibe-coding/PROTOCOLOS/18-PRD.md` - **Com checkpoints, NÃO implementa código** |
 
 #### COMANDOS DE INTEGRAÇÃO (1)
 
@@ -83,7 +147,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
 | `*nerd` | Problemas complexos | Leia `vibe-coding/PROTOCOLOS/17-NERD.md`, debug profundo, profiling, otimização |
-| `*agentes` | Usar Agent Teams | Crie equipe de agentes para tarefa complexa |
+| `*agentes` | Usar Agent Teams | Leia `vibe-coding/PROTOCOLOS/20-AGENTES.md` - **Sistema de Squads** |
 | `*melhorar` | Refatorar | Leia `vibe-coding/PROTOCOLOS/03-MELHORAR.md` |
 
 #### COMANDO DE AJUDA
@@ -91,6 +155,53 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | Comando | Ação |
 |---------|------|
 | `*ajuda` | Liste todos os comandos disponíveis |
+
+---
+
+## COMPORTAMENTO ESPECÍFICO POR COMANDO
+
+### `*começar` - Tutorial Interativo
+
+```
+COMPORTAMENTO OBRIGATÓRIO:
+
+1. MOSTRAR menu de opções
+2. 🛑 ESPERAR resposta do usuário
+3. DIRECIONAR para comando adequado
+
+PROIBIDO: Criar arquivos automaticamente
+```
+
+### `*prd` - Gerador de PRD
+
+```
+COMPORTAMENTO OBRIGATÓRIO:
+
+1. CHECKPOINT: Explicar que VAI criar documento, NÃO VAI implementar código
+2. FAZER perguntas (máx. 5)
+3. 🛑 ESPERAR respostas
+4. CRIAR docs/PRD.md
+5. 🛑 MOSTRAR resultado e esperar aprovação
+6. NÃO implementar código
+
+PROIBIDO: Implementar código durante *prd
+```
+
+### `*agentes` - Sistema de Squads
+
+```
+COMPORTAMENTO OBRIGATÓRIO:
+
+1. IDENTIFICAR necessidade
+2. SELECIONAR agentes do diretório squads/
+3. CRIAR tarefas com TaskCreate
+4. EXECUTAR sequencialmente
+5. REPORTAR progresso
+
+Consultar: vibe-coding/PROTOCOLOS/20-AGENTES.md
+```
+
+---
 
 ═══════════════════════════════════════════════════════════════════════════════
 ### REGRA #1: DOCUMENTE TUDO
@@ -122,45 +233,47 @@ O comando `*garantir` é o **ÚNICO** que pode:
 
 ```
 projeto/
-├── CLAUDE.md              ← VOCÊ ESTÁ AQUI (orquestrador)
-├── docs/                   ← DO PROJETO (sempre atualize!)
+├── .claude/                   ← CONFIGURAÇÃO (alta prioridade)
+│   ├── custom_instructions.md ← LEIS FUNDAMENTAIS
+│   └── settings.json
+│
+├── CLAUDE.md                  ← VOCÊ ESTÁ AQUI (orquestrador)
+├── docs/                       ← DO PROJETO (sempre atualize!)
 │   ├── PRD.md
 │   ├── ARQUITETURA.md
 │   ├── DECISOES.md
 │   ├── MUDANCAS.md
 │   ├── ROADMAP.md
 │   └── specs/
-├── vibe-coding/            ← REFERÊNCIA (consulte, não edite)
+├── vibe-coding/                ← REFERÊNCIA (consulte, não edite)
 │   ├── COMANDOS.md
 │   ├── COMUNICACAO.md
 │   ├── GLOSSARIO.md
 │   ├── BANDEIRAS-VERMELHAS.md
 │   ├── TROUBLESHOOTING.md
 │   └── PROTOCOLOS/
-│       ├── 00-INICIAR.md
-│       ├── 01-DESENVOLVER.md
-│       ├── 02-BUGS.md
-│       ├── 03-MELHORAR.md
-│       ├── 04-MANUTENCAO.md
-│       ├── 05-LANCAR.md
-│       ├── 06-SEGURANCA.md
-│       ├── 07-QUALIDADE.md
-│       ├── 08-GARANTIDOR.md
-│       ├── 09-DESIGN.md
-│       ├── 10-UX.md
-│       ├── 11-BANCO.md
-│       ├── 12-SUPABASE.md
-│       ├── 13-WORKFLOW.md
-│       ├── 14-ORQUESTRAR.md
-│       ├── 15-TAREFAS.md
-│       ├── 16-PLANEJAR.md
-│       ├── 17-NERD.md
-│       └── 18-PRD.md
-└── .env.local              ← CREDENCIAIS (nunca commitar!)
+│       ├── 00-COMEÇAR.md       ← Tutorial interativo
+│       ├── 01-SETUP-TECNICO.md ← Setup técnico
+│       ├── ... (outros)
+│       └── 20-AGENTES.md       ← Sistema de Squads
+│
+├── squads/                     ← AGENTES ESPECIALIZADOS
+│   ├── README.md
+│   ├── ARCHITECT.md
+│   ├── DEVELOPER.md
+│   ├── REVIEWER.md
+│   ├── QA.md
+│   ├── SECURITY.md
+│   ├── DESIGNER.md
+│   ├── DATA.md
+│   └── custom/                 ← Agentes customizados
+│
+└── .env.local                  ← CREDENCIAIS (nunca commitar!)
 ```
 
 **docs/** = Documentação DO PROJETO (crie, edite, mantenha atualizada!)
 **vibe-coding/** = Documentação de REFERÊNCIA (consulte quando precisar)
+**squads/** = Definições de AGENTES (podem ser estendidos em squads/custom/)
 
 ═══════════════════════════════════════════════════════════════════════════════
 ### REGRAS DE COMUNICAÇÃO
@@ -201,16 +314,30 @@ Consulte `vibe-coding/COMUNICACAO.md` para regras completas.
 3. PERGUNTE se pode continuar
 
 ═══════════════════════════════════════════════════════════════════════════════
-### CHECKLIST PÓS-MUDANÇA
+### SISTEMA DE SQUADS
 ═══════════════════════════════════════════════════════════════════════════════
 
-Após implementar, verificar:
+### Agentes Disponíveis
 
-- [ ] Atualizei `docs/MUDANCAS.md`?
-- [ ] Se foi decisão → `docs/DECISOES.md`?
-- [ ] Se completei tarefa → `docs/ROADMAP.md`?
-- [ ] Se mudei arquitetura → `docs/ARQUITETURA.md`?
-- [ ] Passei por `*garantir` (se necessário)?
+| Agente | Especialidade | Arquivo |
+|--------|---------------|---------|
+| ARCHITECT | Arquitetura de software | squads/ARCHITECT.md |
+| DEVELOPER | Desenvolvimento | squads/DEVELOPER.md |
+| REVIEWER | Code review | squads/REVIEWER.md |
+| QA | Qualidade e testes | squads/QA.md |
+| SECURITY | Segurança | squads/SECURITY.md |
+| DESIGNER | Design e UX | squads/DESIGNER.md |
+| DATA | Dados e performance | squads/DATA.md |
+
+### Squads Pré-definidos
+
+| Squad | Ordem | Quando Usar |
+|-------|-------|-------------|
+| Feature Squad | ARCHITECT → DEVELOPER → REVIEWER → QA | Features novas |
+| Bug Squad | DEVELOPER → QA → SECURITY (se crítico) | Correções |
+| Performance Squad | DATA → DEVELOPER → QA | Otimizações |
+| Security Squad | SECURITY → DEVELOPER → REVIEWER | Auditorias |
+| Design Squad | DESIGNER → DEVELOPER → QA | UI/UX |
 
 ═══════════════════════════════════════════════════════════════════════════════
 ### RESUMO DOS 30 COMANDOS
@@ -239,16 +366,24 @@ Para começar um projeto do zero, o usuário deve digitar:
 ```
 
 Você deve:
-1. Perguntar qual é a ideia do projeto
-2. Ler `vibe-coding/PROTOCOLOS/00-INICIAR.md`
-3. Seguir o protocolo de planejamento
-4. Preencher `docs/PRD.md` com as informações
-5. Criar `docs/ROADMAP.md` com os próximos passos
+1. MOSTRAR menu interativo
+2. 🛑 ESPERAR resposta
+3. DIRECIONAR para o comando adequado
+
+**NÃO criar arquivos automaticamente!**
 
 Para problemas complexos:
 
 ```
-*orquestrar [descrição do problema]
+*agentes
+[descrição do problema]
 ```
 
-O orquestrador vai sugerir a sequência de comandos adequada.
+O sistema de squads vai criar equipe apropriada.
+
+---
+
+**Consulte também:**
+- `.claude/custom_instructions.md` - Leis fundamentais detalhadas
+- `vibe-coding/COMANDOS.md` - Lista completa de comandos
+- `squads/README.md` - Documentação do sistema de agentes

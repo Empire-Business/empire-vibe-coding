@@ -22,6 +22,85 @@ Este documento estabelece o protocolo padrão para o fluxo de trabalho diário d
 
 ---
 
+## 🛑 CHECKPOINT INICIAL OBRIGATÓRIO
+
+### ANTES DE QUALQUER DESENVOLVIMENTO, VERIFICAR:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  VERIFICAÇÃO DE PRÉ-REQUISITOS                              │
+└─────────────────────────────────────────────────────────────┘
+
+Execute esta verificação ANTES de começar qualquer desenvolvimento:
+
+1. docs/PRD.md existe e tem conteúdo?
+   ├── NÃO → 🛑 BLOQUEAR
+   │        "Você precisa criar o PRD primeiro."
+   │        "Execute: *prd"
+   │        PARAR AQUI
+   └── SIM → ✅ Continuar
+
+2. docs/ARQUITETURA.md existe e tem conteúdo?
+   ├── NÃO → 🛑 BLOQUEAR
+   │        "Você precisa definir a arquitetura primeiro."
+   │        "Execute: *arquitetura"
+   │        PARAR AQUI
+   └── SIM → ✅ Continuar
+
+3. docs/ROADMAP.md existe e tem tarefas?
+   ├── NÃO → 🛑 BLOQUEAR
+   │        "Você precisa criar o roadmap primeiro."
+   │        "Execute: *roadmap"
+   │        PARAR AQUI
+   └── SIM → ✅ Continuar
+
+4. Design System está definido?
+   ├── Verificar: docs/DESIGN/tokens.md OU tailwind.config.* OU padrões visuais documentados
+   ├── NÃO → 🛑 BLOQUEAR
+   │        "Você precisa definir o Design System primeiro."
+   │        "Execute: *design"
+   │        PARAR AQUI
+   └── SIM → ✅ PERMITIR DESENVOLVIMENTO
+```
+
+### MENSAGEM DE BLOQUEIO
+
+Quando um pré-requisito estiver faltando, mostrar:
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  🛑 DESENVOLVIMENTO BLOQUEADO                                 ║
+║                                                               ║
+║  Antes de desenvolver, você precisa ter:                      ║
+║                                                               ║
+║  1. [STATUS] PRD (docs/PRD.md)                                ║
+║     [→ Execute: *prd] se faltando                             ║
+║                                                               ║
+║  2. [STATUS] Arquitetura (docs/ARQUITETURA.md)                ║
+║     [→ Execute: *arquitetura] se faltando                     ║
+║                                                               ║
+║  3. [STATUS] Roadmap (docs/ROADMAP.md)                        ║
+║     [→ Execute: *roadmap] se faltando                         ║
+║                                                               ║
+║  4. [STATUS] Design System                                    ║
+║     [→ Execute: *design] se faltando                          ║
+║                                                               ║
+║  Complete os itens faltando antes de desenvolver.             ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+### EXCEÇÕES (NÃO bloquear)
+
+Esta verificação NÃO se aplica quando:
+- O comando é `*bug` ou `*erro`
+- É manutenção simples (typos, atualização de dependências)
+- É refatoração sem mudança de comportamento
+- O projeto já tem código funcionando (assumir que passou pela fase de documentação)
+
+---
+
 ## Como Funciona o Trabalho Diário (Explicado Simples)
 
 ### Análogo: Trabalhar com IA é como trabalhar com um assistente

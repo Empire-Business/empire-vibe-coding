@@ -1,62 +1,125 @@
 ---
 ## PARA CLAUDE (AI INSTRUCTIONS)
 
-Ao gerar um PRD:
-1. Comece com até 5 perguntas essenciais
-2. Se não houver resposta, avance com suposições explícitas
-3. Gere DUAS versões: (1) Leiga (2) Técnica
-4. Use bullets, tabelas e exemplos
-5. Evite jargão na seção leiga
-6. Faça auto-revisão antes de finalizar
+IMPORTANTE - LEIA COM ATENÇÃO:
+
+1. NUNCA implemente código durante *prd
+2. SEMPRE mostre checkpoint antes de começar
+3. SEMPRE faça perguntas PRIMEIRO
+4. SEMPRE pare em STOP POINTS
+5. Este comando CRIA DOCUMENTAÇÃO, não código
 ---
 
 # 18-PRD.md - Protocolo de PRD Generator
 
 ## Quando Usar
 
-- `*começar` → Gera PRD completo
-- `*prd` → Atualiza PRD existente
+- `*prd` → Gerar/atualizar PRD
+- `*começar` → Quando usuário escolhe "Criar PRD"
 - Antes de desenvolver features grandes
 - Quando precisa alinhar visão com stakeholders
 
 ---
 
+## ⚠️ CHECKPOINT INICIAL (OBRIGATÓRIO)
+
+### ANTES de começar, SEMPRE mostre:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│  📋 PRD Generator - Documento de Requisitos                    │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ✅ VOU FAZER:                                                  │
+│                                                                 │
+│     1. Fazer até 5 perguntas para entender sua ideia           │
+│     2. Criar docs/PRD.md com as respostas                      │
+│     3. Incluir seção leiga (sem jargão técnico)                │
+│     4. Incluir seção técnica (para desenvolvedores)            │
+│                                                                 │
+│  ❌ NÃO VOU FAZER:                                              │
+│                                                                 │
+│     ✗ Implementar código                                        │
+│     ✗ Criar arquivos de programação                             │
+│     ✗ Configurar ambiente                                       │
+│     ✗ Instalar dependências                                     │
+│     ✗ Criar banco de dados                                      │
+│                                                                 │
+│  📁 ARQUIVO QUE SERÁ CRIADO:                                    │
+│     → docs/PRD.md                                               │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Posso continuar? (SIM/NÃO)                                     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+🛑 STOP_POINT_CONFIRMACAO
+→ ESPERE o usuário dizer "SIM" ou "NÃO"
+→ Se "NÃO", pergunte o que ele quer ajustar
+```
+
+---
+
 ## PROCESSO OBRIGATÓRIO
 
-### Passo 1: Brief de Entendimento (5-10 linhas)
-
-Responda mentalmente:
-- O que é a ideia?
-- Para quem é?
-- Qual problema resolve?
-- Qual resultado esperado?
-
-### Passo 2: Perguntas Indispensáveis (máx. 5)
-
-Pergunte APENAS o que muda decisões:
+### ETAPA 1: Perguntas de Entendimento (máx. 5)
 
 ```
-1. Persona primária e dor principal?
-2. Plataforma (web/mobile) e contexto?
-3. Definição de sucesso (1-3 métricas)?
-4. Restrições (prazo, integrações, compliance)?
+Depois da confirmação, faça ATÉ 5 perguntas:
+
+1. Qual é a ideia principal do projeto?
+   (Uma frase que descreve o que você quer criar)
+
+2. Para quem é esse projeto?
+   (Quem vai usar? Que tipo de pessoa?)
+
+3. Qual problema principal ele resolve?
+   (O que a pessoa sofre hoje que seu projeto vai resolver?)
+
+4. O que define sucesso para você?
+   (Como você sabe que funcionou? Que métrica importa?)
+
 5. O que está FORA de escopo?
+   (O que você NÃO quer que o projeto faça?)
+
+🛑 STOP_POINT_PERGUNTA
+→ ESPERE o usuário responder TODAS as perguntas
+→ Se não responder alguma, use DEFAULTS (veja abaixo)
 ```
 
-**Se o usuário não responder:** Siga com defaults e marque em "Suposições".
+### ETAPA 2: Criar o Documento
 
-### Passo 3: Gerar PRD Completo
+```
+Após receber as respostas:
 
-Use a estrutura abaixo.
+1. Gerar docs/PRD.md usando a estrutura abaixo
+2. Incluir seção leiga (linguagem simples)
+3. Incluir seção técnica (para desenvolvedores)
 
-### Passo 4: Auto-Revisão
+🛑 STOP_POINT_DOCUMENTACAO
+→ MOSTRE o conteúdo criado
+→ PERGUNTE se quer ajustar algo
+→ SÓ continue após aprovação
+```
 
-Verifique antes de finalizar:
-- [ ] Todo objetivo tem métrica associada
-- [ ] Requisitos têm regras, estados e erros
-- [ ] Seção leiga está clara (sem jargão)
-- [ ] Exemplo prático incluído
-- [ ] Critérios de aceite cobrem happy path + erros
+### ETAPA 3: Próximos Passos
+
+```
+Depois de aprovar o PRD:
+
+1. SUGIRA próximos passos (não execute automaticamente):
+   - "Quer que eu crie o roadmap?" (*roadmap)
+   - "Quer que eu configure o ambiente?" (*setup)
+   - "Quer começar a desenvolver?" (*desenvolver)
+
+2. NÃO crie arquivos automaticamente
+
+🛑 STOP_POINT_ETAPA
+→ ESPERE o usuário escolher o próximo passo
+```
 
 ---
 
@@ -373,7 +436,7 @@ Esta seção deve ser compreensível por qualquer pessoa, sem conhecimento técn
 ### Acessibilidade
 - [ ] WCAG 2.1 AA compliance
 - [ ] Navegação por teclado
-- [ ] Contraste adequado
+- [ ] Contraste adequatdo
 - [ ] Textos alternativos
 
 ### Resiliência
@@ -461,62 +524,7 @@ Para cada API detectada:
 |--------|----------|-----------|
 | POST | /api/v1/[recurso] | [Descrição] |
 | GET | /api/v1/[recurso]/:id | [Descrição] |
-
-### Exemplo de Payload
-```json
-{
-  "campo1": "valor",
-  "campo2": 123
-}
 ```
-
-### Erros Padronizados
-```json
-{
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Mensagem legível",
-    "details": {}
-  }
-}
-```
-
-### Webhooks/Eventos
-| Evento | Quando dispara | Payload |
-|--------|----------------|---------|
-| [evento.created] | [Quando] | [Dados] |
-```
-
-#### Detecção Automática de APIs
-
-Durante a geração do PRD, identificar menções a serviços externos:
-
-```
-Palavras-chave → APIs prováveis:
-- "pagamento", "cobrar", "cartão" → Stripe, Mercado Pago
-- "login social", "Google login", "OAuth" → Auth0, Clerk
-- "email", "enviar email", "newsletter" → SendGrid, Resend
-- "IA", "chat", "GPT", "gerar texto" → OpenAI, Anthropic
-- "mapa", "localização", "endereço" → Google Maps, Mapbox
-- "SMS", "WhatsApp", "notificação" → Twilio
-- "busca", "pesquisar", "filtro avançado" → Algolia
-- "armazenar arquivos", "upload", "imagens" → AWS S3, Cloudflare R2
-- "analytics", "métricas", "tracking" → Mixpanel, PostHog
-```
-
-**Ação Obrigatória:** Se detectar APIs, criar tarefa automática:
-
-```
-⚠️ APIs detectadas: [lista]
-
-Tarefas criadas automaticamente:
-├── [ ] *api [nome1] - Documentar API antes de desenvolver
-├── [ ] *api [nome2] - Documentar API antes de desenvolver
-
-⚠️ EXECUTE *api PARA CADA API ANTES DE *desenvolver
-```
-
----
 
 ---
 
@@ -539,16 +547,6 @@ Tarefas criadas automaticamente:
 1. `[passo_1]` → 100%
 2. `[passo_2]` → [expected %]
 3. `[passo_3]` → [expected %]
-
-### Dashboards
-- [ ] Dashboard de aquisição
-- [ ] Dashboard de engajamento
-- [ ] Dashboard de conversão
-
-### Guardrails (limites de alerta)
-| Métrica | Limite | Ação |
-|---------|--------|------|
-| [Métrica] | [Valor] | [O que fazer] |
 ```
 
 ---
@@ -589,16 +587,6 @@ Tarefas criadas automaticamente:
 | Gradual 1 | 25% | [Métrica] | [Condição] |
 | Gradual 2 | 50% | [Métrica] | [Condição] |
 | Full | 100% | - | - |
-
-### Migração
-- [ ] Script de migração preparado
-- [ ] Dados de teste migrados
-- [ ] Plano de rollback
-
-### Comunicação
-- [ ] Anúncio interno
-- [ ] Release notes
-- [ ] Documentação atualizada
 ```
 
 ---
@@ -635,20 +623,6 @@ Dado que [contexto]
 Quando [ação que causa erro]
 Então [mensagem de erro esperada]
 ```
-
-**Cenário:** Permissão
-```gherkin
-Dado que sou um [role]
-Quando tento [ação]
-Então [resultado baseado em permissão]
-```
-
-**Cenário:** Edge Case
-```gherkin
-Dado que [condição extrema]
-Quando [ação]
-Então [comportamento esperado]
-```
 ```
 
 ---
@@ -675,45 +649,10 @@ Então [comportamento esperado]
 
 ---
 
-### 18. MATRIZ DE RASTREABILIDADE
+### 18. PRÓXIMOS PASSOS
 
 ```markdown
-## 18. Matriz de Rastreabilidade (OBRIGATÓRIA)
-
-| Objetivo | KPI | FR/NFR | Evento Analytics | Critério de Aceite |
-|----------|-----|--------|------------------|-------------------|
-| [Obj 1] | [KPI] | FR-001 | [evento] | AC-001 |
-| [Obj 2] | [KPI] | FR-002 | [evento] | AC-002 |
-```
-
----
-
-### 19. SUPORÇÕES E PERGUNTAS ABERTAS
-
-```markdown
-## 19. Suposições e Perguntas Abertas
-
-### Suposições (inferências feitas)
-| Suposição | Se estiver errado | Como validar |
-|-----------|-------------------|--------------|
-| [Suposição 1] | [Impacto] | [Validação] |
-
-### Perguntas em Aberto (priorizadas)
-1. **[ALTA]** [Pergunta] - Bloqueia: [O quê]
-2. **[MÉDIA]** [Pergunta]
-
-### Decisões Pendentes
-| Decisão | Opções | Prós | Contras | Prazo |
-|---------|--------|------|---------|-------|
-| [Decisão] | [Opção A vs B] | [+] | [-] | [Data] |
-```
-
----
-
-### 20. PRÓXIMOS PASSOS
-
-```markdown
-## 20. Próximos Passos
+## 18. Próximos Passos
 
 1. [ ] [Ação concreta 1]
 2. [ ] [Ação concreta 2]
@@ -757,4 +696,20 @@ Use estes valores quando não tiver informação:
 | AC | Critério de Aceite (como testar) |
 | SLO | Meta de disponibilidade |
 
-**Lembre-se:** Um bom PRD não é perfeito, é útil. Documente o suficiente para começar, ajuste conforme aprende.
+---
+
+## ⚠️ LEMBRETE FINAL
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  Este comando CRIA DOCUMENTAÇÃO.                              ║
+║                                                               ║
+║  NÃO implementa código.                                       ║
+║  NÃO cria arquivos de programação.                            ║
+║  NÃO configura ambiente.                                      ║
+║                                                               ║
+║  PRD = Documento, não código!                                 ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```

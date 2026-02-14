@@ -112,7 +112,8 @@ curl -fsSL "$GITHUB_RAW/vibe-coding/GLOSSARIO.md" -o vibe-coding/GLOSSARIO.md &&
 curl -fsSL "$GITHUB_RAW/vibe-coding/BANDEIRAS-VERMELHAS.md" -o vibe-coding/BANDEIRAS-VERMELHAS.md && echo -e "${GREEN}   ✓ vibe-coding/BANDEIRAS-VERMELHAS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/TROUBLESHOOTING.md" -o vibe-coding/TROUBLESHOOTING.md && echo -e "${GREEN}   ✓ vibe-coding/TROUBLESHOOTING.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/CLAUDE-INSTRUCTIONS.md" -o vibe-coding/CLAUDE-INSTRUCTIONS.md && echo -e "${GREEN}   ✓ vibe-coding/CLAUDE-INSTRUCTIONS.md${RESET}"
-curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/00-INICIAR.md" -o vibe-coding/PROTOCOLOS/00-INICIAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-INICIAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/00-COMEÇAR.md" -o vibe-coding/PROTOCOLOS/00-COMEÇAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-COMEÇAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md" -o vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-DESENVOLVER.md" -o vibe-coding/PROTOCOLOS/01-DESENVOLVER.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-DESENVOLVER.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/02-BUGS.md" -o vibe-coding/PROTOCOLOS/02-BUGS.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/02-BUGS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/03-MELHORAR.md" -o vibe-coding/PROTOCOLOS/03-MELHORAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/03-MELHORAR.md${RESET}"
@@ -132,6 +133,7 @@ curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/16-PLANEJAR.md" -o vibe-coding/PR
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/17-NERD.md" -o vibe-coding/PROTOCOLOS/17-NERD.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/17-NERD.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/18-PRD.md" -o vibe-coding/PROTOCOLOS/18-PRD.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/18-PRD.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/19-API.md" -o vibe-coding/PROTOCOLOS/19-API.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/19-API.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/20-AGENTES.md" -o vibe-coding/PROTOCOLOS/20-AGENTES.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/20-AGENTES.md${RESET}"
 
 # Baixar template de ambiente
 echo ""
@@ -153,6 +155,26 @@ curl -fsSL "$GITHUB_RAW/.claude/settings.json" -o .claude/settings.local.json
 echo -e "${YELLOW}   ⚠ settings.json já existe${RESET}"
 echo -e "${GREEN}   ✓ .claude/settings.local.json criado como alternativa${RESET}"
 fi
+
+# Baixar instruções customizadas de compliance
+if [ ! -f ".claude/custom_instructions.md" ]; then
+curl -fsSL "$GITHUB_RAW/.claude/custom_instructions.md" -o .claude/custom_instructions.md && echo -e "${GREEN}   ✓ .claude/custom_instructions.md${RESET}"
+else
+echo -e "${YELLOW}   ⚠ .claude/custom_instructions.md já existe${RESET}"
+fi
+
+# Criar estrutura de squads
+echo ""
+echo -e "${YELLOW}🤖 Configurando sistema de Squads...${RESET}"
+mkdir -p squads/custom
+curl -fsSL "$GITHUB_RAW/squads/README.md" -o squads/README.md && echo -e "${GREEN}   ✓ squads/README.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/ARCHITECT.md" -o squads/ARCHITECT.md && echo -e "${GREEN}   ✓ squads/ARCHITECT.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/DEVELOPER.md" -o squads/DEVELOPER.md && echo -e "${GREEN}   ✓ squads/DEVELOPER.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/REVIEWER.md" -o squads/REVIEWER.md && echo -e "${GREEN}   ✓ squads/REVIEWER.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/QA.md" -o squads/QA.md && echo -e "${GREEN}   ✓ squads/QA.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/SECURITY.md" -o squads/SECURITY.md && echo -e "${GREEN}   ✓ squads/SECURITY.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/DESIGNER.md" -o squads/DESIGNER.md && echo -e "${GREEN}   ✓ squads/DESIGNER.md${RESET}"
+curl -fsSL "$GITHUB_RAW/squads/DATA.md" -o squads/DATA.md && echo -e "${GREEN}   ✓ squads/DATA.md${RESET}"
 
 # Criar templates de documentação do projeto
 echo ""
