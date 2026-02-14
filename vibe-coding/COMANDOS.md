@@ -10,8 +10,8 @@ Digite o comando no Claude Code para ativar a função correspondente.
 
 | Comando | Função | O que acontece |
 |---------|--------|----------------|
-| `*começar` | Iniciar projeto | Ativa o guia de planejamento, preenche PRD.md |
-| `*desenvolver` | Modo desenvolvimento | Ativa protocolo de desenvolvimento |
+| `*começar` | Tutorial inicial | **APENAS mostra tutorial**, não executa (use *prd para começar) |
+| `*desenvolver` | Modo desenvolvimento | Ativa protocolo de desenvolvimento **(requer PRD + Arquitetura)** |
 | `*bug` | Reportar problema | Ativa protocolo de correção de bugs |
 | `*erro` | Resolver erro | Cole o erro e recebe ajuda passo a passo |
 | `*termo` | Explicar termo | Pergunte qualquer termo técnico |
@@ -91,10 +91,13 @@ Digite o comando no Claude Code para ativar a função correspondente.
 
 ## Exemplos de Uso
 
-### Começar projeto do zero
+### Começar projeto do zero (ORDEM OBRIGATÓRIA)
 ```
-*começar
-Quero criar um app de tarefas
+*começar          # Ver tutorial (primeira vez)
+*prd              # Criar documento de requisitos
+*arquitetura      # Definir arquitetura técnica
+*planejar         # Criar plano de implementação
+*desenvolver      # Começar a desenvolver (só após anteriores!)
 ```
 
 ### Resolver um erro
@@ -133,14 +136,19 @@ O app está lento e não sei por quê
 
 ---
 
-## Fluxo Recomendado para Iniciantes
+## Fluxo Obrigatório (não pule etapas!)
 
-1. `*começar` → Planeja o projeto
-2. `*desenvolver` → Desenvolve features
-3. `*mudança` → Documenta cada mudança
-4. `*seguranca` → Verifica segurança
-5. `*garantir` → Aprova mudanças
-6. `*lançar` → Publica o projeto
+1. `*começar` → **Tutorial** (primeira vez usando)
+2. `*prd` → **Cria requisitos** (OBRIGATÓRIO primeiro)
+3. `*arquitetura` → **Define arquitetura** (OBRIGATÓRIO segundo)
+4. `*planejar` → **Cria plano** (recomendado)
+5. `*desenvolver` → **Desenvolve** (só após anteriores)
+
+### Após desenvolvimento:
+6. `*mudança` → Documenta cada mudança
+7. `*seguranca` → Verifica segurança
+8. `*garantir` → Aprova mudanças
+9. `*lançar` → Publica o projeto
 
 ---
 
