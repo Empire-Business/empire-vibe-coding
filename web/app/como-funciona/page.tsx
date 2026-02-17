@@ -124,10 +124,11 @@ export default function ComoFuncionaPage() {
         <section className="rounded-xl border border-gray-200 bg-white p-6">
           <h2 className="mb-3 flex items-center gap-2 text-xl font-bold text-gray-900">
             <Terminal className="h-5 w-5 text-blue-600" />
-            Instalação padrão (runtime task-oriented incluso)
+            Instalação em modo único obrigatório
           </h2>
           <p className="mb-4 text-sm text-gray-600">
-            O instalador padrão já traz documentação + runtime local em <code>empire-dashboard/</code>.
+            O instalador traz documentação + runtime local em <code>empire-dashboard/</code>.
+            Sempre cria <code>CLAUDE.md</code>, <code>AGENTS.md</code> e <code>.claude/settings.local.json</code>.
           </p>
           <div className="rounded-xl bg-gray-900 p-4 text-xs text-gray-100 sm:text-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
@@ -145,9 +146,9 @@ export default function ComoFuncionaPage() {
               <p className="text-xs text-blue-800">fallback: <code>npm --prefix empire-dashboard run dashboard</code></p>
             </div>
             <div className="rounded-lg bg-amber-50 p-3">
-              <p className="font-semibold text-amber-900">Compatibilidade</p>
+              <p className="font-semibold text-amber-900">Sincronização obrigatória</p>
               <p className="text-xs text-amber-800">
-                Use <code>--docs-only</code> para instalar só docs e <code>--refresh-runtime</code> para atualizar runtime já existente.
+                Se <code>CLAUDE.md</code> e <code>AGENTS.md</code> divergirem, comandos críticos devem bloquear até executar <code>*sincronizar</code>.
               </p>
             </div>
           </div>
@@ -162,6 +163,8 @@ export default function ComoFuncionaPage() {
             projeto/
             <br />
             ├── CLAUDE.md
+            <br />
+            ├── AGENTS.md
             <br />
             ├── docs/
             <br />
@@ -212,14 +215,14 @@ export default function ComoFuncionaPage() {
           </h2>
           <div className="space-y-3 text-sm text-gray-700">
             <p>
-              O projeto garante <code>.claude/settings.local.json</code> com{' '}
+              Claude Code: o projeto garante <code>.claude/settings.local.json</code> com{' '}
               <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>.
             </p>
             <p>
               Dashboard local é exclusivamente de consulta: rotas de mutação retornam <code>403</code>.
             </p>
             <p className="rounded-lg bg-green-50 p-3 text-green-800">
-              Para execução de tarefas use comandos no Claude Code (<code>*agentes</code>, <code>*tarefas</code>, <code>*orquestrar</code>). Para observação use o dashboard localhost.
+              <code>*agentes</code>: Claude usa Agent Teams nativo; Codex usa emulação de squads (líder + especialistas + consolidação). Para observação use o dashboard localhost.
             </p>
           </div>
         </section>

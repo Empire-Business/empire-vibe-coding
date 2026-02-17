@@ -64,6 +64,7 @@ const iconByCommand: Record<string, React.ElementType> = {
   '*orquestrar': Layers,
   '*tarefas': CheckCircle,
   '*dashboard': Terminal,
+  '*sincronizar': CheckCircle,
   '*planejar': FileText,
   '*especificar': FileText,
   '*prd': FileText,
@@ -81,6 +82,7 @@ const exampleByCommand: Record<string, string> = {
   '*termo': '*termo\n\nO que é API?',
   '*comando': '*comando\n\nrm -rf node_modules',
   '*dashboard': '*dashboard',
+  '*sincronizar': '*sincronizar',
   '*agentes': '*agentes\n\nPreciso implementar checkout com segurança e testes',
 }
 
@@ -210,7 +212,7 @@ export default function HomePage() {
           </div>
           <h1 className="mb-3 text-4xl font-bold text-gray-900 sm:text-5xl">Empire Vibe Coding</h1>
           <p className="mx-auto mb-4 max-w-2xl text-lg text-gray-600 sm:text-xl">
-            Desenvolvimento task-oriented com Claude Code, Agent Teams e dashboard local.
+            Desenvolvimento task-oriented com Claude Code, Codex e dashboard local.
           </p>
           <p className="mb-6 text-sm text-gray-500">
             {metrics.totalCommands} comandos ativos • {metrics.totalProtocols} protocolos ativos • tutorial sincronizado com a fonte oficial
@@ -236,9 +238,11 @@ export default function HomePage() {
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <section id="instalar" className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-2xl font-bold text-gray-900">Instalação padrão (runtime incluso)</h2>
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Instalação (modo único obrigatório)</h2>
           <p className="mb-4 text-sm text-gray-600">
-            Instala documentação + runtime em <code>empire-dashboard/</code>. O dashboard roda em localhost e é somente consulta.
+            Instala documentação + runtime em <code>empire-dashboard/</code>. Sempre cria
+            <code> CLAUDE.md</code> + <code>AGENTS.md</code> + <code>.claude/settings.local.json</code>.
+            O dashboard roda em localhost e é somente consulta.
           </p>
           <div className="rounded-lg bg-gray-900 p-4">
             <div className="mb-2 flex items-center justify-between text-xs text-gray-300">
@@ -248,6 +252,12 @@ export default function HomePage() {
             <code className="break-all text-sm text-white">
               curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
             </code>
+          </div>
+
+          <div className="mt-3 grid gap-2 text-xs text-gray-600 sm:grid-cols-3">
+            <div className="rounded bg-gray-50 p-2">Sempre cria <code>CLAUDE.md</code> e <code>AGENTS.md</code></div>
+            <div className="rounded bg-gray-50 p-2">Sempre cria <code>.claude/settings.local.json</code></div>
+            <div className="rounded bg-gray-50 p-2">Arquivos de agente devem ficar idênticos byte a byte</div>
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -260,25 +270,31 @@ export default function HomePage() {
               <p className="font-semibold">Flags úteis</p>
               <p><code>--docs-only</code> (sem runtime)</p>
               <p><code>--refresh-runtime</code> (atualiza runtime)</p>
+              <p className="text-xs">Legadas removidas: <code>--platform</code>, <code>--merge</code>, <code>--separate</code>, <code>--no-claude</code></p>
             </div>
           </div>
 
           <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">
-            Agent Teams é garantido em <code>.claude/settings.local.json</code> com
-            <code> CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>.
+            Claude: Agent Teams em <code>.claude/settings.local.json</code> com
+            <code> CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>. Se houver drift entre
+            <code> CLAUDE.md</code> e <code>AGENTS.md</code>, rode <code>*sincronizar</code>.
           </div>
         </section>
 
         <section className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
           <h2 className="mb-3 text-2xl font-bold text-gray-900">Fluxo recomendado</h2>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-lg bg-gray-100 p-3">
+              <code className="font-bold text-blue-700">*sincronizar</code>
+              <p className="mt-1 text-sm text-gray-600">Valida e corrige paridade entre CLAUDE.md e AGENTS.md.</p>
+            </div>
             <div className="rounded-lg bg-gray-100 p-3">
               <code className="font-bold text-blue-700">*começar</code>
               <p className="mt-1 text-sm text-gray-600">Abre tutorial interativo e direciona o próximo passo.</p>
             </div>
             <div className="rounded-lg bg-gray-100 p-3">
               <code className="font-bold text-blue-700">*agentes</code>
-              <p className="mt-1 text-sm text-gray-600">Ativa líder PM + especialistas para tarefas complexas.</p>
+              <p className="mt-1 text-sm text-gray-600">Claude: Agent Teams nativo. Codex: emulação líder PM + especialistas.</p>
             </div>
             <div className="rounded-lg bg-gray-100 p-3">
               <code className="font-bold text-blue-700">*dashboard</code>

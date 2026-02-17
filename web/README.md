@@ -18,6 +18,12 @@ npm run dashboard
 npm --prefix empire-dashboard run dashboard
 ```
 
+Observações de instalação:
+
+- o runtime é instalado por padrão em `empire-dashboard/`;
+- o sistema opera em modo único obrigatório (`CLAUDE.md` + `AGENTS.md` sempre sincronizados);
+- para drift entre arquivos de instrução, usar `*sincronizar`.
+
 No repositório principal (desenvolvimento do dashboard web):
 
 ```bash
@@ -80,3 +86,15 @@ Validação (falha se houver drift):
 ```bash
 node ./scripts/generate-web-tutorial-data.mjs --check
 ```
+
+## Agentes
+
+- Claude Code: Agent Teams nativo
+- Codex: emulação de squads (líder + especialistas)
+
+## Update seguro (instalações existentes)
+
+- default: latest stable release;
+- opcional: versão pinada (`vX.Y.Z`);
+- obrigatórios: preflight + backup + snapshot Git (quando disponível);
+- sempre finalizar com `*sincronizar` para paridade dos arquivos raiz.

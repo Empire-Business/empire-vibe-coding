@@ -34,6 +34,80 @@ const RUNTIME_DIR = 'empire-dashboard'
 const RUNTIME_MANIFEST_PATH = 'installer/runtime-files.manifest.txt'
 const RUNTIME_DASHBOARD_SCRIPT = `npm --prefix ${RUNTIME_DIR} run dashboard`
 
+function isInteractiveSession() {
+  return Boolean(process.stdin.isTTY && process.stdout.isTTY)
+}
+
+function printUsage() {
+  console.log('Uso: create-empire-vibe-coding [caminho] [flags]')
+  console.log('  --docs-only                   Instala apenas docs/instruções (sem runtime local)')
+  console.log('  --refresh-runtime             Atualiza arquivos de runtime em empire-dashboard/')
+  console.log('')
+  console.log('Modo único obrigatório:')
+  console.log('  Sempre cria e sincroniza CLAUDE.md + AGENTS.md + .claude/settings.local.json')
+  console.log('')
+  console.log('Flags legadas removidas:')
+  console.log('  --platform, --merge, --separate, --no-claude')
+}
+
+function parseArgs(argv) {
+  const parsed = {
+    docsOnly: false,
+    refreshRuntime: false,
+    help: false,
+    pathArg: '.',
+  }
+
+  const positional = []
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index]
+    if (arg === '--docs-only') {
+      parsed.docsOnly = true
+      continue
+    }
+
+    if (arg === '--refresh-runtime') {
+      parsed.refreshRuntime = true
+      continue
+    }
+
+    if (arg === '--help' || arg === '-h') {
+      parsed.help = true
+      continue
+    }
+
+    if (
+      arg === '--platform' ||
+      arg.startsWith('--platform=') ||
+      arg === '--merge' ||
+      arg === '--separate' ||
+      arg === '--no-claude'
+    ) {
+      throw new Error(`Flag legada não suportada: ${arg}. Migração: modo único obrigatório (Claude + Codex).`)
+    }
+
+    if (arg.startsWith('--merge=') || arg.startsWith('--separate=') || arg.startsWith('--no-claude=')) {
+      throw new Error(`Flag legada não suportada: ${arg}. Migração: modo único obrigatório (Claude + Codex).`)
+    }
+
+    if (arg.startsWith('-')) {
+      throw new Error(`Flag desconhecida: ${arg}`)
+    }
+
+    positional.push(arg)
+  }
+
+  if (positional.length > 1) {
+    throw new Error('Informe apenas um caminho de instalação.')
+  }
+  if (positional.length === 1) {
+    parsed.pathArg = positional[0]
+  }
+
+  return parsed
+}
+
 function ensureAgentTeamsEnv(settingsPath) {
   if (!existsSync(settingsPath)) return false
 
@@ -180,6 +254,7 @@ const FILES_TO_DOWNLOAD = {
   'vibe-coding/BANDEIRAS-VERMELHAS.md': 'vibe-coding/BANDEIRAS-VERMELHAS.md',
   'vibe-coding/TROUBLESHOOTING.md': 'vibe-coding/TROUBLESHOOTING.md',
   'vibe-coding/CLAUDE-INSTRUCTIONS.md': 'vibe-coding/CLAUDE-INSTRUCTIONS.md',
+  'vibe-coding/CODEX-INSTRUCTIONS.md': 'vibe-coding/CODEX-INSTRUCTIONS.md',
 
   // Protocolos
   'vibe-coding/PROTOCOLOS/00-COMEÇAR.md': 'vibe-coding/PROTOCOLOS/00-COMEÇAR.md',
@@ -206,6 +281,8 @@ const FILES_TO_DOWNLOAD = {
   'vibe-coding/PROTOCOLOS/20-AGENTES.md': 'vibe-coding/PROTOCOLOS/20-AGENTES.md',
   'vibe-coding/PROTOCOLOS/21-ROADMAP.md': 'vibe-coding/PROTOCOLOS/21-ROADMAP.md',
   'vibe-coding/PROTOCOLOS/22-ARQUITETURA.md': 'vibe-coding/PROTOCOLOS/22-ARQUITETURA.md',
+  'vibe-coding/PROTOCOLOS/23-ATUALIZAR.md': 'vibe-coding/PROTOCOLOS/23-ATUALIZAR.md',
+  'vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md': 'vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md',
 
   // Claude configuration
   '.claude/settings.json': '.claude/settings.json',
@@ -685,37 +762,44 @@ async function downloadFile(url, dest) {
 
 // Função principal
 async function main() {
-  const args = process.argv.slice(2)
-  const docsOnly = args.includes('--docs-only')
-  const refreshRuntime = args.includes('--refresh-runtime')
+  let parsedArgs
+  try {
+    parsedArgs = parseArgs(process.argv.slice(2))
+  } catch (error) {
+    console.error(chalk.red(`✗ ${error.message}`))
+    printUsage()
+    process.exit(1)
+  }
 
-  if (args.includes('--help') || args.includes('-h')) {
-    console.log('Uso: create-empire-vibe-coding [caminho] [--docs-only] [--refresh-runtime]')
-    console.log('  --docs-only        Instala apenas docs/instruções (sem runtime local)')
-    console.log('  --refresh-runtime  Atualiza arquivos de runtime em empire-dashboard/')
+  if (parsedArgs.help) {
+    printUsage()
     process.exit(0)
   }
 
-  const pathArg = args.find((arg) => !arg.startsWith('-')) || '.'
+  const interactive = isInteractiveSession()
 
-  // Perguntar onde instalar
-  const response = await prompts({
-    type: 'text',
-    name: 'path',
-    message: 'Onde você quer instalar o Empire Vibe Coding?',
-    initial: pathArg,
-    validate: (value) => {
-      if (!value) return 'Digite um caminho'
-      return true
+  let installPath = parsedArgs.pathArg
+  if (interactive) {
+    const response = await prompts({
+      type: 'text',
+      name: 'path',
+      message: 'Onde você quer instalar o Empire Vibe Coding?',
+      initial: installPath,
+      validate: (value) => {
+        if (!value) return 'Digite um caminho'
+        return true
+      },
+    })
+
+    if (!response.path) {
+      console.log(yellow('\nOperação cancelada.'))
+      process.exit(0)
     }
-  })
 
-  if (!response.path) {
-    console.log(yellow('\nOperação cancelada.'))
-    process.exit(0)
+    installPath = response.path
   }
 
-  const targetDir = join(process.cwd(), response.path)
+  const targetDir = join(process.cwd(), installPath || '.')
 
   // Criar diretório se não existir
   if (!existsSync(targetDir)) {
@@ -731,8 +815,8 @@ async function main() {
       'vibe-coding/PROTOCOLOS',
       'docs/specs',
       'docs/APIS-DOCS',
+      'squads/custom',
       '.claude',
-      'squads/custom'
     ]
 
     for (const folder of folders) {
@@ -791,15 +875,48 @@ async function main() {
 
     const officialClaudeInstructions = join(targetDir, 'vibe-coding', 'CLAUDE-INSTRUCTIONS.md')
     const rootClaudePath = join(targetDir, 'CLAUDE.md')
-    if (!existsSync(rootClaudePath) && existsSync(officialClaudeInstructions)) {
-      writeFileSync(rootClaudePath, readFileSync(officialClaudeInstructions, 'utf8'))
+    const rootCodexPath = join(targetDir, 'AGENTS.md')
+    const hasClaudeInstructions = existsSync(officialClaudeInstructions)
+    if (!hasClaudeInstructions) {
+      throw new Error('Fonte obrigatória ausente: vibe-coding/CLAUDE-INSTRUCTIONS.md')
+    }
+
+    spinner.text = 'Sincronizando arquivos obrigatórios de agentes...'
+    const canonicalContent = readFileSync(officialClaudeInstructions, 'utf8')
+    const codexSourcePath = join(targetDir, 'vibe-coding', 'CODEX-INSTRUCTIONS.md')
+    writeFileSync(codexSourcePath, canonicalContent)
+
+    const backupRoot = join(
+      targetDir,
+      '.empire-sync',
+      'backups',
+      new Date().toISOString().replace(/[:.]/g, '-')
+    )
+    if (existsSync(rootClaudePath) || existsSync(rootCodexPath)) {
+      mkdirSync(backupRoot, { recursive: true })
+      if (existsSync(rootClaudePath)) {
+        writeFileSync(join(backupRoot, 'CLAUDE.md.before-sync'), readFileSync(rootClaudePath, 'utf8'))
+      }
+      if (existsSync(rootCodexPath)) {
+        writeFileSync(join(backupRoot, 'AGENTS.md.before-sync'), readFileSync(rootCodexPath, 'utf8'))
+      }
+    }
+
+    writeFileSync(rootClaudePath, canonicalContent)
+    writeFileSync(rootCodexPath, canonicalContent)
+
+    if (readFileSync(rootClaudePath, 'utf8') !== readFileSync(rootCodexPath, 'utf8')) {
+      throw new Error('Falha ao sincronizar CLAUDE.md e AGENTS.md (conteúdo divergente).')
     }
 
     spinner.text = 'Configurando Agent Teams...'
     ensureLocalSettingsFile(targetDir)
 
     spinner.text = `Configurando runtime local (${RUNTIME_DIR})...`
-    const runtimeResult = await installRuntimeDashboard(targetDir, { docsOnly, refreshRuntime })
+    const runtimeResult = await installRuntimeDashboard(targetDir, {
+      docsOnly: parsedArgs.docsOnly,
+      refreshRuntime: parsedArgs.refreshRuntime,
+    })
     const packageScriptStatus =
       runtimeResult.status === 'skipped'
         ? 'skipped'
@@ -812,8 +929,12 @@ async function main() {
     console.log(bold('  INSTALAÇÃO CONCLUÍDA!'))
     console.log(blue('═══════════════════════════════════════════════════════════'))
     console.log('')
+    console.log(`${green('✓')} Modo único obrigatório ativo (Claude + Codex sincronizados)`)
     console.log(`${green('✓')} ${downloaded} arquivos baixados`)
     console.log(`${green('✓')} .claude/settings.local.json com Agent Teams habilitado`)
+
+    console.log(`${green('✓')} CLAUDE.md e AGENTS.md sincronizados (byte a byte)`)
+
     if (runtimeResult.status === 'installed' || runtimeResult.status === 'refreshed') {
       console.log(`${green('✓')} Runtime task-oriented em ${RUNTIME_DIR}/ (${runtimeResult.downloaded} arquivos)`)
       if (runtimeResult.failed > 0) {
@@ -844,17 +965,19 @@ async function main() {
     console.log('')
     console.log(blue('Próximos passos:'))
     console.log('  1. Abra o terminal na pasta do projeto')
-    console.log('  2. Digite: claude')
-    console.log('  3. Digite: *começar')
-    if (!docsOnly) {
-      console.log(`  4. Para dashboard local: npm run dashboard`)
+    console.log('  2. Abra Claude Code ou Codex')
+    console.log('  3. Digite: *sincronizar')
+    console.log('  4. Digite: *começar')
+    if (!parsedArgs.docsOnly) {
+      console.log('  5. Para dashboard local: npm run dashboard')
       console.log(`     (fallback: ${RUNTIME_DASHBOARD_SCRIPT})`)
-      console.log('  5. Descreva sua ideia!')
+      console.log('  6. Descreva sua ideia!')
     } else {
-      console.log('  4. Descreva sua ideia!')
+      console.log('  5. Descreva sua ideia!')
     }
     console.log('')
     console.log(yellow('⚠ IMPORTANTE: Toda mudança deve ser documentada em docs/'))
+    console.log(yellow('⚠ COMANDOS * devem validar que CLAUDE.md e AGENTS.md estão idênticos; use *sincronizar quando houver drift.'))
     console.log('')
 
   } catch (error) {

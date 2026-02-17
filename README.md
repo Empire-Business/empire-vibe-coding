@@ -1,71 +1,94 @@
 # Empire Vibe Coding
 
-Framework task-oriented para desenvolvimento com Claude Code, com documentação guiada, protocolos e dashboard local de acompanhamento.
+Framework task-oriented para desenvolvimento com IA, com modo único obrigatório para Claude Code e Codex.
 
-## Instalação padrão (com runtime local)
+## Instalação
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
 ```
 
-Por padrão, a instalação cria:
+A instalação sempre cria e sincroniza:
 
 - `CLAUDE.md`
-- `vibe-coding/`
-- `docs/`
-- `empire-dashboard/` (runtime local do dashboard)
+- `AGENTS.md`
 - `.claude/settings.local.json` com `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
 
-### Comandos pós-instalação
-
-```bash
-claude
-# no Claude Code:
-*começar
-
-# dashboard local (consulta/read-only)
-npm run dashboard
-# fallback
-npm --prefix empire-dashboard run dashboard
-```
-
-## Flags de compatibilidade
-
-```bash
-# somente docs/instruções (sem runtime local)
-curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash -s -- --docs-only
-
-# força atualização do runtime local já instalado
-curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash -s -- --refresh-runtime
-```
-
-## Criador via npx
-
-```bash
-npx create-empire-vibe-coding
-npx create-empire-vibe-coding meu-projeto --refresh-runtime
-npx create-empire-vibe-coding meu-projeto --docs-only
-```
-
-## Dashboard local
-
-- Endereço padrão: `http://localhost:3001`
-- Objetivo: acompanhamento visual de tarefas/squads
-- Modo: somente consulta (rotas de mutação retornam `403`)
-
-## Agent Teams
-
-O projeto garante a configuração em `.claude/settings.local.json`:
+Também instala runtime local em `empire-dashboard/` (exceto com `--docs-only`) e garante script raiz:
 
 ```json
 {
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  "scripts": {
+    "dashboard": "npm --prefix empire-dashboard run dashboard"
   }
 }
 ```
 
-Com isso, fluxos com `*agentes` e ativações automáticas de time ficam habilitados no ambiente do projeto.
+## Flags válidas
+
+```bash
+--docs-only
+--refresh-runtime
+```
+
+Flags legadas removidas (agora geram erro explícito):
+
+```bash
+--platform
+--merge
+--separate
+--no-claude
+```
+
+## CLI via npx
+
+```bash
+npx create-empire-vibe-coding meu-projeto
+npx create-empire-vibe-coding meu-projeto --docs-only
+npx create-empire-vibe-coding meu-projeto --refresh-runtime
+```
+
+## Operação diária
+
+Regra dura:
+
+1. `CLAUDE.md` e `AGENTS.md` são de leitura obrigatória.
+2. Os dois devem estar idênticos byte a byte.
+3. Se houver drift, bloquear comandos críticos e executar `*sincronizar`.
+
+Comandos-chave:
+
+- `*começar`
+- `*dashboard`
+- `*agentes`
+- `*sincronizar`
+- `*atualizar`
+
+## Atualizar instalação existente
+
+```text
+*atualizar
+*atualizar vX.Y.Z
+```
+
+Fluxo seguro obrigatório:
+
+1. preflight completo;
+2. checkpoint (backup + snapshot Git quando disponível);
+3. atualização via instalador oficial;
+4. validação pós-update + rollback documentado;
+5. sincronização final de `CLAUDE.md` e `AGENTS.md`.
+
+## Dashboard local
+
+- endereço padrão: `http://localhost:3001`
+- objetivo: acompanhamento visual de tarefas/squads
+- modo: somente consulta/read-only (`POST/PATCH/DELETE` de mutação retornam `403`)
+
+## Agentes
+
+- Claude Code: Agent Teams nativo
+- Codex: emulação de squads (líder PM + especialistas + consolidação)
 
 ## Desenvolvimento deste repositório
 
@@ -73,6 +96,7 @@ Com isso, fluxos com `*agentes` e ativações automáticas de time ficam habilit
 npm run test
 npm run web:dev
 npm run dashboard
+npm run agents:check
 ```
 
 ## Licença

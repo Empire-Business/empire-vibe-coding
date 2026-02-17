@@ -1,14 +1,15 @@
 ---
-## PARA CLAUDE (AI INSTRUCTIONS)
+## PARA CLAUDE E CODEX (AI INSTRUCTIONS)
 
-Este protocolo define como usar **Agent Teams do Claude Code** para criar um agente líder e subagentes automaticamente.
+Este protocolo define como executar times de agentes em dois modos:
+- **Claude Code:** Agent Teams nativo.
+- **Codex:** emulação de squads (líder + especialistas).
 
 Regras obrigatórias:
-1. Use a ferramenta `Task` (não `TaskCreate/TaskUpdate`) para invocar subagentes.
-2. Sempre rode um **líder PM** primeiro para planejar o time.
-3. Depois, a sessão principal cria os subagentes com base no plano do líder.
-4. Consolide resultados e reporte progresso em linguagem simples.
-5. Se Agent Teams não estiver disponível, faça fallback para execução manual/sequencial e avise.
+1. Sempre rode um **líder PM** primeiro para planejar o time.
+2. Depois, a sessão principal cria/executa especialistas com base no plano do líder.
+3. Consolide resultados e reporte progresso em linguagem simples.
+4. Se Agent Teams nativo não estiver disponível, use emulação sem interromper a execução.
 
 Limitação importante do Claude Code:
 - Subagentes não criam outros subagentes diretamente.
@@ -126,6 +127,27 @@ A sessão principal cria subagentes (um `Task` por especialista), usando:
 - contexto mínimo necessário
 - critérios de pronto definidos pelo líder
 - referência do arquivo em `squads/[ROLE].md`
+
+## Modo Codex (emulação)
+
+Quando Agent Teams nativo não existir (ex.: Codex), seguir o mesmo contrato emulado:
+
+### Fase 1 - Líder PM
+- produzir plano com especialistas necessários;
+- explicitar dependências e critérios de pronto;
+- definir blocos paralelizáveis.
+
+### Fase 2 - Especialistas
+- executar cada frente por domínio (arquitetura, implementação, QA, segurança, etc.);
+- manter isolamento de contexto por frente.
+
+### Fase 3 - Paralelismo
+- rodar em paralelo apenas frentes independentes;
+- tarefas dependentes aguardam conclusão dos pré-requisitos.
+
+### Fase 4 - Consolidação
+- consolidar decisões, mudanças e riscos remanescentes;
+- publicar próximos passos com prioridade.
 
 ### PASSO 3 - Resolver dependências
 

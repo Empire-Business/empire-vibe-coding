@@ -5,9 +5,6 @@ CLI para instalar Empire Vibe Coding em um projeto novo ou existente.
 ## Uso
 
 ```bash
-# pasta atual
-npx create-empire-vibe-coding
-
 # pasta específica
 npx create-empire-vibe-coding minha-pasta
 
@@ -18,13 +15,19 @@ npx create-empire-vibe-coding minha-pasta --docs-only
 npx create-empire-vibe-coding minha-pasta --refresh-runtime
 ```
 
-## O que instala por padrão
+## Modo único obrigatório
+
+A instalação sempre cria:
+
+- `CLAUDE.md`
+- `AGENTS.md`
+- `.claude/settings.local.json` com `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+
+E sempre garante:
 
 - `vibe-coding/` (comandos + protocolos)
 - `docs/` (templates do projeto)
-- `CLAUDE.md` (instruções para o Claude)
-- `empire-dashboard/` (runtime local task-oriented)
-- `.claude/settings.local.json` com `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+- `empire-dashboard/` (runtime local, exceto `--docs-only`)
 
 Também garante script na raiz:
 
@@ -36,21 +39,42 @@ Também garante script na raiz:
 }
 ```
 
+## Flags válidas
+
+- `--docs-only`
+- `--refresh-runtime`
+
+Flags legadas removidas (erro explícito):
+
+- `--platform`
+- `--merge`
+- `--separate`
+- `--no-claude`
+
 ## Após instalar
 
 ```bash
-claude
-# no Claude Code
+# no Claude Code ou Codex
+*sincronizar
 *começar
 
 # dashboard local
 npm run dashboard
 ```
 
+## Atualizar instalação existente
+
+```text
+*atualizar
+*atualizar vX.Y.Z
+```
+
+Sempre com checkpoint completo antes do upgrade.
+
 ## Requisitos
 
 - Node.js 18+
-- Claude Code instalado ([docs](https://docs.anthropic.com/claude-code))
+- Claude Code e/ou Codex
 
 ## Links
 

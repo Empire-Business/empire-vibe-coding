@@ -19,6 +19,16 @@ const INSTALL_SH = join(REPO_ROOT, 'install.sh');
 const CREATE_CLI = join(REPO_ROOT, 'packages', 'create-empire-vibe-coding', 'bin', 'create.js');
 const DASHBOARD_DIR = 'empire-dashboard';
 const DASHBOARD_SCRIPT = `npm --prefix ${DASHBOARD_DIR} run dashboard`;
+const UPDATE_PROTOCOL_RELATIVE = join('vibe-coding', 'PROTOCOLOS', '23-ATUALIZAR.md');
+const SYNC_PROTOCOL_RELATIVE = join('vibe-coding', 'PROTOCOLOS', '24-SINCRONIZAR.md');
+
+const LEGACY_FLAG_CASES = [
+  ['--platform', 'claude'],
+  ['--platform=claude'],
+  ['--merge'],
+  ['--separate'],
+  ['--no-claude'],
+];
 
 function runCommand(command, args, options = {}) {
   return new Promise((resolvePromise, rejectPromise) => {
@@ -153,6 +163,93 @@ function assertDashboardScriptNotAdded(projectDir) {
   assert.equal(packageJson?.scripts?.dashboard, undefined);
 }
 
+function assertProtocolsInstalled(projectDir) {
+  const updateProtocolPath = join(projectDir, UPDATE_PROTOCOL_RELATIVE);
+  const syncProtocolPath = join(projectDir, SYNC_PROTOCOL_RELATIVE);
+
+  assert.equal(existsSync(updateProtocolPath), true, `${updateProtocolPath} should exist`);
+  assert.equal(existsSync(syncProtocolPath), true, `${syncProtocolPath} should exist`);
+
+  assert.match(readFileSync(updateProtocolPath, 'utf8'), /23-ATUALIZAR\.md/);
+  assert.match(readFileSync(syncProtocolPath, 'utf8'), /24-SINCRONIZAR\.md/);
+}
+
+function assertSingleModeFiles(projectDir) {
+  const claudeFile = join(projectDir, 'CLAUDE.md');
+  const agentsFile = join(projectDir, 'AGENTS.md');
+  const claudeSettings = join(projectDir, '.claude', 'settings.local.json');
+  const claudeInstructions = join(projectDir, 'vibe-coding', 'CLAUDE-INSTRUCTIONS.md');
+  const codexInstructions = join(projectDir, 'vibe-coding', 'CODEX-INSTRUCTIONS.md');
+
+  assert.equal(existsSync(claudeFile), true, 'CLAUDE.md should exist');
+  assert.equal(existsSync(agentsFile), true, 'AGENTS.md should exist');
+  assert.equal(existsSync(claudeSettings), true, '.claude/settings.local.json should exist');
+  assert.equal(existsSync(claudeInstructions), true, 'vibe-coding/CLAUDE-INSTRUCTIONS.md should exist');
+  assert.equal(existsSync(codexInstructions), true, 'vibe-coding/CODEX-INSTRUCTIONS.md should exist');
+
+  const claudeBuffer = readFileSync(claudeFile);
+  const agentsBuffer = readFileSync(agentsFile);
+  const claudeInstructionsBuffer = readFileSync(claudeInstructions);
+  const codexInstructionsBuffer = readFileSync(codexInstructions);
+
+  assert.equal(claudeBuffer.equals(agentsBuffer), true, 'CLAUDE.md and AGENTS.md must be byte-identical');
+  assert.equal(
+    claudeInstructionsBuffer.equals(codexInstructionsBuffer),
+    true,
+    'CLAUDE-INSTRUCTIONS.md and CODEX-INSTRUCTIONS.md must be byte-identical'
+  );
+
+  assertAgentTeamsEnabled(claudeSettings);
+}
+
+function assertCanonicalCommandsAndSyncRules() {
+  const commandsPath = join(REPO_ROOT, 'vibe-coding', 'COMANDOS.md');
+  const claudeInstructionsPath = join(REPO_ROOT, 'vibe-coding', 'CLAUDE-INSTRUCTIONS.md');
+  const codexInstructionsPath = join(REPO_ROOT, 'vibe-coding', 'CODEX-INSTRUCTIONS.md');
+
+  const commands = readFileSync(commandsPath, 'utf8');
+  const claudeInstructions = readFileSync(claudeInstructionsPath, 'utf8');
+  const codexInstructions = readFileSync(codexInstructionsPath, 'utf8');
+
+  assert.match(commands, /\*atualizar/);
+  assert.match(commands, /\*sincronizar/);
+  assert.match(commands, /24-SINCRONIZAR\.md/);
+  assert.match(commands, /bloquear/i);
+
+  assert.match(claudeInstructions, /\*atualizar/);
+  assert.match(claudeInstructions, /\*sincronizar/);
+  assert.match(claudeInstructions, /byte a byte/i);
+  assert.match(claudeInstructions, /bloquear/i);
+
+  assert.equal(
+    Buffer.from(claudeInstructions, 'utf8').equals(Buffer.from(codexInstructions, 'utf8')),
+    true,
+    'CLAUDE-INSTRUCTIONS.md and CODEX-INSTRUCTIONS.md must be byte-identical'
+  );
+}
+
+async function runExpectingFailure(command, args, options = {}) {
+  try {
+    await runCommand(command, args, options);
+  } catch (error) {
+    return String(error?.message ?? error);
+  }
+  throw new Error(`Expected command to fail: ${command} ${args.join(' ')}`);
+}
+
+async function assertLegacyFlagsFail(command, baseArgs, cwd, baseUrl) {
+  for (const flagCase of LEGACY_FLAG_CASES) {
+    const args = [...baseArgs, ...flagCase];
+    const output = await runExpectingFailure(command, args, {
+      cwd,
+      env: {
+        EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
+      },
+    });
+    assert.match(output, /flag legada/i);
+  }
+}
+
 async function testDashboardReadOnly() {
   const port = 3131;
   const child = spawn('npm', ['run', 'dev', '--', '-p', `${port}`], {
@@ -219,7 +316,6 @@ async function testDashboardReadOnly() {
   }
 
   if (!output.includes('ready')) {
-    // Next.js output format can vary, so this is non-blocking safety info.
     console.log('[test-behavior] dashboard output captured');
   }
 }
@@ -229,27 +325,31 @@ async function testTutorialDataSync() {
 }
 
 async function testInstallScript(baseUrl) {
-  const installDir = mkdtempSync(join(tmpdir(), 'empire-install-'));
-  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-install-web-conflict-'));
+  const defaultDir = mkdtempSync(join(tmpdir(), 'empire-install-default-'));
   const docsOnlyDir = mkdtempSync(join(tmpdir(), 'empire-install-docs-only-'));
+  const legacyFlagDir = mkdtempSync(join(tmpdir(), 'empire-install-legacy-'));
+  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-install-web-conflict-'));
 
   try {
-    await runCommand('bash', [INSTALL_SH, '--no-claude'], {
-      cwd: installDir,
+    await runCommand('bash', [INSTALL_SH], {
+      cwd: defaultDir,
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
       },
     });
 
-    assertAgentTeamsEnabled(join(installDir, '.claude', 'settings.local.json'));
-    assertDashboardRuntimeInstalled(installDir);
-    assertDashboardScriptInRootPackage(installDir);
+    assertSingleModeFiles(defaultDir);
+    assertProtocolsInstalled(defaultDir);
+    assertDashboardRuntimeInstalled(defaultDir);
+    assertDashboardScriptInRootPackage(defaultDir);
+
+    await assertLegacyFlagsFail('bash', [INSTALL_SH], legacyFlagDir, baseUrl);
 
     mkdirSync(join(noConflictDir, 'web'), { recursive: true });
     const sentinelPath = join(noConflictDir, 'web', 'do-not-touch.txt');
     writeFileSync(sentinelPath, 'keep-web-folder-intact\n');
 
-    await runCommand('bash', [INSTALL_SH, '--no-claude'], {
+    await runCommand('bash', [INSTALL_SH], {
       cwd: noConflictDir,
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
@@ -257,41 +357,49 @@ async function testInstallScript(baseUrl) {
     });
 
     assert.equal(readFileSync(sentinelPath, 'utf8'), 'keep-web-folder-intact\n');
+    assertSingleModeFiles(noConflictDir);
+    assertProtocolsInstalled(noConflictDir);
     assertDashboardRuntimeInstalled(noConflictDir);
 
-    await runCommand('bash', [INSTALL_SH, '--no-claude', '--docs-only'], {
+    await runCommand('bash', [INSTALL_SH, '--docs-only'], {
       cwd: docsOnlyDir,
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
       },
     });
 
+    assertSingleModeFiles(docsOnlyDir);
+    assertProtocolsInstalled(docsOnlyDir);
     assertDashboardRuntimeNotInstalled(docsOnlyDir);
     assertDashboardScriptNotAdded(docsOnlyDir);
   } finally {
-    rmSync(installDir, { recursive: true, force: true });
-    rmSync(noConflictDir, { recursive: true, force: true });
+    rmSync(defaultDir, { recursive: true, force: true });
     rmSync(docsOnlyDir, { recursive: true, force: true });
+    rmSync(legacyFlagDir, { recursive: true, force: true });
+    rmSync(noConflictDir, { recursive: true, force: true });
   }
 }
 
 async function testCreateCli(baseUrl) {
-  const createDir = mkdtempSync(join(tmpdir(), 'empire-create-'));
-  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-create-web-conflict-'));
+  const defaultDir = mkdtempSync(join(tmpdir(), 'empire-create-default-'));
   const docsOnlyDir = mkdtempSync(join(tmpdir(), 'empire-create-docs-only-'));
+  const legacyFlagDir = mkdtempSync(join(tmpdir(), 'empire-create-legacy-'));
+  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-create-web-conflict-'));
 
   try {
     await runCommand('node', [CREATE_CLI, '.'], {
-      cwd: createDir,
+      cwd: defaultDir,
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
       },
-      stdin: '\n',
     });
 
-    assertAgentTeamsEnabled(join(createDir, '.claude', 'settings.local.json'));
-    assertDashboardRuntimeInstalled(createDir);
-    assertDashboardScriptInRootPackage(createDir);
+    assertSingleModeFiles(defaultDir);
+    assertProtocolsInstalled(defaultDir);
+    assertDashboardRuntimeInstalled(defaultDir);
+    assertDashboardScriptInRootPackage(defaultDir);
+
+    await assertLegacyFlagsFail('node', [CREATE_CLI, '.'], legacyFlagDir, baseUrl);
 
     mkdirSync(join(noConflictDir, 'web'), { recursive: true });
     const sentinelPath = join(noConflictDir, 'web', 'do-not-touch.txt');
@@ -302,10 +410,11 @@ async function testCreateCli(baseUrl) {
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
       },
-      stdin: '\n',
     });
 
     assert.equal(readFileSync(sentinelPath, 'utf8'), 'keep-web-folder-intact\n');
+    assertSingleModeFiles(noConflictDir);
+    assertProtocolsInstalled(noConflictDir);
     assertDashboardRuntimeInstalled(noConflictDir);
 
     await runCommand('node', [CREATE_CLI, '.', '--docs-only'], {
@@ -313,15 +422,17 @@ async function testCreateCli(baseUrl) {
       env: {
         EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
       },
-      stdin: '\n',
     });
 
+    assertSingleModeFiles(docsOnlyDir);
+    assertProtocolsInstalled(docsOnlyDir);
     assertDashboardRuntimeNotInstalled(docsOnlyDir);
     assertDashboardScriptNotAdded(docsOnlyDir);
   } finally {
-    rmSync(createDir, { recursive: true, force: true });
-    rmSync(noConflictDir, { recursive: true, force: true });
+    rmSync(defaultDir, { recursive: true, force: true });
     rmSync(docsOnlyDir, { recursive: true, force: true });
+    rmSync(legacyFlagDir, { recursive: true, force: true });
+    rmSync(noConflictDir, { recursive: true, force: true });
   }
 }
 
@@ -337,6 +448,7 @@ async function testInstallersParityAndSettings() {
 }
 
 async function main() {
+  assertCanonicalCommandsAndSyncRules();
   await testTutorialDataSync();
   await testDashboardReadOnly();
   await testInstallersParityAndSettings();

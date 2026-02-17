@@ -35,6 +35,10 @@ npm-debug.log*
 # Debug
 *.pem
 
+# Empire backups
+.empire-sync/
+.empire-update/
+
 # Local SQLite data
 data/*.db
 data/*.db-*

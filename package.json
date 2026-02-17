@@ -18,6 +18,8 @@
     "web:test": "npm run tutorial:check && cd web && npm run test",
     "cli:test": "cd packages/create-empire-vibe-coding && npm test",
     "test:behavior": "node ./scripts/test-behavior.mjs",
+    "agents:sync": "node ./scripts/sync-agent-files.mjs",
+    "agents:check": "node ./scripts/check-agent-files-sync.mjs",
     "dashboard": "cd web && npm run dashboard",
     "test": "npm run web:test && npm run cli:test && npm run test:behavior"
   },

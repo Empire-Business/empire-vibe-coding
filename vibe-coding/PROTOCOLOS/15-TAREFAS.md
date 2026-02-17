@@ -1,8 +1,8 @@
 ---
-## PARA CLAUDE (AI INSTRUCTIONS)
+## PARA CLAUDE E CODEX (AI INSTRUCTIONS)
 
-Este protocolo é invocado pelo comando `*tarefas` no CLAUDE.md.
-Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
+Este protocolo é invocado pelo comando `*tarefas` em `CLAUDE.md` (Claude) ou `AGENTS.md` (Codex).
+Execute conforme as regras definidas no arquivo raiz de instruções e em `COMUNICACAO.md`.
 ---
 
 # Protocolo de Tarefas (*tarefas)
@@ -17,16 +17,12 @@ Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
 
 ---
 
-## Ferramentas do Claude Code
+## Ferramentas de Tarefas por Plataforma
 
-O Claude Code tem ferramentas nativas de tarefas. Este comando as utiliza:
-
-| Ferramenta | Função |
-|------------|--------|
-| `TaskCreate` | Criar nova tarefa |
-| `TaskList` | Listar todas as tarefas |
-| `TaskGet` | Ver detalhes de uma tarefa |
-| `TaskUpdate` | Atualizar status/campos |
+| Plataforma | Ferramenta/abordagem | Função |
+|------------|-----------------------|--------|
+| Claude Code | `TaskCreate`, `TaskList`, `TaskGet`, `TaskUpdate` | Criar/listar/detalhar/atualizar tarefas |
+| Codex | Plano + checklist estruturado + atualização de status no fluxo | Mesmo contrato funcional: criar/listar/detalhar/atualizar |
 
 ---
 

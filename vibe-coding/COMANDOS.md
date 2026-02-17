@@ -2,126 +2,158 @@
 
 ## Como Usar
 
-Digite comandos com `*` no Claude Code para ativar o comportamento correspondente.
+Digite comandos com `*` para ativar o comportamento correspondente.
+
+## Modo Unico Obrigatorio
+
+Este sistema opera sempre com os dois arquivos raiz:
+
+- `CLAUDE.md`
+- `AGENTS.md`
+
+Regra operacional diaria:
+
+1. Antes de executar comandos `*`, validar que os dois arquivos existem.
+2. Validar que os dois arquivos estao identicos byte a byte.
+3. Se faltar arquivo ou houver drift, bloquear execucao e rodar `*sincronizar`.
 
 ---
 
-## FLUXO OBRIGATÓRIO DE DOCUMENTAÇÃO
+## FLUXO OBRIGATORIO DE DOCUMENTACAO
 
 Antes de entrar em desenvolvimento amplo, siga a ordem recomendada:
 
-1. `*prd` - define o que será construído
-2. `*arquitetura` - define como será construído
+1. `*prd` - define o que sera construido
+2. `*arquitetura` - define como sera construido
 3. `*roadmap` - define ordem e entregas
-4. `*design` - define direção visual e UX
-5. `*desenvolver` - implementação
+4. `*design` - define direcao visual e UX
+5. `*desenvolver` - implementacao
 
-Exceções: `*bug`, `*erro`, manutenção simples e ajustes localizados.
+Excecoes: `*bug`, `*erro`, manutencao simples e ajustes localizados.
 
 ---
 
 ## Comandos Principais
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
 | `*começar` | Iniciar projeto | Tutorial interativo: mostra menu, espera resposta e direciona |
 | `*desenvolver` | Modo desenvolvimento | Ativa protocolo de desenvolvimento |
-| `*bug` | Reportar problema | Ativa protocolo de correção de bugs |
+| `*bug` | Reportar problema | Ativa protocolo de correcao de bugs |
 | `*erro` | Resolver erro | Ajuda guiada para erros de terminal/navegador |
-| `*termo` | Explicar termo | Explica termo técnico com linguagem simples |
+| `*termo` | Explicar termo | Explica termo tecnico com linguagem simples |
 | `*comando` | Verificar comando | Checa risco antes de executar comandos |
-| `*lançar` | Preparar lançamento | Executa checklist pré-publicação |
+| `*lançar` | Preparar lancamento | Executa checklist pre-publicacao |
 
 ## Comandos de Documentação
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
 | `*roadmap` | Ver/atualizar roadmap | Atualiza `docs/ROADMAP.md` |
-| `*decisão` | Registrar decisão | Atualiza `docs/DECISOES.md` |
-| `*mudança` | Registrar mudança | Atualiza `docs/MUDANCAS.md` |
+| `*decisão` | Registrar decisao | Atualiza `docs/DECISOES.md` |
+| `*mudança` | Registrar mudanca | Atualiza `docs/MUDANCAS.md` |
 | `*arquitetura` | Atualizar arquitetura | Atualiza `docs/ARQUITETURA.md` |
-| `*status` | Ver status do projeto | Resume progresso, pendências e próximos passos |
+| `*status` | Ver status do projeto | Resume progresso, pendencias e proximos passos |
 
 ## Comandos de Design & UX
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*design` | Design System | Tokens, cores, tipografia e padronização visual |
-| `*ux` | UX Design | Heurísticas, fluxos, acessibilidade e estados |
+| `*design` | Design System | Tokens, cores, tipografia e padronizacao visual |
+| `*ux` | UX Design | Heuristicas, fluxos, acessibilidade e estados |
 
 ## Comandos de Qualidade
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*seguranca` | Auditoria de segurança | Checklist OWASP, segredos, superfícies de risco |
-| `*qualidade` | Checar qualidade | Revisão de código, estrutura e padrões |
-| `*garantir` | Garantidor de qualidade | Único comando que aprova mudanças |
-| `*revisar` | Code review | Revisão completa com pontos de risco |
+| `*seguranca` | Auditoria de seguranca | Checklist OWASP, segredos, superficies de risco |
+| `*qualidade` | Checar qualidade | Revisao de codigo, estrutura e padroes |
+| `*garantir` | Garantidor de qualidade | Unico comando que aprova mudancas |
+| `*revisar` | Code review | Revisao completa com pontos de risco |
 
 ## Comandos de Infra & Banco
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*banco` | Saúde do banco | Diagnóstico de queries, índices e integridade |
-| `*supabase` | Configurar Supabase | Setup e validação de configuração Supabase |
+| `*banco` | Saude do banco | Diagnostico de queries, indices e integridade |
+| `*supabase` | Configurar Supabase | Setup e validacao de configuracao Supabase |
 
 ## Comandos de Automação
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*workflow` | Criar workflows | CI/CD e automações de projeto |
-| `*orquestrar` | Orquestrar comandos | Combina comandos para resolver cenários complexos |
+| `*workflow` | Criar workflows | CI/CD e automacoes de projeto |
+| `*orquestrar` | Orquestrar comandos | Combina comandos para resolver cenarios complexos |
 | `*tarefas` | Gerenciar tarefas | Planejamento e acompanhamento task-oriented |
 | `*dashboard` | Abrir dashboard | Inicia dashboard local em localhost (somente leitura) |
+| `*atualizar` | Atualizar instalacao | Atualiza instalacao existente para latest estavel ou versao pinada (`vX.Y.Z`) com checkpoint e rollback |
+| `*sincronizar` | Sincronizar instrucoes | Regera `CLAUDE.md` e `AGENTS.md` da mesma fonte e valida igualdade byte a byte |
 
 ## Comandos de Planejamento
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*planejar` | Planejamento detalhado | WBS, riscos, estimativas e critérios |
+| `*planejar` | Planejamento detalhado | WBS, riscos, estimativas e criterios |
 | `*especificar` | Criar spec de feature | Cria documento em `docs/specs/` |
-| `*prd` | Gerar PRD completo | Cria documentação de requisitos (sem implementar código) |
+| `*prd` | Gerar PRD completo | Cria documentacao de requisitos (sem implementar codigo) |
 
 ## Comandos de Integração
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*api` | Documentar API externa | Pesquisa e documenta API antes da integração |
+| `*api` | Documentar API externa | Pesquisa e documenta API antes da integracao |
 
 ## Comandos de Especialistas
 
-| Comando | Função | O que acontece |
+| Comando | Funcao | O que acontece |
 |---------|--------|----------------|
-| `*nerd` | Problemas complexos | Diagnóstico profundo e otimização avançada |
-| `*agentes` | Usar Agent Teams | Cria líder (PM) e especialistas conforme escopo |
-| `*melhorar` | Refatorar código | Propõe melhorias estruturais e técnicas |
+| `*nerd` | Problemas complexos | Diagnostico profundo e otimizacao avancada |
+| `*agentes` | Usar agentes | Claude: Agent Teams nativo. Codex: emulacao de squads (lider + especialistas) |
+| `*melhorar` | Refatorar codigo | Propoe melhorias estruturais e tecnicas |
 
 ## Comando de Ajuda
 
-| Comando | Função |
+| Comando | Funcao |
 |---------|--------|
-| `*ajuda` | Mostra todos os comandos disponíveis |
+| `*ajuda` | Mostra todos os comandos disponiveis |
 
 ---
 
-## Comportamentos essenciais
+## Comportamentos Essenciais
 
 ### `*começar`
 
 - sempre abre menu interativo
-- sempre espera resposta do usuário
-- não cria arquivos automaticamente
+- sempre espera resposta do usuario
+- nao cria arquivos automaticamente
 
 ### `*dashboard`
 
 - foco em acompanhamento local
-- execução em `localhost`
-- API de mutação bloqueada (`403`)
+- execucao em `localhost`
+- API de mutacao bloqueada (`403`)
+
+### `*sincronizar`
+
+- executa `vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md`
+- faz backup obrigatorio antes de reescrever
+- regenera `CLAUDE.md` e `AGENTS.md` da mesma fonte
+- bloqueia comandos criticos enquanto houver drift
+
+### `*atualizar`
+
+- executa atualizacao segura de instalacoes existentes
+- default: latest stable release
+- opcional: versao pinada (`*atualizar vX.Y.Z`)
+- exige checkpoint completo (backup + snapshot Git quando disponivel)
+- sincroniza os dois arquivos de instrucoes apos atualizar
 
 ### `*agentes`
 
-- usa líder PM + especialistas
-- pode ativar automaticamente quando o escopo exigir coordenação
+- usa lider PM + especialistas
+- Claude: Agent Teams nativo
+- Codex: execucao emulada com planejamento + especialistas + consolidacao
+- pode ativar automaticamente quando o escopo exigir coordenacao
 
 ---
 
@@ -130,22 +162,24 @@ Exceções: `*bug`, `*erro`, manutenção simples e ajustes localizados.
 | Categoria | Qtd | Comandos |
 |-----------|-----|----------|
 | Principais | 7 | começar, desenvolver, bug, erro, termo, comando, lançar |
-| Documentação | 5 | roadmap, decisão, mudança, arquitetura, status |
+| Documentacao | 5 | roadmap, decisão, mudança, arquitetura, status |
 | Design & UX | 2 | design, ux |
 | Qualidade | 4 | seguranca, qualidade, garantir, revisar |
 | Infra & Banco | 2 | banco, supabase |
-| Automação | 4 | workflow, orquestrar, tarefas, dashboard |
+| Automacao | 6 | workflow, orquestrar, tarefas, dashboard, atualizar, sincronizar |
 | Planejamento | 3 | planejar, especificar, prd |
-| Integração | 1 | api |
+| Integracao | 1 | api |
 | Especialistas | 3 | nerd, agentes, melhorar |
 | Ajuda | 1 | ajuda |
-| **TOTAL** | **32** | |
+| **TOTAL** | **34** | |
 
 ---
 
-## Referências principais
+## Referencias principais
 
 - `vibe-coding/PROTOCOLOS/00-COMEÇAR.md`
 - `vibe-coding/PROTOCOLOS/20-AGENTES.md`
 - `vibe-coding/PROTOCOLOS/15-TAREFAS.md`
+- `vibe-coding/PROTOCOLOS/23-ATUALIZAR.md`
+- `vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md`
 - `vibe-coding/BANDEIRAS-VERMELHAS.md`

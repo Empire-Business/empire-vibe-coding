@@ -4,9 +4,6 @@
 # Execute: curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
 #
 # Flags disponíveis:
-#   --merge      Adiciona instruções ao final do CLAUDE.md existente
-#   --separate   Cria CLAUDE.vibe-coding.md separado
-#   --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)
 #   --docs-only  Instala apenas documentação/instruções (sem runtime local)
 #   --refresh-runtime  Atualiza arquivos do runtime local (empire-dashboard/)
 
@@ -22,6 +19,25 @@ YELLOW='\033[33m'
 RED='\033[31m'
 RESET='\033[0m'
 BOLD='\033[1m'
+
+print_usage() {
+  echo ""
+  echo -e "${BOLD}Uso:${RESET}"
+  echo "  curl -fsSL https://raw.githubusercontent.com/.../install.sh | bash"
+  echo ""
+  echo -e "${BOLD}Flags disponíveis:${RESET}"
+  echo "  --docs-only  Instala apenas documentação/instruções (sem runtime local)"
+  echo "  --refresh-runtime  Força atualização de ${RUNTIME_DIR}/"
+  echo ""
+  echo -e "${BOLD}Modo único obrigatório:${RESET}"
+  echo "  O instalador sempre cria e sincroniza:"
+  echo "  - CLAUDE.md"
+  echo "  - AGENTS.md"
+  echo "  - .claude/settings.local.json"
+  echo ""
+  echo "  Flags legadas removidas: --platform, --merge, --separate, --no-claude"
+  echo ""
+}
 
 # Garante que o arquivo de settings tenha Agent Teams habilitado
 ensure_agent_teams_env() {
@@ -240,26 +256,11 @@ install_runtime_dashboard() {
 }
 
 # Parse flags
-MERGE_MODE=false
-SEPARATE_MODE=false
-NO_CLAUDE=false
 DOCS_ONLY=false
 REFRESH_RUNTIME=false
 
-for arg in "$@"; do
-  case $arg in
-    --merge)
-      MERGE_MODE=true
-      shift
-      ;;
-    --separate)
-      SEPARATE_MODE=true
-      shift
-      ;;
-    --no-claude)
-      NO_CLAUDE=true
-      shift
-      ;;
+while [ $# -gt 0 ]; do
+  case "$1" in
     --docs-only)
       DOCS_ONLY=true
       shift
@@ -268,24 +269,20 @@ for arg in "$@"; do
       REFRESH_RUNTIME=true
       shift
       ;;
+    --platform|--platform=*|--merge|--separate|--no-claude)
+      echo -e "${RED}✗ Flag legada não suportada: $1${RESET}" >&2
+      echo -e "${RED}  Migração: o sistema agora opera em modo único obrigatório (Claude + Codex).${RESET}" >&2
+      print_usage
+      exit 1
+      ;;
     --help|-h)
-      echo ""
-      echo -e "${BOLD}Uso:${RESET}"
-      echo "  curl -fsSL https://raw.githubusercontent.com/.../install.sh | bash"
-      echo "  curl -fsSL https://raw.githubusercontent.com/.../install.sh | bash -s -- --flag"
-      echo ""
-      echo -e "${BOLD}Flags disponíveis:${RESET}"
-      echo "  --merge      Adiciona instruções ao final do CLAUDE.md existente"
-      echo "  --separate   Cria CLAUDE.vibe-coding.md separado"
-      echo "  --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)"
-      echo "  --docs-only  Instala apenas documentação/instruções (sem runtime local)"
-      echo "  --refresh-runtime  Força atualização de ${RUNTIME_DIR}/"
-      echo ""
-      echo -e "${BOLD}Comportamento padrão:${RESET}"
-      echo "  Instala documentação + runtime local task-oriented em ${RUNTIME_DIR}/"
-      echo "  Se CLAUDE.md NÃO existe → Cria CLAUDE.md completo"
-      echo "  Se CLAUDE.md JÁ existe → Cria CLAUDE.vibe-coding.md separado (seguro)"
+      print_usage
       exit 0
+      ;;
+    *)
+      echo -e "${RED}✗ Argumento desconhecido: $1${RESET}" >&2
+      print_usage
+      exit 1
       ;;
   esac
 done
@@ -294,6 +291,8 @@ echo ""
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${RESET}"
 echo -e "${BOLD}  EMPIRE VIBE CODING - Instalador${RESET}"
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${RESET}"
+echo ""
+echo -e "${BLUE}Modo:${RESET} ${BOLD}Claude + Codex obrigatórios (sincronizados)${RESET}"
 echo ""
 
 # Criar estrutura de pastas
@@ -346,6 +345,7 @@ curl -fsSL "$GITHUB_RAW/vibe-coding/GLOSSARIO.md" -o vibe-coding/GLOSSARIO.md &&
 curl -fsSL "$GITHUB_RAW/vibe-coding/BANDEIRAS-VERMELHAS.md" -o vibe-coding/BANDEIRAS-VERMELHAS.md && echo -e "${GREEN}   ✓ vibe-coding/BANDEIRAS-VERMELHAS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/TROUBLESHOOTING.md" -o vibe-coding/TROUBLESHOOTING.md && echo -e "${GREEN}   ✓ vibe-coding/TROUBLESHOOTING.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/CLAUDE-INSTRUCTIONS.md" -o vibe-coding/CLAUDE-INSTRUCTIONS.md && echo -e "${GREEN}   ✓ vibe-coding/CLAUDE-INSTRUCTIONS.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/CODEX-INSTRUCTIONS.md" -o vibe-coding/CODEX-INSTRUCTIONS.md && echo -e "${GREEN}   ✓ vibe-coding/CODEX-INSTRUCTIONS.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/00-COMEÇAR.md" -o vibe-coding/PROTOCOLOS/00-COMEÇAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/00-COMEÇAR.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md" -o vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/01-DESENVOLVER.md" -o vibe-coding/PROTOCOLOS/01-DESENVOLVER.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/01-DESENVOLVER.md${RESET}"
@@ -370,6 +370,8 @@ curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/19-API.md" -o vibe-coding/PROTOCO
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/20-AGENTES.md" -o vibe-coding/PROTOCOLOS/20-AGENTES.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/20-AGENTES.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/21-ROADMAP.md" -o vibe-coding/PROTOCOLOS/21-ROADMAP.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/21-ROADMAP.md${RESET}"
 curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/22-ARQUITETURA.md" -o vibe-coding/PROTOCOLOS/22-ARQUITETURA.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/22-ARQUITETURA.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/23-ATUALIZAR.md" -o vibe-coding/PROTOCOLOS/23-ATUALIZAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/23-ATUALIZAR.md${RESET}"
+curl -fsSL "$GITHUB_RAW/vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md" -o vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md && echo -e "${GREEN}   ✓ vibe-coding/PROTOCOLOS/24-SINCRONIZAR.md${RESET}"
 
 # Baixar template de ambiente
 echo ""
@@ -753,36 +755,37 @@ else
 echo -e "${YELLOW}   ⚠ docs/ROADMAP.md já existe${RESET}"
 fi
 
-# Criar CLAUDE.md na raiz do projeto
+# Sincronizar instruções obrigatórias (modo único)
 echo ""
-echo -e "${YELLOW}📝 Configurando CLAUDE.md...${RESET}"
+echo -e "${YELLOW}📝 Sincronizando CLAUDE.md e AGENTS.md...${RESET}"
+if [ ! -f "vibe-coding/CLAUDE-INSTRUCTIONS.md" ]; then
+  echo -e "${RED}   ✗ Fonte ausente: vibe-coding/CLAUDE-INSTRUCTIONS.md${RESET}"
+  exit 1
+fi
 
-# Verificar flag --no-claude
-if [ "$NO_CLAUDE" = true ]; then
-  echo -e "${YELLOW}   ⚠ Flag --no-claude: pulando CLAUDE.md${RESET}"
-elif [ -f "CLAUDE.md" ]; then
-  # CLAUDE.md já existe
-  if [ "$MERGE_MODE" = true ]; then
-    # Modo merge: adicionar ao final
-    echo "" >> CLAUDE.md
-    echo "---" >> CLAUDE.md
-    cat vibe-coding/CLAUDE-INSTRUCTIONS.md >> CLAUDE.md
-    echo -e "${GREEN}   ✓ Instruções adicionadas ao CLAUDE.md (--merge)${RESET}"
-  elif [ "$SEPARATE_MODE" = true ]; then
-    # Modo separado explícito
-    cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.vibe-coding.md
-    echo -e "${GREEN}   ✓ CLAUDE.vibe-coding.md criado (--separate)${RESET}"
-  else
-    # Comportamento padrão quando já existe: criar separado
-    cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.vibe-coding.md
-    echo -e "${YELLOW}   ⚠ CLAUDE.md já existe${RESET}"
-    echo -e "${GREEN}   ✓ CLAUDE.vibe-coding.md criado${RESET}"
-    echo -e "${BLUE}   Dica: Adicione 'Consulte também: CLAUDE.vibe-coding.md' ao seu CLAUDE.md${RESET}"
+cp vibe-coding/CLAUDE-INSTRUCTIONS.md vibe-coding/CODEX-INSTRUCTIONS.md
+echo -e "${GREEN}   ✓ Fontes canônicas sincronizadas (CLAUDE-INSTRUCTIONS.md = CODEX-INSTRUCTIONS.md)${RESET}"
+
+if [ -f "CLAUDE.md" ] || [ -f "AGENTS.md" ]; then
+  SYNC_BACKUP_DIR=".empire-sync/backups/$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$SYNC_BACKUP_DIR"
+  if [ -f "CLAUDE.md" ]; then
+    cp CLAUDE.md "$SYNC_BACKUP_DIR/CLAUDE.md.before-sync"
   fi
+  if [ -f "AGENTS.md" ]; then
+    cp AGENTS.md "$SYNC_BACKUP_DIR/AGENTS.md.before-sync"
+  fi
+  echo -e "${GREEN}   ✓ Backup criado em ${SYNC_BACKUP_DIR}${RESET}"
+fi
+
+cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.md
+cp vibe-coding/CLAUDE-INSTRUCTIONS.md AGENTS.md
+
+if cmp -s CLAUDE.md AGENTS.md; then
+  echo -e "${GREEN}   ✓ CLAUDE.md e AGENTS.md sincronizados (byte a byte)${RESET}"
 else
-  # CLAUDE.md não existe - copiar instruções oficiais
-  cp vibe-coding/CLAUDE-INSTRUCTIONS.md CLAUDE.md
-  echo -e "${GREEN}   ✓ CLAUDE.md criado na raiz do projeto${RESET}"
+  echo -e "${RED}   ✗ Falha ao sincronizar CLAUDE.md e AGENTS.md${RESET}"
+  exit 1
 fi
 
 # Instalar runtime local task-oriented
@@ -815,18 +818,22 @@ if [ "$DOCS_ONLY" = false ]; then
   echo "   │   ├── components/"
   echo "   │   └── package.json"
 fi
-echo "   └── CLAUDE.md             ← Instruções para o Claude"
+echo "   ├── CLAUDE.md             ← Instruções obrigatórias (Claude)"
+echo "   ├── AGENTS.md             ← Instruções obrigatórias (Codex)"
+echo "   └── .claude/settings.local.json"
 echo ""
 echo -e "${BLUE}🚀 Próximos passos:${RESET}"
-echo "   1. Reinicie o Claude Code se estiver aberto"
-echo "   2. Digite: *começar"
+echo "   1. Abra Claude Code ou Codex"
+echo "   2. Digite: *sincronizar"
+echo "   3. Digite: *começar"
 if [ "$DOCS_ONLY" = false ]; then
-  echo "   3. Para abrir o dashboard local: npm run dashboard"
+  echo "   4. Para abrir o dashboard local: npm run dashboard"
   echo "      (fallback: npm --prefix ${RUNTIME_DIR} run dashboard)"
-  echo "   4. O Claude vai te guiar e documentar tudo em docs/"
+  echo "   5. Use *agentes para coordenação de times"
 else
-  echo "   3. O Claude vai te guiar e documentar tudo em docs/"
+  echo "   4. Use *agentes para coordenação de times"
 fi
 echo ""
 echo -e "${YELLOW}⚠️  IMPORTANTE: Toda mudança deve ser documentada em docs/${RESET}"
+echo -e "${YELLOW}⚠️  COMANDOS * devem validar que CLAUDE.md e AGENTS.md estão idênticos; use *sincronizar quando houver drift.${RESET}"
 echo ""
