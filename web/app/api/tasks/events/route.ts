@@ -4,6 +4,7 @@
 import { NextRequest } from 'next/server';
 import { taskEvents } from '@/lib/events';
 
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 // GET /api/tasks/events - SSE stream for real-time updates

@@ -1,119 +1,140 @@
 'use client'
 
-import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, Copy, Check, Terminal, Github, Download, FolderOpen, ChevronDown, ChevronUp, Palette, MousePointer, Star, CheckCircle, Database, Layers, GitBranch, ListTodo, Calendar, Brain, HelpCircle, Globe } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
+import {
+  AlertCircle,
+  BookOpen,
+  Bot,
+  Brain,
+  Bug,
+  Check,
+  CheckCircle,
+  Code,
+  Copy,
+  Database,
+  Download,
+  FileText,
+  Github,
+  GitBranch,
+  Globe,
+  HelpCircle,
+  Layers,
+  Rocket,
+  Search,
+  Shield,
+  Sparkles,
+  Star,
+  Terminal,
+  Upload,
+  Users,
+  Wrench,
+} from 'lucide-react'
+import tutorialData from '@/data/tutorial.generated.json'
 
-// ===== COMANDOS =====
-interface Command {
-  cmd: string
-  name: string
+type CommandEntry = {
+  command: string
+  title: string
   description: string
-  example?: string
-  icon: React.ElementType
-  color: string
+  category: string
 }
 
-const mainCommands: Command[] = [
-  { cmd: '*começar', name: 'Tutorial Inicial', description: 'Mostra tutorial de como começar. Explica os próximos passos: digite *PRD para criar requisitos, depois *arquitetura. NÃO executa desenvolvimento.', example: '*começar', icon: Rocket, color: 'bg-blue-100 text-blue-600' },
-  { cmd: '*desenvolver', name: 'Modo Desenvolvimento', description: 'Ativa o protocolo de desenvolvimento diário', icon: Code, color: 'bg-green-100 text-green-600' },
-  { cmd: '*bug', name: 'Resolver Bug', description: 'Investiga e corrige problemas no código', example: '*bug\n\nO login não funciona', icon: Bug, color: 'bg-red-100 text-red-600' },
-  { cmd: '*erro', name: 'Resolver Erro', description: 'Ajuda a resolver erros e mensagens de erro do terminal', example: '*erro\n\nnpm ERR! code ERESOLVE', icon: AlertCircle, color: 'bg-orange-100 text-orange-600' },
-  { cmd: '*termo', name: 'Explicar Termo', description: 'Explica termos técnicos com analogias simples do dia a dia', example: '*termo\n\nO que é API?', icon: BookOpen, color: 'bg-purple-100 text-purple-600' },
-  { cmd: '*comando', name: 'Verificar Comando', description: 'Verifica se um comando é perigoso antes de executar', example: '*comando\n\nrm -rf node_modules', icon: Shield, color: 'bg-yellow-100 text-yellow-600' },
-  { cmd: '*lançar', name: 'Preparar Lançamento', description: 'Checklist completo antes de publicar o projeto', icon: Upload, color: 'bg-indigo-100 text-indigo-600' },
+const iconByCommand: Record<string, React.ElementType> = {
+  '*começar': Rocket,
+  '*desenvolver': Code,
+  '*bug': Bug,
+  '*erro': AlertCircle,
+  '*termo': BookOpen,
+  '*comando': Shield,
+  '*lançar': Upload,
+  '*roadmap': FileText,
+  '*decisão': FileText,
+  '*mudança': FileText,
+  '*arquitetura': Layers,
+  '*status': CheckCircle,
+  '*design': Sparkles,
+  '*ux': Search,
+  '*seguranca': Shield,
+  '*qualidade': Star,
+  '*garantir': CheckCircle,
+  '*revisar': Search,
+  '*banco': Database,
+  '*supabase': Database,
+  '*workflow': GitBranch,
+  '*orquestrar': Layers,
+  '*tarefas': CheckCircle,
+  '*dashboard': Terminal,
+  '*planejar': FileText,
+  '*especificar': FileText,
+  '*prd': FileText,
+  '*api': Globe,
+  '*nerd': Brain,
+  '*agentes': Users,
+  '*melhorar': Wrench,
+  '*ajuda': HelpCircle,
+}
+
+const exampleByCommand: Record<string, string> = {
+  '*começar': '*começar',
+  '*bug': '*bug\n\nLogin não funciona no Safari',
+  '*erro': '*erro\n\nnpm ERR! ERESOLVE unable to resolve dependency tree',
+  '*termo': '*termo\n\nO que é API?',
+  '*comando': '*comando\n\nrm -rf node_modules',
+  '*dashboard': '*dashboard',
+  '*agentes': '*agentes\n\nPreciso implementar checkout com segurança e testes',
+}
+
+const palette = [
+  'bg-blue-100 text-blue-700',
+  'bg-green-100 text-green-700',
+  'bg-purple-100 text-purple-700',
+  'bg-red-100 text-red-700',
+  'bg-orange-100 text-orange-700',
+  'bg-cyan-100 text-cyan-700',
 ]
 
-const docCommands: Command[] = [
-  { cmd: '*roadmap', name: 'Ver Roadmap', description: 'Mostra os próximos passos e progresso do projeto', icon: Map, color: 'bg-cyan-100 text-cyan-600' },
-  { cmd: '*decisão', name: 'Registrar Decisão', description: 'Adiciona uma decisão técnica (ADR) na documentação', example: '*decisão\n\nVamos usar PostgreSQL', icon: FileText, color: 'bg-teal-100 text-teal-600' },
-  { cmd: '*mudança', name: 'Registrar Mudança', description: 'Atualiza o changelog com a mudança feita', example: '*mudança\n\nAdicionei página de login', icon: RefreshCw, color: 'bg-lime-100 text-lime-600' },
-  { cmd: '*arquitetura', name: 'Atualizar Arquitetura', description: 'Atualiza a documentação de arquitetura', icon: Settings, color: 'bg-gray-100 text-gray-600' },
-  { cmd: '*status', name: 'Ver Status', description: 'Resumo de onde o projeto está e o que falta', icon: BarChart3, color: 'bg-pink-100 text-pink-600' },
-]
-
-const designCommands: Command[] = [
-  { cmd: '*design', name: 'Design System', description: 'Configura cores, tipografia, tokens e Tailwind', example: '*design\n\nQuero criar o design system do app', icon: Palette, color: 'bg-fuchsia-100 text-fuchsia-600' },
-  { cmd: '*ux', name: 'UX Design', description: 'Aplica heurísticas de Nielsen, estados e acessibilidade', example: '*ux\n\nRevisar fluxo de checkout', icon: MousePointer, color: 'bg-rose-100 text-rose-600' },
-]
-
-const qualityCommands: Command[] = [
-  { cmd: '*seguranca', name: 'Auditoria de Segurança', description: 'Checklist OWASP Top 10, RLS, npm audit', icon: Shield, color: 'bg-red-100 text-red-600' },
-  { cmd: '*qualidade', name: 'Checar Qualidade', description: 'Code smells, SOLID, métricas, cobertura', icon: Star, color: 'bg-amber-100 text-amber-600' },
-  { cmd: '*garantir', name: 'Garantidor de Qualidade', description: 'ÚNICO que pode aprovar mudanças', icon: CheckCircle, color: 'bg-emerald-100 text-emerald-600' },
-  { cmd: '*revisar', name: 'Code Review', description: 'Faz revisão completa do código', icon: Search, color: 'bg-sky-100 text-sky-600' },
-]
-
-const infraCommands: Command[] = [
-  { cmd: '*banco', name: 'Saúde do Banco', description: 'Queries de diagnóstico, índices, VACUUM', example: '*banco\n\nO app está lento', icon: Database, color: 'bg-violet-100 text-violet-600' },
-  { cmd: '*supabase', name: 'Configurar Supabase', description: 'CLI setup, MCP config, RLS', icon: Layers, color: 'bg-green-100 text-green-600' },
-]
-
-const automationCommands: Command[] = [
-  { cmd: '*workflow', name: 'Criar Workflows', description: 'GitHub Actions, CI/CD, automações', example: '*workflow\n\nQuero CI para testes', icon: GitBranch, color: 'bg-slate-100 text-slate-600' },
-  { cmd: '*orquestrar', name: 'Orquestrar Comandos', description: 'Combina múltiplos comandos', example: '*orquestrar\n\nMeu app está lento', icon: Layers, color: 'bg-indigo-100 text-indigo-600' },
-  { cmd: '*tarefas', name: 'Gerenciar Tarefas', description: 'Usa o Task tool do Claude Code para dividir e acompanhar tarefas', icon: ListTodo, color: 'bg-orange-100 text-orange-600' },
-]
-
-const planningCommands: Command[] = [
-  { cmd: '*planejar', name: 'Planejamento Detalhado', description: 'WBS, estimativas, riscos, critérios', example: '*planejar\n\nSistema de pagamentos', icon: Calendar, color: 'bg-blue-100 text-blue-600' },
-  { cmd: '*especificar', name: 'Criar Spec', description: 'Cria especificação técnica de uma feature', example: '*especificar\n\nSistema de pagamento', icon: FileText, color: 'bg-slate-100 text-slate-600' },
-  { cmd: '*prd', name: 'Gerar PRD Completo', description: 'PRD com seção leiga e técnica, 20 seções', example: '*prd\n\nApp de gestão financeira', icon: FileText, color: 'bg-cyan-100 text-cyan-600' },
-]
-
-const integrationCommands: Command[] = [
-  { cmd: '*api', name: 'Documentar API Externa', description: 'Pesquisa e documenta APIs antes da integração', example: '*api\n\nstripe', icon: Globe, color: 'bg-emerald-100 text-emerald-600' },
-]
-
-const specialistCommands: Command[] = [
-  { cmd: '*nerd', name: 'Problemas Complexos', description: 'Debug profundo, profiling, otimização', example: '*nerd\n\nMemory leak no Node', icon: Brain, color: 'bg-purple-100 text-purple-600' },
-  { cmd: '*agentes', name: 'Agent Teams', description: 'Cria equipe de agentes para tarefas complexas', example: '*agentes\n\nO app está lento', icon: Users, color: 'bg-violet-100 text-violet-600' },
-  { cmd: '*melhorar', name: 'Melhorar Código', description: 'Sugere refatorações e melhorias', icon: Sparkles, color: 'bg-rose-100 text-rose-600' },
-]
-
-// ===== COMPONENTES =====
 function CopyButton({ text, dark = false }: { text: string; dark?: boolean }) {
   const [copied, setCopied] = useState(false)
 
-  const handleCopy = async () => {
+  const onCopy = async () => {
     await navigator.clipboard.writeText(text)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopied(false), 1500)
   }
 
   return (
     <button
-      onClick={handleCopy}
-      className={`p-1.5 sm:p-2 rounded transition-colors flex-shrink-0 ${dark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+      onClick={onCopy}
+      type="button"
+      className={`rounded p-1.5 transition-colors ${dark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
       title="Copiar"
     >
-      {copied ? (
-        <Check className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${dark ? 'text-green-400' : 'text-green-600'}`} />
-      ) : (
-        <Copy className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`} />
-      )}
+      {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className={`h-4 w-4 ${dark ? 'text-gray-300' : 'text-gray-500'}`} />}
     </button>
   )
 }
 
-function CommandCard({ command }: { command: Command }) {
+function CommandCard({ command, color }: { command: CommandEntry; color: string }) {
+  const Icon = iconByCommand[command.command] || Terminal
+  const example = exampleByCommand[command.command]
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 hover:shadow-md transition-shadow">
-      <div className="flex items-start gap-3 sm:gap-4">
-        <div className={`w-9 h-9 sm:w-10 sm:h-10 ${command.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
-          <command.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+    <div className="rounded-lg border border-gray-200 bg-white p-4 hover:shadow-sm">
+      <div className="flex items-start gap-3">
+        <div className={`mt-0.5 rounded-lg p-2 ${color}`}>
+          <Icon className="h-4 w-4" />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <code className="text-base sm:text-lg font-bold text-blue-600">{command.cmd}</code>
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 flex items-center gap-2">
+            <code className="text-sm font-bold text-blue-700">{command.command}</code>
+            <span className="text-xs text-gray-500">{command.title}</span>
           </div>
-          <h3 className="font-semibold text-gray-900 mb-0.5 text-sm sm:text-base">{command.name}</h3>
-          <p className="text-gray-600 text-xs sm:text-sm">{command.description}</p>
-          {command.example && (
-            <div className="mt-2 sm:mt-3 bg-gray-50 rounded-lg p-2 sm:p-3 relative group">
+          <p className="text-sm text-gray-600">{command.description}</p>
+          {example && (
+            <div className="mt-2 rounded bg-gray-50 p-2">
               <div className="flex items-start justify-between gap-2">
-                <code className="text-xs sm:text-sm text-gray-700 whitespace-pre-line flex-1">{command.example}</code>
-                <CopyButton text={command.example?.split('\n')[0] || command.cmd} />
+                <code className="whitespace-pre-line text-xs text-gray-700">{example}</code>
+                <CopyButton text={example.split('\n')[0] || command.command} />
               </div>
             </div>
           )}
@@ -123,468 +144,175 @@ function CommandCard({ command }: { command: Command }) {
   )
 }
 
-function InstallStep({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
+function CommandSection({
+  title,
+  commands,
+  color,
+}: {
+  title: string
+  commands: CommandEntry[]
+  color: string
+}) {
   return (
-    <div className="flex gap-3 sm:gap-4">
-      <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm">
-        {number}
+    <section className="mb-8">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">{commands.length}</span>
       </div>
-      <div className="flex-1 pb-4 sm:pb-6">
-        <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">{title}</h3>
-        {children}
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        {commands.map((command) => (
+          <CommandCard key={command.command} command={command} color={color} />
+        ))}
       </div>
-    </div>
+    </section>
   )
 }
 
-function CommandSection({ title, commands, defaultOpen = true }: { title: string; commands: Command[]; defaultOpen?: boolean }) {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-
-  return (
-    <div className="mb-6 sm:mb-8">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 mb-3 sm:mb-4 group w-full text-left"
-      >
-        {isOpen ? (
-          <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 group-hover:text-blue-600" />
-        ) : (
-          <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 group-hover:text-blue-600" />
-        )}
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{title}</h3>
-        <span className="text-xs sm:text-sm text-gray-400">({commands.length})</span>
-      </button>
-      {isOpen && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-          {commands.map((cmd) => (
-            <CommandCard key={cmd.cmd} command={cmd} />
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ===== PÁGINA PRINCIPAL =====
 export default function HomePage() {
-  const totalCommands = mainCommands.length + docCommands.length + designCommands.length +
-    qualityCommands.length + infraCommands.length + automationCommands.length +
-    planningCommands.length + integrationCommands.length + specialistCommands.length
+  const metrics = tutorialData.metrics
+
+  const categories = useMemo(
+    () => tutorialData.categories.filter((category) => category.count > 0),
+    []
+  )
+
+  const commandsByCategory = useMemo(() => {
+    const map = new Map<string, CommandEntry[]>()
+
+    for (const category of categories) {
+      map.set(
+        category.name,
+        category.commands.map((command) => ({
+          command: command.command,
+          title: command.title,
+          description: command.description,
+          category: category.name,
+        }))
+      )
+    }
+
+    return map
+  }, [categories])
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-12 sm:py-20 lg:py-28">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-6 sm:mb-8 flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-200 rounded-full blur-3xl opacity-30 scale-150"></div>
-              <Image
-                src="/logo.png"
-                alt="Empire"
-                width={180}
-                height={180}
-                className="relative h-32 w-32 sm:h-40 sm:w-40 lg:h-48 lg:w-48 mx-auto"
-                style={{ objectFit: 'contain' }}
-                priority
-              />
-            </div>
+      <section className="bg-gradient-to-b from-blue-50 to-white py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="mb-6 flex justify-center">
+            <Image src="/logo.png" alt="Empire" width={160} height={160} className="h-32 w-32 sm:h-36 sm:w-36" priority />
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
-            Empire Vibe Coding
-          </h1>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto">
-            Desenvolva software com IA sem saber programar
+          <h1 className="mb-3 text-4xl font-bold text-gray-900 sm:text-5xl">Empire Vibe Coding</h1>
+          <p className="mx-auto mb-4 max-w-2xl text-lg text-gray-600 sm:text-xl">
+            Desenvolvimento task-oriented com Claude Code, Agent Teams e dashboard local.
           </p>
-          <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8">
-            {totalCommands} comandos para transformar suas ideias em código
+          <p className="mb-6 text-sm text-gray-500">
+            {metrics.totalCommands} comandos ativos • {metrics.totalProtocols} protocolos ativos • tutorial sincronizado com a fonte oficial
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <a
-              href="#instalar"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold shadow-lg shadow-blue-500/25"
-            >
-              <Download className="h-5 w-5" />
-              Instalar Agora
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href="#instalar" className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
+              <Download className="mr-2 inline h-4 w-4" /> Instalar
             </a>
-            <a
-              href="/como-funciona"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 rounded-xl hover:bg-gray-50 transition-colors text-base sm:text-lg font-semibold border border-gray-200"
-            >
-              <HelpCircle className="h-5 w-5" />
-              Como Funciona
+            <a href="/como-funciona" className="rounded-xl border border-gray-200 bg-white px-6 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+              Como funciona
             </a>
             <a
               href="https://github.com/Empire-Business/empire-vibe-coding"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base font-medium"
+              className="px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900"
             >
-              <Github className="h-5 w-5" />
-              GitHub
+              <Github className="mr-2 inline h-4 w-4" /> GitHub
             </a>
           </div>
         </div>
       </section>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-        {/* ===== SEÇÃO 1: COMO INSTALAR ===== */}
-        <section id="instalar" className="mb-10 sm:mb-16">
-          {/* Aviso importante */}
-          <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-6">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 bg-amber-200 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-amber-700 font-bold text-xs">!</span>
-              </div>
-              <div>
-                <h4 className="font-bold text-amber-900 text-sm mb-1">Instalação por Projeto</h4>
-                <p className="text-amber-800 text-xs sm:text-sm">
-                  O Empire Vibe Coding se instala <strong>dentro de cada projeto</strong>, não no computador.
-                  Repita a instalação para cada projeto novo.
-                </p>
-              </div>
+      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <section id="instalar" className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Instalação padrão (runtime incluso)</h2>
+          <p className="mb-4 text-sm text-gray-600">
+            Instala documentação + runtime em <code>empire-dashboard/</code>. O dashboard roda em localhost e é somente consulta.
+          </p>
+          <div className="rounded-lg bg-gray-900 p-4">
+            <div className="mb-2 flex items-center justify-between text-xs text-gray-300">
+              <span>Comando de instalação</span>
+              <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
+            </div>
+            <code className="break-all text-sm text-white">
+              curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
+            </code>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg bg-blue-50 p-3 text-sm text-blue-900">
+              <p className="font-semibold">Abrir dashboard</p>
+              <p><code>npm run dashboard</code></p>
+              <p className="text-xs text-blue-800">fallback: <code>npm --prefix empire-dashboard run dashboard</code></p>
+            </div>
+            <div className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
+              <p className="font-semibold">Flags úteis</p>
+              <p><code>--docs-only</code> (sem runtime)</p>
+              <p><code>--refresh-runtime</code> (atualiza runtime)</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Download className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Como Instalar</h2>
-              <p className="text-gray-600 text-sm sm:text-base">Siga os passos abaixo</p>
-            </div>
-          </div>
-
-          {/* Passo a Passo COMPLETO */}
-          <div className="space-y-6">
-
-            {/* PASSO 1: O que você precisa ter instalado */}
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-5 sm:p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">O que você precisa ter instalado</h3>
-              </div>
-
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <h4 className="font-bold text-gray-900 mb-2">Claude Code</h4>
-                  <p className="text-gray-700 text-sm mb-3">
-                    É o programa onde você conversa com a IA da Anthropic. É gratuito.
-                  </p>
-                  <a
-                    href="https://docs.anthropic.com/claude-code"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                  >
-                    Baixar Claude Code
-                  </a>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <h4 className="font-bold text-gray-900 mb-2">VS Code (recomendado)</h4>
-                  <p className="text-gray-700 text-sm mb-3">
-                    Editor de código gratuito da Microsoft. O terminal dele facilita muito.
-                  </p>
-                  <a
-                    href="https://code.visualstudio.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors text-sm font-medium"
-                  >
-                    Baixar VS Code
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* PASSO 2: Crie uma pasta */}
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-5 sm:p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">Crie uma pasta para seu projeto</h3>
-              </div>
-
-              <p className="text-gray-700 text-sm mb-4">
-                Vai ser onde seu projeto vai ficar. Pode criar em qualquer lugar do seu computador.
-              </p>
-
-              <div className="space-y-4">
-                {/* Windows */}
-                <div className="p-4 bg-gray-900 rounded-xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded font-bold">WINDOWS</span>
-                  </div>
-                  <p className="text-gray-300 text-sm mb-3">
-                    Abra o VS Code, clique em <strong className="text-white">Terminal → New Terminal</strong> (ou aperte Ctrl+`) e digite:
-                  </p>
-                  <div className="bg-black rounded-lg p-3 font-mono text-sm overflow-x-auto">
-                    <code className="text-white">mkdir meu-projeto</code>
-                    <br />
-                    <code className="text-white">cd meu-projeto</code>
-                  </div>
-                </div>
-
-                {/* Mac */}
-                <div className="p-4 bg-gray-900 rounded-xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-gray-600 text-white text-xs px-2 py-1 rounded font-bold">MAC</span>
-                  </div>
-                  <p className="text-gray-300 text-sm mb-3">
-                    Abra o <strong className="text-white">Terminal</strong> (procure no Spotlight com Cmd+Space) e digite:
-                  </p>
-                  <div className="bg-black rounded-lg p-3 font-mono text-sm overflow-x-auto">
-                    <code className="text-white">mkdir meu-projeto</code>
-                    <br />
-                    <code className="text-white">cd meu-projeto</code>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* PASSO 3: Execute a instalação */}
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-5 sm:p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">Execute o comando de instalação</h3>
-              </div>
-
-              <p className="text-gray-700 text-sm mb-4">
-                Ainda no terminal, copie e cole este comando (clique no botão para copiar):
-              </p>
-
-              <div className="bg-gray-900 rounded-xl p-4 mb-4">
-                <div className="flex items-center justify-between gap-3 mb-3">
-                  <span className="text-gray-400 text-sm">Cole isso no terminal e aperte Enter:</span>
-                  <CopyButton text="curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash" dark />
-                </div>
-                <div className="bg-black rounded-lg p-3 font-mono text-xs sm:text-sm overflow-x-auto">
-                  <code className="text-white break-all">
-                    curl -fsSL https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main/install.sh | bash
-                  </code>
-                </div>
-              </div>
-
-              <div className="p-4 bg-gray-100 rounded-xl">
-                <h4 className="font-bold text-gray-900 mb-2">O que vai acontecer?</h4>
-                <ul className="text-gray-700 text-sm space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">•</span>
-                    <span>O comando baixa os arquivos do Empire Vibe Coding da internet</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">•</span>
-                    <span>Cria as pastas <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">vibe-coding/</code> e <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">docs/</code></span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">•</span>
-                    <span>Cria o arquivo <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code> que ensina a IA</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">•</span>
-                    <span>Quando aparecer <strong className="text-green-700">&quot;INSTALAÇÃO CONCLUÍDA!&quot;</strong> está pronto</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* PASSO 4: Abra o Claude Code */}
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-5 sm:p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">Abra o Claude Code</h3>
-              </div>
-
-              <p className="text-gray-700 text-sm mb-4">
-                No mesmo terminal (na pasta do projeto), digite:
-              </p>
-
-              <div className="bg-gray-900 rounded-xl p-4 mb-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="bg-black rounded-lg p-3 font-mono text-sm flex-1">
-                    <code className="text-white">claude</code>
-                  </div>
-                  <CopyButton text="claude" dark />
-                </div>
-              </div>
-
-              <p className="text-gray-700 text-sm">
-                Isso abre o Claude Code. Ele vai ler o arquivo <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code> automaticamente.
-              </p>
-            </div>
-
-            {/* PASSO 5: Comece! */}
-            <div className="bg-blue-600 rounded-2xl p-5 sm:p-6 text-white">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
-                <h3 className="text-lg sm:text-xl font-bold">Comece seu projeto!</h3>
-              </div>
-
-              <p className="text-blue-50 text-sm mb-4">
-                Agora é só digitar o comando mágico e descrever sua ideia:
-              </p>
-
-              <div className="bg-white/10 rounded-xl p-4 font-mono text-sm mb-4">
-                <code className="text-yellow-300 text-lg">*começar</code>
-              </div>
-
-              <p className="text-blue-50 text-sm">
-                Exemplo: <span className="text-white font-medium">&quot;Quero criar um app de tarefas para organizar meu dia a dia&quot;</span>
-              </p>
-
-              <p className="text-blue-100 text-sm mt-4">
-                O Claude vai explicar os próximos passos: digite *PRD para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
-              </p>
-            </div>
-
+          <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+            Agent Teams é garantido em <code>.claude/settings.local.json</code> com
+            <code> CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>.
           </div>
         </section>
 
-        {/* ===== SEÇÃO 2: COMO USAR OS COMANDOS ===== */}
+        <section className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900">Fluxo recomendado</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-lg bg-gray-100 p-3">
+              <code className="font-bold text-blue-700">*começar</code>
+              <p className="mt-1 text-sm text-gray-600">Abre tutorial interativo e direciona o próximo passo.</p>
+            </div>
+            <div className="rounded-lg bg-gray-100 p-3">
+              <code className="font-bold text-blue-700">*agentes</code>
+              <p className="mt-1 text-sm text-gray-600">Ativa líder PM + especialistas para tarefas complexas.</p>
+            </div>
+            <div className="rounded-lg bg-gray-100 p-3">
+              <code className="font-bold text-blue-700">*dashboard</code>
+              <p className="mt-1 text-sm text-gray-600">Acompanha execução no dashboard local (read-only).</p>
+            </div>
+          </div>
+        </section>
+
         <section>
-          <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Terminal className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-            </div>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Como Usar os Comandos</h2>
-              <p className="text-gray-600 text-sm sm:text-base">Digite os comandos * no Claude Code</p>
-            </div>
-          </div>
-
-          {/* Quick Start */}
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-4 sm:p-6 text-white mb-6 sm:mb-8">
-            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-              <Rocket className="h-5 w-5 sm:h-6 sm:w-6" />
-              <h3 className="text-lg sm:text-xl font-bold">Para começar um projeto do zero</h3>
-            </div>
-            <p className="text-blue-100 mb-2 sm:mb-3 text-xs sm:text-sm">
-              Digite isso no Claude Code e descreva sua ideia:
-            </p>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-3 sm:p-4 font-mono text-lg sm:text-xl">
-              *começar
-            </div>
-            <p className="text-blue-200 mt-2 sm:mt-3 text-xs sm:text-sm">
-              O Claude vai explicar os próximos passos: digite *prd para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Comandos (fonte oficial)</h2>
+            <p className="text-sm text-gray-600">
+              As seções abaixo são renderizadas a partir de <code>vibe-coding/COMANDOS.md</code> via arquivo gerado.
             </p>
           </div>
 
-          {/* Comandos Principais */}
-          <CommandSection title="Comandos Principais" commands={mainCommands} />
-
-          {/* Comandos de Documentação */}
-          <CommandSection title="Comandos de Documentação" commands={docCommands} />
-
-          {/* Comandos de Design & UX */}
-          <CommandSection title="Design & UX" commands={designCommands} />
-
-          {/* Comandos de Qualidade */}
-          <CommandSection title="Qualidade" commands={qualityCommands} defaultOpen={true} />
-
-          {/* Comandos de Infra & Banco */}
-          <CommandSection title="Infra & Banco" commands={infraCommands} />
-
-          {/* Comandos de Automação */}
-          <CommandSection title="Automação" commands={automationCommands} />
-
-          {/* Comandos de Planejamento */}
-          <CommandSection title="Planejamento" commands={planningCommands} />
-
-          {/* Comandos de Integração */}
-          <CommandSection title="Integração" commands={integrationCommands} />
-
-          {/* Comandos de Especialistas */}
-          <CommandSection title="Especialistas" commands={specialistCommands} />
-
-          {/* Fluxo Recomendado */}
-          <div className="mt-6 sm:mt-8 bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Fluxo Recomendado</h3>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
-              {[
-                { cmd: '*começar', desc: 'Tutorial' },
-                { cmd: '*desenvolver', desc: 'Criar' },
-                { cmd: '*seguranca', desc: 'Verificar' },
-                { cmd: '*garantir', desc: 'Aprovar' },
-                { cmd: '*mudança', desc: 'Documentar' },
-                { cmd: '*lançar', desc: 'Publicar' },
-              ].map((item, i) => (
-                <div key={item.cmd} className="text-center">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs sm:text-sm mx-auto mb-1.5 sm:mb-2">
-                    {i + 1}
-                  </div>
-                  <code className="text-[10px] sm:text-sm font-bold text-blue-600 block">{item.cmd}</code>
-                  <span className="text-[10px] sm:text-xs text-gray-500">{item.desc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Dicas */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 sm:p-5">
-              <h4 className="font-semibold text-blue-900 mb-1.5 sm:mb-2 text-sm sm:text-base">Comandos + Contexto</h4>
-              <p className="text-blue-700 text-xs sm:text-sm mb-2">
-                Adicione contexto após o comando:
-              </p>
-              <code className="block text-xs sm:text-sm bg-blue-100 p-2 sm:p-3 rounded text-blue-800">
-                *bug O login parou de funcionar
-              </code>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
-              <h4 className="font-semibold text-amber-900 mb-1.5 sm:mb-2 text-sm sm:text-base">Precisa de ajuda?</h4>
-              <p className="text-amber-700 text-xs sm:text-sm mb-2">
-                Digite para ver todos os comandos:
-              </p>
-              <code className="block text-sm sm:text-lg bg-amber-100 p-2 sm:p-3 rounded text-amber-800 font-bold">
-                *ajuda
-              </code>
-            </div>
-          </div>
-
-          {/* Orquestrador */}
-          <div className="mt-6 sm:mt-8 bg-gradient-to-r from-violet-500 to-purple-600 rounded-2xl p-4 sm:p-6 text-white">
-            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-              <Layers className="h-5 w-5 sm:h-6 sm:w-6" />
-              <h3 className="text-lg sm:text-xl font-bold">Não sabe qual comando usar?</h3>
-            </div>
-            <p className="text-violet-100 mb-2 sm:mb-3 text-xs sm:text-sm">
-              O comando <code className="bg-white/20 px-1.5 sm:px-2 py-0.5 rounded">*orquestrar</code> analisa seu problema e sugere a sequência ideal.
-            </p>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-3 sm:p-4 font-mono text-sm sm:text-base">
-              *orquestrar Meu app está lento e não sei por quê
-            </div>
-          </div>
+          {categories.map((category, index) => {
+            const commands = commandsByCategory.get(category.name) || []
+            return (
+              <CommandSection
+                key={category.key}
+                title={`${category.name}`}
+                commands={commands}
+                color={palette[index % palette.length]}
+              />
+            )
+          })}
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white mt-10 sm:mt-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Image
-                src="/logo.png"
-                alt="Empire"
-                width={32}
-                height={32}
-                className="h-7 w-7 sm:h-8 sm:w-8"
-                style={{ objectFit: 'contain' }}
-              />
-              <p className="text-gray-500 text-xs sm:text-sm">
-                Empire Vibe Coding - {totalCommands} comandos para desenvolver software com IA
-              </p>
-            </div>
-            <a
-              href="https://github.com/Empire-Business/empire-vibe-coding"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 sm:gap-2 text-gray-600 hover:text-gray-900 text-xs sm:text-sm"
-            >
-              <Github className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              Ver no GitHub
-            </a>
-          </div>
+      <footer className="border-t border-gray-200 bg-white">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-6 sm:px-6 lg:px-8">
+          <p className="text-xs text-gray-500">Empire Vibe Coding - {metrics.totalCommands} comandos sincronizados</p>
+          <a
+            href="https://github.com/Empire-Business/empire-vibe-coding"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-600 hover:text-gray-900"
+          >
+            Ver no GitHub
+          </a>
         </div>
       </footer>
     </div>

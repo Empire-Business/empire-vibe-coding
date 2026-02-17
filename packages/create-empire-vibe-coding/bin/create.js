@@ -30,6 +30,9 @@ console.log(banner)
 // GitHub raw URL
 const GITHUB_RAW = process.env.EMPIRE_VIBE_CODING_GITHUB_RAW || 'https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main'
 const AGENT_TEAMS_ENV_KEY = 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'
+const RUNTIME_DIR = 'empire-dashboard'
+const RUNTIME_MANIFEST_PATH = 'installer/runtime-files.manifest.txt'
+const RUNTIME_DASHBOARD_SCRIPT = `npm --prefix ${RUNTIME_DIR} run dashboard`
 
 function ensureAgentTeamsEnv(settingsPath) {
   if (!existsSync(settingsPath)) return false
@@ -76,6 +79,98 @@ function ensureLocalSettingsFile(targetDir) {
   ensureAgentTeamsEnv(settingsLocalPath)
 }
 
+function ensureDashboardScriptInPackageJson(targetDir) {
+  const packageJsonPath = join(targetDir, 'package.json')
+
+  if (!existsSync(packageJsonPath)) {
+    const packageJson = {
+      name: 'empire-vibe-project',
+      private: true,
+      scripts: {
+        dashboard: RUNTIME_DASHBOARD_SCRIPT,
+      },
+    }
+    writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`)
+    return 'created'
+  }
+
+  try {
+    const current = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+    if (!current || typeof current !== 'object' || Array.isArray(current)) {
+      return 'invalid'
+    }
+
+    if (!current.scripts || typeof current.scripts !== 'object' || Array.isArray(current.scripts)) {
+      current.scripts = {}
+    }
+
+    if (Object.prototype.hasOwnProperty.call(current.scripts, 'dashboard')) {
+      return 'exists'
+    }
+
+    current.scripts.dashboard = RUNTIME_DASHBOARD_SCRIPT
+    writeFileSync(packageJsonPath, `${JSON.stringify(current, null, 2)}\n`)
+    return 'added'
+  } catch {
+    return 'invalid'
+  }
+}
+
+async function installRuntimeDashboard(targetDir, options) {
+  if (options.docsOnly) {
+    return { status: 'skipped', downloaded: 0, failed: 0 }
+  }
+
+  const runtimeDir = join(targetDir, RUNTIME_DIR)
+  const runtimeExists = existsSync(runtimeDir)
+
+  if (runtimeExists && !options.refreshRuntime) {
+    return { status: 'exists', downloaded: 0, failed: 0 }
+  }
+
+  if (!runtimeExists) {
+    mkdirSync(runtimeDir, { recursive: true })
+  }
+
+  const manifestUrl = `${GITHUB_RAW}/${RUNTIME_MANIFEST_PATH}`
+  const manifestResponse = await fetch(manifestUrl)
+  if (!manifestResponse.ok) {
+    throw new Error(`Falha ao baixar manifesto do runtime (${manifestResponse.status})`)
+  }
+
+  const manifestContent = await manifestResponse.text()
+  const runtimeFiles = manifestContent
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#') && line.startsWith('web/'))
+
+  let downloaded = 0
+  let failed = 0
+
+  for (const remote of runtimeFiles) {
+    const relative = remote.replace(/^web\//, '')
+    const destination = join(runtimeDir, relative)
+    const destinationDir = dirname(destination)
+
+    if (!existsSync(destinationDir)) {
+      mkdirSync(destinationDir, { recursive: true })
+    }
+
+    const ok = await downloadFile(`${GITHUB_RAW}/${remote}`, destination)
+    if (ok) {
+      downloaded++
+    } else {
+      failed++
+    }
+  }
+
+  return {
+    status: runtimeExists ? 'refreshed' : 'installed',
+    downloaded,
+    failed,
+  }
+}
+
 // Arquivos para baixar
 const FILES_TO_DOWNLOAD = {
   // Pasta vibe-coding
@@ -109,8 +204,11 @@ const FILES_TO_DOWNLOAD = {
   'vibe-coding/PROTOCOLOS/18-PRD.md': 'vibe-coding/PROTOCOLOS/18-PRD.md',
   'vibe-coding/PROTOCOLOS/19-API.md': 'vibe-coding/PROTOCOLOS/19-API.md',
   'vibe-coding/PROTOCOLOS/20-AGENTES.md': 'vibe-coding/PROTOCOLOS/20-AGENTES.md',
+  'vibe-coding/PROTOCOLOS/21-ROADMAP.md': 'vibe-coding/PROTOCOLOS/21-ROADMAP.md',
+  'vibe-coding/PROTOCOLOS/22-ARQUITETURA.md': 'vibe-coding/PROTOCOLOS/22-ARQUITETURA.md',
 
   // Claude configuration
+  '.claude/settings.json': '.claude/settings.json',
   '.claude/custom_instructions.md': '.claude/custom_instructions.md',
 
   // Squads
@@ -587,9 +685,18 @@ async function downloadFile(url, dest) {
 
 // Função principal
 async function main() {
-  const pathArg = process.argv[2] && !process.argv[2].startsWith('-')
-    ? process.argv[2]
-    : '.'
+  const args = process.argv.slice(2)
+  const docsOnly = args.includes('--docs-only')
+  const refreshRuntime = args.includes('--refresh-runtime')
+
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log('Uso: create-empire-vibe-coding [caminho] [--docs-only] [--refresh-runtime]')
+    console.log('  --docs-only        Instala apenas docs/instruções (sem runtime local)')
+    console.log('  --refresh-runtime  Atualiza arquivos de runtime em empire-dashboard/')
+    process.exit(0)
+  }
+
+  const pathArg = args.find((arg) => !arg.startsWith('-')) || '.'
 
   // Perguntar onde instalar
   const response = await prompts({
@@ -671,14 +778,32 @@ async function main() {
         mkdirSync(parentDir, { recursive: true })
       }
 
+      // CLAUDE.md é sincronizado a partir do arquivo oficial baixado
+      if (file === 'CLAUDE.md') {
+        continue
+      }
+
       // Só criar se não existir
       if (!existsSync(dest)) {
         writeFileSync(dest, content)
       }
     }
 
+    const officialClaudeInstructions = join(targetDir, 'vibe-coding', 'CLAUDE-INSTRUCTIONS.md')
+    const rootClaudePath = join(targetDir, 'CLAUDE.md')
+    if (!existsSync(rootClaudePath) && existsSync(officialClaudeInstructions)) {
+      writeFileSync(rootClaudePath, readFileSync(officialClaudeInstructions, 'utf8'))
+    }
+
     spinner.text = 'Configurando Agent Teams...'
     ensureLocalSettingsFile(targetDir)
+
+    spinner.text = `Configurando runtime local (${RUNTIME_DIR})...`
+    const runtimeResult = await installRuntimeDashboard(targetDir, { docsOnly, refreshRuntime })
+    const packageScriptStatus =
+      runtimeResult.status === 'skipped'
+        ? 'skipped'
+        : ensureDashboardScriptInPackageJson(targetDir)
 
     spinner.succeed('Instalação concluída!')
 
@@ -689,6 +814,28 @@ async function main() {
     console.log('')
     console.log(`${green('✓')} ${downloaded} arquivos baixados`)
     console.log(`${green('✓')} .claude/settings.local.json com Agent Teams habilitado`)
+    if (runtimeResult.status === 'installed' || runtimeResult.status === 'refreshed') {
+      console.log(`${green('✓')} Runtime task-oriented em ${RUNTIME_DIR}/ (${runtimeResult.downloaded} arquivos)`)
+      if (runtimeResult.failed > 0) {
+        console.log(`${yellow('⚠')} ${runtimeResult.failed} arquivos de runtime falharam (tente --refresh-runtime)`)
+      }
+    } else if (runtimeResult.status === 'exists') {
+      console.log(`${yellow('⚠')} Runtime já existia em ${RUNTIME_DIR}/ (mantido)`)
+    } else if (runtimeResult.status === 'skipped') {
+      console.log(`${yellow('⚠')} Runtime pulado (--docs-only)`)
+    }
+
+    if (packageScriptStatus === 'created') {
+      console.log(`${green('✓')} package.json criado com script dashboard`)
+    } else if (packageScriptStatus === 'added') {
+      console.log(`${green('✓')} Script dashboard adicionado ao package.json`)
+    } else if (packageScriptStatus === 'exists') {
+      console.log(`${yellow('⚠')} package.json já possui script dashboard (mantido)`)
+    } else if (packageScriptStatus === 'skipped') {
+      console.log(`${yellow('⚠')} Script dashboard pulado (--docs-only)`)
+    } else {
+      console.log(`${yellow('⚠')} Não foi possível garantir script dashboard no package.json`)
+    }
     if (failed > 0) {
       console.log(`${yellow('⚠')} ${failed} arquivos falharam (verifique sua conexão)`)
     }
@@ -699,7 +846,13 @@ async function main() {
     console.log('  1. Abra o terminal na pasta do projeto')
     console.log('  2. Digite: claude')
     console.log('  3. Digite: *começar')
-    console.log('  4. Descreva sua ideia!')
+    if (!docsOnly) {
+      console.log(`  4. Para dashboard local: npm run dashboard`)
+      console.log(`     (fallback: ${RUNTIME_DASHBOARD_SCRIPT})`)
+      console.log('  5. Descreva sua ideia!')
+    } else {
+      console.log('  4. Descreva sua ideia!')
+    }
     console.log('')
     console.log(yellow('⚠ IMPORTANTE: Toda mudança deve ser documentada em docs/'))
     console.log('')

@@ -120,13 +120,14 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | `*banco` | Saúde do banco | Leia `vibe-coding/PROTOCOLOS/11-BANCO.md`, execute queries de diagnóstico |
 | `*supabase` | Configurar Supabase | Leia `vibe-coding/PROTOCOLOS/12-SUPABASE.md`, configure CLI/MCP/RLS |
 
-#### COMANDOS DE AUTOMAÇÃO (3)
+#### COMANDOS DE AUTOMAÇÃO (4)
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
 | `*workflow` | Criar workflows | Leia `vibe-coding/PROTOCOLOS/13-WORKFLOW.md`, configure CI/CD, automações |
 | `*orquestrar` | Orquestrar comandos | Leia `vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md`, combine múltiplos comandos |
 | `*tarefas` | Gerenciar tarefas | Leia `vibe-coding/PROTOCOLOS/15-TAREFAS.md`, use Task tool |
+| `*dashboard` | Dashboard local | Abra monitor local em localhost (somente consulta/read-only) |
 
 #### COMANDOS DE PLANEJAMENTO (3)
 
@@ -185,6 +186,18 @@ COMPORTAMENTO OBRIGATÓRIO:
 6. NÃO implementar código
 
 PROIBIDO: Implementar código durante *prd
+```
+
+### `*dashboard` - Dashboard local (consulta)
+
+```
+COMPORTAMENTO OBRIGATÓRIO:
+
+1. INFORMAR que o dashboard é local (localhost)
+2. INFORMAR que é modo read-only (sem mutações)
+3. DIRECIONAR para comando local:
+   npm run dashboard
+   fallback: npm --prefix empire-dashboard run dashboard
 ```
 
 ### `*agentes` - Agent Teams
@@ -329,6 +342,7 @@ Consulte `vibe-coding/COMUNICACAO.md` para regras completas.
 
 | Agente | Especialidade | Arquivo |
 |--------|---------------|---------|
+| PM | Liderança e orquestração | squads/PM.md |
 | ARCHITECT | Arquitetura de software | squads/ARCHITECT.md |
 | DEVELOPER | Desenvolvimento | squads/DEVELOPER.md |
 | REVIEWER | Code review | squads/REVIEWER.md |
@@ -341,14 +355,14 @@ Consulte `vibe-coding/COMUNICACAO.md` para regras completas.
 
 | Squad | Ordem | Quando Usar |
 |-------|-------|-------------|
-| Feature Squad | ARCHITECT → DEVELOPER → REVIEWER → QA | Features novas |
-| Bug Squad | DEVELOPER → QA → SECURITY (se crítico) | Correções |
-| Performance Squad | DATA → DEVELOPER → QA | Otimizações |
-| Security Squad | SECURITY → DEVELOPER → REVIEWER | Auditorias |
-| Design Squad | DESIGNER → DEVELOPER → QA | UI/UX |
+| Feature Squad | PM → ARCHITECT → DEVELOPER → REVIEWER → QA | Features novas |
+| Bug Squad | PM → DEVELOPER → QA → SECURITY (se crítico) | Correções |
+| Performance Squad | PM → DATA → DEVELOPER → QA | Otimizações |
+| Security Squad | PM → SECURITY → DEVELOPER → REVIEWER | Auditorias |
+| Design Squad | PM → DESIGNER → DEVELOPER → QA | UI/UX |
 
 ═══════════════════════════════════════════════════════════════════════════════
-### RESUMO DOS 30 COMANDOS
+### RESUMO DOS 32 COMANDOS
 ═══════════════════════════════════════════════════════════════════════════════
 
 | Categoria | Comandos |
@@ -358,10 +372,11 @@ Consulte `vibe-coding/COMUNICACAO.md` para regras completas.
 | Design & UX (2) | design, ux |
 | Qualidade (4) | seguranca, qualidade, garantir, revisar |
 | Infra & Banco (2) | banco, supabase |
-| Automação (3) | workflow, orquestrar, tarefas |
+| Automação (4) | workflow, orquestrar, tarefas, dashboard |
 | Planejamento (3) | planejar, especificar, prd |
 | Integração (1) | api |
 | Especialistas (3) | nerd, agentes, melhorar |
+| Ajuda (1) | ajuda |
 
 ═══════════════════════════════════════════════════════════════════════════════
 ### INÍCIO RÁPIDO

@@ -2,6 +2,8 @@
  * Funções para ler e parsear documentos markdown
  */
 
+import tutorialData from '@/data/tutorial.generated.json'
+
 export interface DocSection {
   id: string
   title: string
@@ -257,51 +259,11 @@ export function extractErrorGuides(content: string): ErrorGuide[] {
 }
 
 /**
- * Lista de seções de protocolos disponíveis
+ * Catálogo sincronizado de protocolos disponíveis
+ * Fonte: scripts/generate-web-tutorial-data.mjs
  */
-export const PROTOCOL_SECTIONS = [
-  { id: 'iniciar', title: 'Iniciar Projeto', path: '00-COMEÇAR.md' },
-  { id: 'desenvolver', title: 'Desenvolvimento', path: '01-DESENVOLVER.md' },
-  { id: 'bugs', title: 'Correção de Bugs', path: '02-BUGS.md' },
-  { id: 'melhorar', title: 'Melhorar Código', path: '03-MELHORAR.md' },
-  { id: 'manutencao', title: 'Manutenção', path: '04-MANUTENCAO.md' },
-  { id: 'lancar', title: 'Lançar Projeto', path: '05-LANCAR.md' },
-]
-
-/**
- * Lista de seções de arquitetura disponíveis
- */
-export const ARCHITECTURE_SECTIONS = [
-  { id: 'structure', title: 'Estrutura de Projeto', path: '01-projeto-estrutura.md' },
-  { id: 'database', title: 'Schema de Banco de Dados', path: '02-database-schema.md' },
-  { id: 'rls', title: 'Políticas RLS', path: '03-rls-policies.md' },
-  { id: 'state', title: 'Gerenciamento de Estado', path: '04-state-management.md' },
-]
-
-/**
- * Lista de seções de design disponíveis
- */
-export const DESIGN_SECTIONS = [
-  { id: 'tokens', title: 'Design Tokens', path: '01-design-tokens.md' },
-  { id: 'components', title: 'Biblioteca de Componentes', path: '02-component-library.md' },
-  { id: 'skeletons', title: 'Skeleton Loaders', path: '03-skeleton-loaders.md' },
-  { id: 'accessibility', title: 'Acessibilidade', path: '04-accessibility.md' },
-]
-
-/**
- * Lista de seções de segurança disponíveis
- */
-export const SECURITY_SECTIONS = [
-  { id: 'frontend', title: 'Segurança Frontend', path: '01-seguranca-front.md' },
-  { id: 'backend', title: 'Segurança Backend', path: '02-seguranca-back.md' },
-  { id: 'dependencies', title: 'Auditoria de Dependências', path: '03-dependencies-audit.md' },
-]
-
-/**
- * Lista de seções de qualidade disponíveis
- */
-export const QUALITY_SECTIONS = [
-  { id: 'typescript', title: 'TypeScript Strict', path: '01-typescript-strict.md' },
-  { id: 'testing', title: 'Padrões de Testing', path: '02-testing-patterns.md' },
-  { id: 'cicd', title: 'Checklist CI/CD', path: '03-ci-cd-checklist.md' },
-]
+export const PROTOCOL_SECTIONS = tutorialData.protocols.map((protocol) => ({
+  id: protocol.id.toLowerCase(),
+  title: protocol.id,
+  path: protocol.file,
+}))

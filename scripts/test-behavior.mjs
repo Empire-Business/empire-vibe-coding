@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdtempSync, rmSync, readFileSync, createReadStream, statSync } from 'node:fs';
+import {
+  mkdtempSync,
+  rmSync,
+  readFileSync,
+  createReadStream,
+  statSync,
+  existsSync,
+  mkdirSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, normalize, resolve, sep } from 'node:path';
 import http from 'node:http';
@@ -8,6 +17,8 @@ import http from 'node:http';
 const REPO_ROOT = process.cwd();
 const INSTALL_SH = join(REPO_ROOT, 'install.sh');
 const CREATE_CLI = join(REPO_ROOT, 'packages', 'create-empire-vibe-coding', 'bin', 'create.js');
+const DASHBOARD_DIR = 'empire-dashboard';
+const DASHBOARD_SCRIPT = `npm --prefix ${DASHBOARD_DIR} run dashboard`;
 
 function runCommand(command, args, options = {}) {
   return new Promise((resolvePromise, rejectPromise) => {
@@ -109,21 +120,50 @@ async function waitForUrl(url, timeoutMs = 90000) {
   throw new Error(`Timeout waiting for ${url}`);
 }
 
+function assertAgentTeamsEnabled(settingsFile) {
+  const json = JSON.parse(readFileSync(settingsFile, 'utf8'));
+  assert.equal(json?.env?.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS, '1');
+}
+
+function assertDashboardRuntimeInstalled(projectDir) {
+  const runtimePackage = join(projectDir, DASHBOARD_DIR, 'package.json');
+  assert.equal(existsSync(runtimePackage), true, `${runtimePackage} should exist`);
+}
+
+function assertDashboardRuntimeNotInstalled(projectDir) {
+  const runtimePackage = join(projectDir, DASHBOARD_DIR, 'package.json');
+  assert.equal(existsSync(runtimePackage), false, `${runtimePackage} should not exist`);
+}
+
+function assertDashboardScriptInRootPackage(projectDir) {
+  const packagePath = join(projectDir, 'package.json');
+  assert.equal(existsSync(packagePath), true, 'root package.json should exist');
+
+  const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+  assert.equal(packageJson?.scripts?.dashboard, DASHBOARD_SCRIPT);
+}
+
+function assertDashboardScriptNotAdded(projectDir) {
+  const packagePath = join(projectDir, 'package.json');
+  if (!existsSync(packagePath)) {
+    return;
+  }
+
+  const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+  assert.equal(packageJson?.scripts?.dashboard, undefined);
+}
+
 async function testDashboardReadOnly() {
   const port = 3131;
-  const child = spawn(
-    'npm',
-    ['run', 'dev', '--', '-p', `${port}`],
-    {
-      cwd: join(REPO_ROOT, 'web'),
-      env: {
-        ...process.env,
-        DASHBOARD_MODE: 'true',
-        DASHBOARD_READ_ONLY: 'false',
-      },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    }
-  );
+  const child = spawn('npm', ['run', 'dev', '--', '-p', `${port}`], {
+    cwd: join(REPO_ROOT, 'web'),
+    env: {
+      ...process.env,
+      DASHBOARD_MODE: 'true',
+      DASHBOARD_READ_ONLY: 'false',
+    },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 
   let output = '';
   child.stdout.on('data', (chunk) => {
@@ -184,15 +224,14 @@ async function testDashboardReadOnly() {
   }
 }
 
-function assertAgentTeamsEnabled(settingsFile) {
-  const json = JSON.parse(readFileSync(settingsFile, 'utf8'));
-  assert.equal(json?.env?.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS, '1');
+async function testTutorialDataSync() {
+  await runCommand('node', ['./scripts/generate-web-tutorial-data.mjs', '--check']);
 }
 
-async function testInstallersSettings() {
-  const { server, baseUrl } = await startLocalFileServer(REPO_ROOT);
+async function testInstallScript(baseUrl) {
   const installDir = mkdtempSync(join(tmpdir(), 'empire-install-'));
-  const createDir = mkdtempSync(join(tmpdir(), 'empire-create-'));
+  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-install-web-conflict-'));
+  const docsOnlyDir = mkdtempSync(join(tmpdir(), 'empire-install-docs-only-'));
 
   try {
     await runCommand('bash', [INSTALL_SH, '--no-claude'], {
@@ -203,7 +242,45 @@ async function testInstallersSettings() {
     });
 
     assertAgentTeamsEnabled(join(installDir, '.claude', 'settings.local.json'));
+    assertDashboardRuntimeInstalled(installDir);
+    assertDashboardScriptInRootPackage(installDir);
 
+    mkdirSync(join(noConflictDir, 'web'), { recursive: true });
+    const sentinelPath = join(noConflictDir, 'web', 'do-not-touch.txt');
+    writeFileSync(sentinelPath, 'keep-web-folder-intact\n');
+
+    await runCommand('bash', [INSTALL_SH, '--no-claude'], {
+      cwd: noConflictDir,
+      env: {
+        EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
+      },
+    });
+
+    assert.equal(readFileSync(sentinelPath, 'utf8'), 'keep-web-folder-intact\n');
+    assertDashboardRuntimeInstalled(noConflictDir);
+
+    await runCommand('bash', [INSTALL_SH, '--no-claude', '--docs-only'], {
+      cwd: docsOnlyDir,
+      env: {
+        EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
+      },
+    });
+
+    assertDashboardRuntimeNotInstalled(docsOnlyDir);
+    assertDashboardScriptNotAdded(docsOnlyDir);
+  } finally {
+    rmSync(installDir, { recursive: true, force: true });
+    rmSync(noConflictDir, { recursive: true, force: true });
+    rmSync(docsOnlyDir, { recursive: true, force: true });
+  }
+}
+
+async function testCreateCli(baseUrl) {
+  const createDir = mkdtempSync(join(tmpdir(), 'empire-create-'));
+  const noConflictDir = mkdtempSync(join(tmpdir(), 'empire-create-web-conflict-'));
+  const docsOnlyDir = mkdtempSync(join(tmpdir(), 'empire-create-docs-only-'));
+
+  try {
     await runCommand('node', [CREATE_CLI, '.'], {
       cwd: createDir,
       env: {
@@ -213,16 +290,56 @@ async function testInstallersSettings() {
     });
 
     assertAgentTeamsEnabled(join(createDir, '.claude', 'settings.local.json'));
+    assertDashboardRuntimeInstalled(createDir);
+    assertDashboardScriptInRootPackage(createDir);
+
+    mkdirSync(join(noConflictDir, 'web'), { recursive: true });
+    const sentinelPath = join(noConflictDir, 'web', 'do-not-touch.txt');
+    writeFileSync(sentinelPath, 'keep-web-folder-intact\n');
+
+    await runCommand('node', [CREATE_CLI, '.'], {
+      cwd: noConflictDir,
+      env: {
+        EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
+      },
+      stdin: '\n',
+    });
+
+    assert.equal(readFileSync(sentinelPath, 'utf8'), 'keep-web-folder-intact\n');
+    assertDashboardRuntimeInstalled(noConflictDir);
+
+    await runCommand('node', [CREATE_CLI, '.', '--docs-only'], {
+      cwd: docsOnlyDir,
+      env: {
+        EMPIRE_VIBE_CODING_GITHUB_RAW: baseUrl,
+      },
+      stdin: '\n',
+    });
+
+    assertDashboardRuntimeNotInstalled(docsOnlyDir);
+    assertDashboardScriptNotAdded(docsOnlyDir);
+  } finally {
+    rmSync(createDir, { recursive: true, force: true });
+    rmSync(noConflictDir, { recursive: true, force: true });
+    rmSync(docsOnlyDir, { recursive: true, force: true });
+  }
+}
+
+async function testInstallersParityAndSettings() {
+  const { server, baseUrl } = await startLocalFileServer(REPO_ROOT);
+
+  try {
+    await testInstallScript(baseUrl);
+    await testCreateCli(baseUrl);
   } finally {
     server.close();
-    rmSync(installDir, { recursive: true, force: true });
-    rmSync(createDir, { recursive: true, force: true });
   }
 }
 
 async function main() {
+  await testTutorialDataSync();
   await testDashboardReadOnly();
-  await testInstallersSettings();
+  await testInstallersParityAndSettings();
   console.log('Behavior checks passed');
 }
 

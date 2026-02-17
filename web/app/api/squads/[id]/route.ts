@@ -7,6 +7,9 @@ import { squadOrchestrator, taskOrchestrator, groupTasksByLevel } from '@/lib/or
 import { squadDb } from '@/lib/db';
 import { isDashboardReadOnly, getReadOnlyErrorMessage } from '@/lib/dashboard-access';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 interface RouteParams {
   params: {
     id: string;

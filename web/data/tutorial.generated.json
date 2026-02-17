@@ -1,0 +1,535 @@
+{
+  "source": {
+    "commands": "vibe-coding/COMANDOS.md",
+    "protocolsDir": "vibe-coding/PROTOCOLOS"
+  },
+  "metrics": {
+    "totalCommands": 32,
+    "totalProtocols": 24,
+    "totalCategories": 10
+  },
+  "categories": [
+    {
+      "key": "principais",
+      "name": "Principais",
+      "count": 7,
+      "commands": [
+        {
+          "command": "*começar",
+          "title": "Iniciar projeto",
+          "description": "Tutorial interativo: mostra menu, espera resposta e direciona"
+        },
+        {
+          "command": "*desenvolver",
+          "title": "Modo desenvolvimento",
+          "description": "Ativa protocolo de desenvolvimento"
+        },
+        {
+          "command": "*bug",
+          "title": "Reportar problema",
+          "description": "Ativa protocolo de correção de bugs"
+        },
+        {
+          "command": "*erro",
+          "title": "Resolver erro",
+          "description": "Ajuda guiada para erros de terminal/navegador"
+        },
+        {
+          "command": "*termo",
+          "title": "Explicar termo",
+          "description": "Explica termo técnico com linguagem simples"
+        },
+        {
+          "command": "*comando",
+          "title": "Verificar comando",
+          "description": "Checa risco antes de executar comandos"
+        },
+        {
+          "command": "*lançar",
+          "title": "Preparar lançamento",
+          "description": "Executa checklist pré-publicação"
+        }
+      ]
+    },
+    {
+      "key": "documentacao",
+      "name": "Documentação",
+      "count": 5,
+      "commands": [
+        {
+          "command": "*roadmap",
+          "title": "Ver/atualizar roadmap",
+          "description": "Atualiza `docs/ROADMAP.md`"
+        },
+        {
+          "command": "*decisão",
+          "title": "Registrar decisão",
+          "description": "Atualiza `docs/DECISOES.md`"
+        },
+        {
+          "command": "*mudança",
+          "title": "Registrar mudança",
+          "description": "Atualiza `docs/MUDANCAS.md`"
+        },
+        {
+          "command": "*arquitetura",
+          "title": "Atualizar arquitetura",
+          "description": "Atualiza `docs/ARQUITETURA.md`"
+        },
+        {
+          "command": "*status",
+          "title": "Ver status do projeto",
+          "description": "Resume progresso, pendências e próximos passos"
+        }
+      ]
+    },
+    {
+      "key": "design-ux",
+      "name": "Design & UX",
+      "count": 2,
+      "commands": [
+        {
+          "command": "*design",
+          "title": "Design System",
+          "description": "Tokens, cores, tipografia e padronização visual"
+        },
+        {
+          "command": "*ux",
+          "title": "UX Design",
+          "description": "Heurísticas, fluxos, acessibilidade e estados"
+        }
+      ]
+    },
+    {
+      "key": "qualidade",
+      "name": "Qualidade",
+      "count": 4,
+      "commands": [
+        {
+          "command": "*seguranca",
+          "title": "Auditoria de segurança",
+          "description": "Checklist OWASP, segredos, superfícies de risco"
+        },
+        {
+          "command": "*qualidade",
+          "title": "Checar qualidade",
+          "description": "Revisão de código, estrutura e padrões"
+        },
+        {
+          "command": "*garantir",
+          "title": "Garantidor de qualidade",
+          "description": "Único comando que aprova mudanças"
+        },
+        {
+          "command": "*revisar",
+          "title": "Code review",
+          "description": "Revisão completa com pontos de risco"
+        }
+      ]
+    },
+    {
+      "key": "infra-banco",
+      "name": "Infra & Banco",
+      "count": 2,
+      "commands": [
+        {
+          "command": "*banco",
+          "title": "Saúde do banco",
+          "description": "Diagnóstico de queries, índices e integridade"
+        },
+        {
+          "command": "*supabase",
+          "title": "Configurar Supabase",
+          "description": "Setup e validação de configuração Supabase"
+        }
+      ]
+    },
+    {
+      "key": "automacao",
+      "name": "Automação",
+      "count": 4,
+      "commands": [
+        {
+          "command": "*workflow",
+          "title": "Criar workflows",
+          "description": "CI/CD e automações de projeto"
+        },
+        {
+          "command": "*orquestrar",
+          "title": "Orquestrar comandos",
+          "description": "Combina comandos para resolver cenários complexos"
+        },
+        {
+          "command": "*tarefas",
+          "title": "Gerenciar tarefas",
+          "description": "Planejamento e acompanhamento task-oriented"
+        },
+        {
+          "command": "*dashboard",
+          "title": "Abrir dashboard",
+          "description": "Inicia dashboard local em localhost (somente leitura)"
+        }
+      ]
+    },
+    {
+      "key": "planejamento",
+      "name": "Planejamento",
+      "count": 3,
+      "commands": [
+        {
+          "command": "*planejar",
+          "title": "Planejamento detalhado",
+          "description": "WBS, riscos, estimativas e critérios"
+        },
+        {
+          "command": "*especificar",
+          "title": "Criar spec de feature",
+          "description": "Cria documento em `docs/specs/`"
+        },
+        {
+          "command": "*prd",
+          "title": "Gerar PRD completo",
+          "description": "Cria documentação de requisitos (sem implementar código)"
+        }
+      ]
+    },
+    {
+      "key": "integracao",
+      "name": "Integração",
+      "count": 1,
+      "commands": [
+        {
+          "command": "*api",
+          "title": "Documentar API externa",
+          "description": "Pesquisa e documenta API antes da integração"
+        }
+      ]
+    },
+    {
+      "key": "especialistas",
+      "name": "Especialistas",
+      "count": 3,
+      "commands": [
+        {
+          "command": "*nerd",
+          "title": "Problemas complexos",
+          "description": "Diagnóstico profundo e otimização avançada"
+        },
+        {
+          "command": "*agentes",
+          "title": "Usar Agent Teams",
+          "description": "Cria líder (PM) e especialistas conforme escopo"
+        },
+        {
+          "command": "*melhorar",
+          "title": "Refatorar código",
+          "description": "Propõe melhorias estruturais e técnicas"
+        }
+      ]
+    },
+    {
+      "key": "ajuda",
+      "name": "Ajuda",
+      "count": 1,
+      "commands": [
+        {
+          "command": "*ajuda",
+          "title": "Mostra todos os comandos disponíveis",
+          "description": "Mostra todos os comandos disponíveis"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "*começar",
+      "title": "Iniciar projeto",
+      "description": "Tutorial interativo: mostra menu, espera resposta e direciona",
+      "category": "Principais"
+    },
+    {
+      "command": "*desenvolver",
+      "title": "Modo desenvolvimento",
+      "description": "Ativa protocolo de desenvolvimento",
+      "category": "Principais"
+    },
+    {
+      "command": "*bug",
+      "title": "Reportar problema",
+      "description": "Ativa protocolo de correção de bugs",
+      "category": "Principais"
+    },
+    {
+      "command": "*erro",
+      "title": "Resolver erro",
+      "description": "Ajuda guiada para erros de terminal/navegador",
+      "category": "Principais"
+    },
+    {
+      "command": "*termo",
+      "title": "Explicar termo",
+      "description": "Explica termo técnico com linguagem simples",
+      "category": "Principais"
+    },
+    {
+      "command": "*comando",
+      "title": "Verificar comando",
+      "description": "Checa risco antes de executar comandos",
+      "category": "Principais"
+    },
+    {
+      "command": "*lançar",
+      "title": "Preparar lançamento",
+      "description": "Executa checklist pré-publicação",
+      "category": "Principais"
+    },
+    {
+      "command": "*roadmap",
+      "title": "Ver/atualizar roadmap",
+      "description": "Atualiza `docs/ROADMAP.md`",
+      "category": "Documentação"
+    },
+    {
+      "command": "*decisão",
+      "title": "Registrar decisão",
+      "description": "Atualiza `docs/DECISOES.md`",
+      "category": "Documentação"
+    },
+    {
+      "command": "*mudança",
+      "title": "Registrar mudança",
+      "description": "Atualiza `docs/MUDANCAS.md`",
+      "category": "Documentação"
+    },
+    {
+      "command": "*arquitetura",
+      "title": "Atualizar arquitetura",
+      "description": "Atualiza `docs/ARQUITETURA.md`",
+      "category": "Documentação"
+    },
+    {
+      "command": "*status",
+      "title": "Ver status do projeto",
+      "description": "Resume progresso, pendências e próximos passos",
+      "category": "Documentação"
+    },
+    {
+      "command": "*design",
+      "title": "Design System",
+      "description": "Tokens, cores, tipografia e padronização visual",
+      "category": "Design & UX"
+    },
+    {
+      "command": "*ux",
+      "title": "UX Design",
+      "description": "Heurísticas, fluxos, acessibilidade e estados",
+      "category": "Design & UX"
+    },
+    {
+      "command": "*seguranca",
+      "title": "Auditoria de segurança",
+      "description": "Checklist OWASP, segredos, superfícies de risco",
+      "category": "Qualidade"
+    },
+    {
+      "command": "*qualidade",
+      "title": "Checar qualidade",
+      "description": "Revisão de código, estrutura e padrões",
+      "category": "Qualidade"
+    },
+    {
+      "command": "*garantir",
+      "title": "Garantidor de qualidade",
+      "description": "Único comando que aprova mudanças",
+      "category": "Qualidade"
+    },
+    {
+      "command": "*revisar",
+      "title": "Code review",
+      "description": "Revisão completa com pontos de risco",
+      "category": "Qualidade"
+    },
+    {
+      "command": "*banco",
+      "title": "Saúde do banco",
+      "description": "Diagnóstico de queries, índices e integridade",
+      "category": "Infra & Banco"
+    },
+    {
+      "command": "*supabase",
+      "title": "Configurar Supabase",
+      "description": "Setup e validação de configuração Supabase",
+      "category": "Infra & Banco"
+    },
+    {
+      "command": "*workflow",
+      "title": "Criar workflows",
+      "description": "CI/CD e automações de projeto",
+      "category": "Automação"
+    },
+    {
+      "command": "*orquestrar",
+      "title": "Orquestrar comandos",
+      "description": "Combina comandos para resolver cenários complexos",
+      "category": "Automação"
+    },
+    {
+      "command": "*tarefas",
+      "title": "Gerenciar tarefas",
+      "description": "Planejamento e acompanhamento task-oriented",
+      "category": "Automação"
+    },
+    {
+      "command": "*dashboard",
+      "title": "Abrir dashboard",
+      "description": "Inicia dashboard local em localhost (somente leitura)",
+      "category": "Automação"
+    },
+    {
+      "command": "*planejar",
+      "title": "Planejamento detalhado",
+      "description": "WBS, riscos, estimativas e critérios",
+      "category": "Planejamento"
+    },
+    {
+      "command": "*especificar",
+      "title": "Criar spec de feature",
+      "description": "Cria documento em `docs/specs/`",
+      "category": "Planejamento"
+    },
+    {
+      "command": "*prd",
+      "title": "Gerar PRD completo",
+      "description": "Cria documentação de requisitos (sem implementar código)",
+      "category": "Planejamento"
+    },
+    {
+      "command": "*api",
+      "title": "Documentar API externa",
+      "description": "Pesquisa e documenta API antes da integração",
+      "category": "Integração"
+    },
+    {
+      "command": "*nerd",
+      "title": "Problemas complexos",
+      "description": "Diagnóstico profundo e otimização avançada",
+      "category": "Especialistas"
+    },
+    {
+      "command": "*agentes",
+      "title": "Usar Agent Teams",
+      "description": "Cria líder (PM) e especialistas conforme escopo",
+      "category": "Especialistas"
+    },
+    {
+      "command": "*melhorar",
+      "title": "Refatorar código",
+      "description": "Propõe melhorias estruturais e técnicas",
+      "category": "Especialistas"
+    },
+    {
+      "command": "*ajuda",
+      "title": "Mostra todos os comandos disponíveis",
+      "description": "Mostra todos os comandos disponíveis",
+      "category": "Ajuda"
+    }
+  ],
+  "protocols": [
+    {
+      "file": "00-COMEÇAR.md",
+      "id": "00-COMEÇAR"
+    },
+    {
+      "file": "01-DESENVOLVER.md",
+      "id": "01-DESENVOLVER"
+    },
+    {
+      "file": "01-SETUP-TECNICO.md",
+      "id": "01-SETUP-TECNICO"
+    },
+    {
+      "file": "02-BUGS.md",
+      "id": "02-BUGS"
+    },
+    {
+      "file": "03-MELHORAR.md",
+      "id": "03-MELHORAR"
+    },
+    {
+      "file": "04-MANUTENCAO.md",
+      "id": "04-MANUTENCAO"
+    },
+    {
+      "file": "05-LANCAR.md",
+      "id": "05-LANCAR"
+    },
+    {
+      "file": "06-SEGURANCA.md",
+      "id": "06-SEGURANCA"
+    },
+    {
+      "file": "07-QUALIDADE.md",
+      "id": "07-QUALIDADE"
+    },
+    {
+      "file": "08-GARANTIDOR.md",
+      "id": "08-GARANTIDOR"
+    },
+    {
+      "file": "09-DESIGN.md",
+      "id": "09-DESIGN"
+    },
+    {
+      "file": "10-UX.md",
+      "id": "10-UX"
+    },
+    {
+      "file": "11-BANCO.md",
+      "id": "11-BANCO"
+    },
+    {
+      "file": "12-SUPABASE.md",
+      "id": "12-SUPABASE"
+    },
+    {
+      "file": "13-WORKFLOW.md",
+      "id": "13-WORKFLOW"
+    },
+    {
+      "file": "14-ORQUESTRAR.md",
+      "id": "14-ORQUESTRAR"
+    },
+    {
+      "file": "15-TAREFAS.md",
+      "id": "15-TAREFAS"
+    },
+    {
+      "file": "16-PLANEJAR.md",
+      "id": "16-PLANEJAR"
+    },
+    {
+      "file": "17-NERD.md",
+      "id": "17-NERD"
+    },
+    {
+      "file": "18-PRD.md",
+      "id": "18-PRD"
+    },
+    {
+      "file": "19-API.md",
+      "id": "19-API"
+    },
+    {
+      "file": "20-AGENTES.md",
+      "id": "20-AGENTES"
+    },
+    {
+      "file": "21-ROADMAP.md",
+      "id": "21-ROADMAP"
+    },
+    {
+      "file": "22-ARQUITETURA.md",
+      "id": "22-ARQUITETURA"
+    }
+  ]
+}

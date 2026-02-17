@@ -7,8 +7,13 @@
 #   --merge      Adiciona instruções ao final do CLAUDE.md existente
 #   --separate   Cria CLAUDE.vibe-coding.md separado
 #   --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)
+#   --docs-only  Instala apenas documentação/instruções (sem runtime local)
+#   --refresh-runtime  Atualiza arquivos do runtime local (empire-dashboard/)
 
 GITHUB_RAW="${EMPIRE_VIBE_CODING_GITHUB_RAW:-https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main}"
+RUNTIME_DIR="empire-dashboard"
+RUNTIME_MANIFEST_PATH="installer/runtime-files.manifest.txt"
+RUNTIME_DASHBOARD_SCRIPT="npm --prefix ${RUNTIME_DIR} run dashboard"
 
 # Cores
 GREEN='\033[32m'
@@ -68,10 +73,178 @@ PY
   fi
 }
 
+ensure_dashboard_script() {
+  local package_file="$1"
+  local update_status=""
+
+  if [ ! -f "$package_file" ]; then
+    cat > "$package_file" <<EOF
+{
+  "name": "empire-vibe-project",
+  "private": true,
+  "scripts": {
+    "dashboard": "$RUNTIME_DASHBOARD_SCRIPT"
+  }
+}
+EOF
+    echo -e "${GREEN}   ✓ package.json criado com script dashboard${RESET}"
+    return 0
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    update_status="$(python3 - "$package_file" "$RUNTIME_DASHBOARD_SCRIPT" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+dashboard_script = sys.argv[2]
+
+try:
+    data = json.loads(path.read_text(encoding="utf-8"))
+except Exception:
+    print("invalid-json")
+    sys.exit(0)
+
+if not isinstance(data, dict):
+    print("invalid-object")
+    sys.exit(0)
+
+scripts = data.get("scripts")
+if not isinstance(scripts, dict):
+    scripts = {}
+    data["scripts"] = scripts
+
+if "dashboard" in scripts:
+    print("exists")
+    sys.exit(0)
+
+scripts["dashboard"] = dashboard_script
+path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print("added")
+PY
+)"
+  elif command -v node >/dev/null 2>&1; then
+    update_status="$(node -e '
+      const fs = require("fs");
+      const file = process.argv[1];
+      const dashboardScript = process.argv[2];
+      try {
+        const data = JSON.parse(fs.readFileSync(file, "utf8"));
+        if (typeof data !== "object" || data === null || Array.isArray(data)) {
+          console.log("invalid-object");
+          process.exit(0);
+        }
+        if (typeof data.scripts !== "object" || data.scripts === null || Array.isArray(data.scripts)) {
+          data.scripts = {};
+        }
+        if (!Object.prototype.hasOwnProperty.call(data.scripts, "dashboard")) {
+          data.scripts.dashboard = dashboardScript;
+          fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n");
+          console.log("added");
+        } else {
+          console.log("exists");
+        }
+      } catch {
+        console.log("invalid-json");
+      }
+    ' "$package_file" "$RUNTIME_DASHBOARD_SCRIPT")"
+  else
+    echo -e "${YELLOW}   ⚠ Não foi possível atualizar package.json (python3/node ausente)${RESET}"
+    return 0
+  fi
+
+  case "$update_status" in
+    added)
+      echo -e "${GREEN}   ✓ Script dashboard adicionado em package.json${RESET}"
+      ;;
+    exists)
+      echo -e "${YELLOW}   ⚠ package.json já possui script dashboard (mantido)${RESET}"
+      ;;
+    *)
+      echo -e "${YELLOW}   ⚠ Não foi possível garantir script dashboard no package.json${RESET}"
+      ;;
+  esac
+}
+
+install_runtime_dashboard() {
+  local docs_only="$1"
+  local refresh_runtime="$2"
+
+  if [ "$docs_only" = true ]; then
+    echo ""
+    echo -e "${YELLOW}📊 Runtime local: pulado (--docs-only)${RESET}"
+    return 0
+  fi
+
+  if [ -d "$RUNTIME_DIR" ] && [ "$refresh_runtime" = false ]; then
+    echo ""
+    echo -e "${YELLOW}📊 Runtime local já existe em ${RUNTIME_DIR}/ (mantido). Use --refresh-runtime para atualizar.${RESET}"
+    ensure_dashboard_script package.json
+    return 0
+  fi
+
+  echo ""
+  echo -e "${YELLOW}📊 Instalando runtime task-oriented em ${RUNTIME_DIR}/...${RESET}"
+  mkdir -p "$RUNTIME_DIR"
+
+  local manifest_tmp
+  manifest_tmp="$(mktemp)"
+  if ! curl -fsSL "$GITHUB_RAW/$RUNTIME_MANIFEST_PATH" -o "$manifest_tmp"; then
+    echo -e "${RED}   ✗ Falha ao baixar manifesto do runtime: $RUNTIME_MANIFEST_PATH${RESET}"
+    rm -f "$manifest_tmp"
+    return 1
+  fi
+
+  local downloaded=0
+  local failed=0
+
+  while IFS= read -r runtime_file || [ -n "$runtime_file" ]; do
+    runtime_file="${runtime_file%%$'\r'}"
+    if [ -z "$runtime_file" ]; then
+      continue
+    fi
+    case "$runtime_file" in
+      \#*)
+        continue
+        ;;
+    esac
+    case "$runtime_file" in
+      web/*)
+        ;;
+      *)
+        continue
+        ;;
+    esac
+
+    local relative_path="${runtime_file#web/}"
+    local destination="${RUNTIME_DIR}/${relative_path}"
+    mkdir -p "$(dirname "$destination")"
+
+    if curl -fsSL "$GITHUB_RAW/$runtime_file" -o "$destination"; then
+      downloaded=$((downloaded + 1))
+    else
+      failed=$((failed + 1))
+      echo -e "${YELLOW}   ⚠ Falha ao baixar $runtime_file${RESET}"
+    fi
+  done < "$manifest_tmp"
+
+  rm -f "$manifest_tmp"
+
+  echo -e "${GREEN}   ✓ Runtime baixado: ${downloaded} arquivos${RESET}"
+  if [ "$failed" -gt 0 ]; then
+    echo -e "${YELLOW}   ⚠ Falhas no runtime: ${failed} arquivos${RESET}"
+  fi
+
+  ensure_dashboard_script package.json
+}
+
 # Parse flags
 MERGE_MODE=false
 SEPARATE_MODE=false
 NO_CLAUDE=false
+DOCS_ONLY=false
+REFRESH_RUNTIME=false
 
 for arg in "$@"; do
   case $arg in
@@ -87,6 +260,14 @@ for arg in "$@"; do
       NO_CLAUDE=true
       shift
       ;;
+    --docs-only)
+      DOCS_ONLY=true
+      shift
+      ;;
+    --refresh-runtime)
+      REFRESH_RUNTIME=true
+      shift
+      ;;
     --help|-h)
       echo ""
       echo -e "${BOLD}Uso:${RESET}"
@@ -97,8 +278,11 @@ for arg in "$@"; do
       echo "  --merge      Adiciona instruções ao final do CLAUDE.md existente"
       echo "  --separate   Cria CLAUDE.vibe-coding.md separado"
       echo "  --no-claude  Não cria/modifica CLAUDE.md (só baixa documentação)"
+      echo "  --docs-only  Instala apenas documentação/instruções (sem runtime local)"
+      echo "  --refresh-runtime  Força atualização de ${RUNTIME_DIR}/"
       echo ""
       echo -e "${BOLD}Comportamento padrão:${RESET}"
+      echo "  Instala documentação + runtime local task-oriented em ${RUNTIME_DIR}/"
       echo "  Se CLAUDE.md NÃO existe → Cria CLAUDE.md completo"
       echo "  Se CLAUDE.md JÁ existe → Cria CLAUDE.vibe-coding.md separado (seguro)"
       exit 0
@@ -601,6 +785,9 @@ else
   echo -e "${GREEN}   ✓ CLAUDE.md criado na raiz do projeto${RESET}"
 fi
 
+# Instalar runtime local task-oriented
+install_runtime_dashboard "$DOCS_ONLY" "$REFRESH_RUNTIME"
+
 # Resumo
 echo ""
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${RESET}"
@@ -622,12 +809,24 @@ echo "   │   ├── GLOSSARIO.md"
 echo "   │   ├── BANDEIRAS-VERMELHAS.md"
 echo "   │   ├── TROUBLESHOOTING.md"
 echo "   │   └── PROTOCOLOS/"
+if [ "$DOCS_ONLY" = false ]; then
+  echo "   ├── ${RUNTIME_DIR}/       ← Dashboard local task-oriented"
+  echo "   │   ├── app/"
+  echo "   │   ├── components/"
+  echo "   │   └── package.json"
+fi
 echo "   └── CLAUDE.md             ← Instruções para o Claude"
 echo ""
 echo -e "${BLUE}🚀 Próximos passos:${RESET}"
 echo "   1. Reinicie o Claude Code se estiver aberto"
 echo "   2. Digite: *começar"
-echo "   3. O Claude vai te guiar e documentar tudo em docs/"
+if [ "$DOCS_ONLY" = false ]; then
+  echo "   3. Para abrir o dashboard local: npm run dashboard"
+  echo "      (fallback: npm --prefix ${RUNTIME_DIR} run dashboard)"
+  echo "   4. O Claude vai te guiar e documentar tudo em docs/"
+else
+  echo "   3. O Claude vai te guiar e documentar tudo em docs/"
+fi
 echo ""
 echo -e "${YELLOW}⚠️  IMPORTANTE: Toda mudança deve ser documentada em docs/${RESET}"
 echo ""

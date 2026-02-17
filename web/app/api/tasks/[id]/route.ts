@@ -9,6 +9,9 @@ import { taskDb, logDb } from '@/lib/db';
 import { isDashboardReadOnly, getReadOnlyErrorMessage } from '@/lib/dashboard-access';
 import type { UpdateTaskRequest } from '@/lib/types';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 interface RouteParams {
   params: {
     id: string;

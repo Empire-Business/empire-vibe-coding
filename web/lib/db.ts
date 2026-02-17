@@ -4,16 +4,41 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import type { Task, TaskLog, SquadExecution, TaskStatus, SquadStatus, AgentType, SquadType, LogLevel } from './types';
 
-// Database path
-const DB_DIR = path.join(process.cwd(), 'data');
-const DB_PATH = path.join(DB_DIR, 'tasks.db');
-
-// Ensure data directory exists
-if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
+function isWritableDirectory(dir: string): boolean {
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    fs.accessSync(dir, fs.constants.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
 }
+
+function resolveDbDirectory(): string {
+  const requestedDir = process.env.DASHBOARD_DATA_DIR?.trim();
+  const candidateDirs = [
+    requestedDir,
+    path.join(process.cwd(), 'data'),
+    path.join(os.tmpdir(), 'empire-vibe-coding', 'dashboard-data'),
+  ].filter((value): value is string => Boolean(value));
+
+  for (const candidate of candidateDirs) {
+    if (isWritableDirectory(candidate)) {
+      return candidate;
+    }
+  }
+
+  throw new Error(
+    `No writable directory available for dashboard SQLite database. Tried: ${candidateDirs.join(', ')}`
+  );
+}
+
+// Database path
+const DB_DIR = resolveDbDirectory();
+const DB_PATH = path.join(DB_DIR, 'tasks.db');
 
 // Initialize database
 const db = new Database(DB_PATH);

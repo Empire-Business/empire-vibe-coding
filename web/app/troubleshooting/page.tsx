@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Wrench, Search, Monitor, Terminal, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 import { SearchBar } from '@/components/SearchBar'
 import { Alert } from '@/components/Alert'
-import { CodeBlock } from '@/components/CodeBlock'
 
 // Dados de troubleshooting (do arquivo vibe-coding/TROUBLESHOOTING.md)
 const ERROR_GUIDES = [
@@ -23,8 +22,9 @@ const ERROR_GUIDES = [
     solutions: [
       'Verifique a versão do Node.js: `node --version` (deve ser 18+)',
       'Limpe o cache do npm: `npm cache clean --force`',
-      'Tente instalar com --force: `npm install --force`',
+      'Evite `npm install --force` como primeira opção (pode mascarar conflito de dependência)',
       'Delete node_modules e package-lock.json, então rode `npm install` de novo',
+      'Se precisar usar `npm install --force`, trate como último recurso e confirme impacto antes',
       'No Windows/Mac, tente rodar o terminal como administrador',
     ],
   },
@@ -40,7 +40,9 @@ const ERROR_GUIDES = [
     ],
     solutions: [
       'Encontre o processo: `lsof -ti:3000` (Mac/Linux) ou `netstat -ano | findstr :3000` (Windows)',
-      'Mate o processo: `kill -9 $(lsof -ti:3000)` (Mac/Linux) ou `taskkill /PID <PID> /F` (Windows)',
+      'Tente encerrar de forma suave primeiro (Ctrl+C no terminal que está rodando)',
+      'Se necessário, finalize o processo: `kill -15 $(lsof -ti:3000)` (Mac/Linux) ou `taskkill /PID <PID>` (Windows)',
+      'Use `kill -9` apenas como último recurso, depois de validar o processo correto',
       'Ou rode em outra porta: `PORT=3001 npm run dev`',
     ],
   },
@@ -268,6 +270,12 @@ export default function TroubleshootingPage() {
       <Alert
         type="info"
         message="Quando der erro, não entre em pânico! A maioria dos erros tem solução simples. Leia a mensagem do erro com atenção - geralmente ela diz exatamente o que está errado."
+        className="mb-8"
+      />
+
+      <Alert
+        type="warning"
+        message="Antes de executar comandos agressivos (`--force`, `kill -9`, `rm -rf`), valide em Bandeiras Vermelhas ou use *comando para checar risco."
         className="mb-8"
       />
 

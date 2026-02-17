@@ -286,6 +286,13 @@ The `install.sh` script supports flags:
 - `--merge` - Append vibe-coding instructions to existing CLAUDE.md
 - `--separate` - Create CLAUDE.vibe-coding.md instead of modifying CLAUDE.md
 - `--no-claude` - Only download documentation, don't create CLAUDE.md
+- `--docs-only` - Install only docs/instructions (skip local runtime)
+- `--refresh-runtime` - Force update of `empire-dashboard/`
+
+Default installer behavior:
+- installs docs + local runtime in `empire-dashboard/`
+- ensures `.claude/settings.local.json` contains `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+- ensures root `package.json` has `dashboard` script when possible
 
 ---
 
@@ -313,6 +320,8 @@ Execute `npm run dashboard` para abrir o dashboard em localhost:3001.
 ```
 npm run dashboard
 # Abre em http://localhost:3001
+# fallback direto no runtime
+npm --prefix empire-dashboard run dashboard
 ```
 
 ### O que o dashboard oferece:
@@ -327,7 +336,7 @@ npm run dashboard
 
 | Comando | Função |
 |---------|--------|
-| `*dashboard` | Inicia servidor do dashboard (somente consulta) |
+| `*dashboard` | Inicia servidor do dashboard local (somente consulta/read-only) |
 
 ### Arquitetura do Dashboard:
 

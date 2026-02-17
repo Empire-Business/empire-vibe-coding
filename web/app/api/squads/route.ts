@@ -9,6 +9,9 @@ import { emitSquadCreated } from '@/lib/events';
 import { isDashboardReadOnly, getReadOnlyErrorMessage } from '@/lib/dashboard-access';
 import type { CreateSquadRequest, AgentType, SquadType } from '@/lib/types';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 // GET /api/squads - List all squads
 export async function GET(request: NextRequest) {
   try {

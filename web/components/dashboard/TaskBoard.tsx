@@ -70,7 +70,7 @@ export function TaskBoard({ squadId, onSelectTask, selectedTaskId }: TaskBoardPr
     return (
       <div className="flex flex-col items-center justify-center py-12 text-gray-500">
         <p className="text-lg font-medium">No tasks available</p>
-        <p className="text-sm">This dashboard is in read-only mode</p>
+        <p className="text-sm">Read-only dashboard. If you expected tasks, verify API/backend connection.</p>
       </div>
     );
   }

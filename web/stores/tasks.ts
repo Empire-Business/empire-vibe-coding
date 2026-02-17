@@ -192,7 +192,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         set({ error: result.error, isLoading: false });
       }
     } catch (error) {
-      set({ error: 'Failed to fetch tasks', isLoading: false });
+      set({ error: 'Failed to fetch tasks. Check API/backend availability.', isLoading: false });
     }
   },
 
@@ -270,7 +270,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         set({ squads: result.data.map(normalizeSquad) });
       }
     } catch (error) {
-      set({ error: 'Failed to fetch squads' });
+      set({ error: 'Failed to fetch squads. Check API/backend availability.' });
     }
   },
 

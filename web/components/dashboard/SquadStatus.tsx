@@ -164,7 +164,7 @@ export function SquadList() {
     return (
       <div className="text-center py-8 text-gray-500">
         <p className="mb-2">No squads available</p>
-        <p className="text-sm">This dashboard is in read-only mode</p>
+        <p className="text-sm">Read-only dashboard. If you expected squads, verify API/backend connection.</p>
       </div>
     );
   }

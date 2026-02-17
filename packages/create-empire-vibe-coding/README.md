@@ -1,61 +1,60 @@
 # create-empire-vibe-coding
 
-Create a new Empire Vibe Coding project - desenvolva software com IA sem saber programar.
+CLI para instalar Empire Vibe Coding em um projeto novo ou existente.
 
 ## Uso
 
 ```bash
-# Criar na pasta atual
+# pasta atual
 npx create-empire-vibe-coding
 
-# Ou especificar uma pasta
+# pasta específica
 npx create-empire-vibe-coding minha-pasta
+
+# somente docs/instruções
+npx create-empire-vibe-coding minha-pasta --docs-only
+
+# atualizar runtime local já existente
+npx create-empire-vibe-coding minha-pasta --refresh-runtime
 ```
 
-## O que ele faz
+## O que instala por padrão
 
-1. Cria a estrutura de pastas:
-   - `vibe-coding/` - Manuais de referência
-   - `docs/` - Documentação do seu projeto
-   - `CLAUDE.md` - Cérebro da IA
+- `vibe-coding/` (comandos + protocolos)
+- `docs/` (templates do projeto)
+- `CLAUDE.md` (instruções para o Claude)
+- `empire-dashboard/` (runtime local task-oriented)
+- `.claude/settings.local.json` com `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
 
-2. Baixa os 18 protocolos e arquivos de referência
+Também garante script na raiz:
 
-3. Cria templates de documentação:
-   - `docs/PRD.md`
-   - `docs/ROADMAP.md`
-   - `docs/MUDANCAS.md`
-   - `docs/DECISOES.md`
-   - `docs/ARQUITETURA.md`
+```json
+{
+  "scripts": {
+    "dashboard": "npm --prefix empire-dashboard run dashboard"
+  }
+}
+```
 
-4. Configura Agent Teams automaticamente em:
-   - `.claude/settings.local.json`
-   - com `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"`
-
-## Próximos Passos
-
-Depois de instalar:
+## Após instalar
 
 ```bash
-# 1. Abra o Claude Code
 claude
+# no Claude Code
+*começar
 
-# 2. Digite o comando de início
-> *começar
-
-# 3. Descreva sua ideia
-> Quero criar um app de tarefas...
+# dashboard local
+npm run dashboard
 ```
 
 ## Requisitos
 
-- Node.js 18 ou superior
-- Claude Code instalado ([como instalar](https://docs.anthropic.com/claude-code))
+- Node.js 18+
+- Claude Code instalado ([docs](https://docs.anthropic.com/claude-code))
 
 ## Links
 
-- [Documentação completa](https://github.com/Empire-Business/empire-vibe-coding)
-- [GitHub](https://github.com/Empire-Business/empire-vibe-coding)
+- [Repositório](https://github.com/Empire-Business/empire-vibe-coding)
 - [Issues](https://github.com/Empire-Business/empire-vibe-coding/issues)
 
 ## Licença
