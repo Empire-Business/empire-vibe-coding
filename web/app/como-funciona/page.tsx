@@ -53,7 +53,13 @@ export default function ComoFuncionaPage() {
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <a href="/" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Empire" width={40} height={40} className="h-10 w-10" />
+            <Image
+              src="/logo.png"
+              alt="Empire"
+              width={150}
+              height={50}
+              className="h-8 w-auto sm:h-9"
+            />
             <div>
               <p className="text-sm font-bold text-gray-900">Como Funciona</p>
               <p className="text-xs text-gray-500">Empire Vibe Coding</p>

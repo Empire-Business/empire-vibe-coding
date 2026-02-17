@@ -199,7 +199,14 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-blue-50 to-white py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mb-6 flex justify-center">
-            <Image src="/logo.png" alt="Empire" width={160} height={160} className="h-32 w-32 sm:h-36 sm:w-36" priority />
+            <Image
+              src="/logo.png"
+              alt="Empire"
+              width={540}
+              height={180}
+              className="h-auto w-56 sm:w-72 lg:w-80"
+              priority
+            />
           </div>
           <h1 className="mb-3 text-4xl font-bold text-gray-900 sm:text-5xl">Empire Vibe Coding</h1>
           <p className="mx-auto mb-4 max-w-2xl text-lg text-gray-600 sm:text-xl">

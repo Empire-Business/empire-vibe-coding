@@ -221,7 +221,7 @@ install_runtime_dashboard() {
     local destination="${RUNTIME_DIR}/${relative_path}"
     mkdir -p "$(dirname "$destination")"
 
-    if curl -fsSL "$GITHUB_RAW/$runtime_file" -o "$destination"; then
+    if curl --globoff -fsSL "$GITHUB_RAW/$runtime_file" -o "$destination"; then
       downloaded=$((downloaded + 1))
     else
       failed=$((failed + 1))
