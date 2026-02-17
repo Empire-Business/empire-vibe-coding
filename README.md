@@ -26,6 +26,28 @@ Isso cria:
 3. Digite `*começar` para iniciar um novo projeto
 4. Use comandos como `*bug`, `*desenvolver`, `*termo` conforme precisar
 
+## Agent Teams (Líder + Subagentes)
+
+Para habilitar Agent Teams no Claude Code:
+
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```
+
+Na instalação, o sistema também garante `.claude/settings.local.json` com:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+Depois:
+- use `*agentes` para abrir um time automaticamente (PM líder + especialistas)
+- o sistema também pode ativar Agent Teams sozinho em tarefas complexas
+
 ## Versão Web
 
 Acesse o site interativo: [https://empire-vibe-coding.vercel.app](https://empire-vibe-coding.vercel.app)
@@ -41,7 +63,7 @@ empire-vibe-coding/
 │   ├── BANDEIRAS-VERMELHAS.md     # Comandos perigosos
 │   ├── TROUBLESHOOTING.md         # Solução de erros
 │   └── PROTOCOLOS/                # Guias de processo
-│       ├── 00-INICIAR.md
+│       ├── 00-COMEÇAR.md
 │       ├── 01-DESENVOLVER.md
 │       ├── 02-BUGS.md
 │       ├── 03-MELHORAR.md

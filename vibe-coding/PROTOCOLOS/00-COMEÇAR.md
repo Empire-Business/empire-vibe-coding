@@ -56,6 +56,9 @@ IMPORTANTE - LEIA COM ATENÇÃO:
 ║     7. 🤖 Usar agentes especializados                         ║
 ║        → Para tarefas complexas que precisam de equipe        ║
 ║                                                               ║
+║     8. 🏗️ Preparar projeto para desenvolvimento              ║
+║        → Guia completo: PRD + Arquitetura + Roadmap + Design  ║
+║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 
 Digite o número da opção ou descreva sua necessidade:
@@ -82,6 +85,66 @@ Baseado na resposta do usuário:
 | 5 - Dúvida de termo | `*termo` | Leia `GLOSSARIO.md` |
 | 6 - Ver comandos | `*ajuda` | Mostre `COMANDOS.md` |
 | 7 - Agentes | `*agentes` | Leia `20-AGENTES.md` |
+| 8 - Preparar projeto | Fluxo guiado | Veja seção específica abaixo |
+
+---
+
+## OPÇÃO 8: Preparar Projeto para Desenvolvimento
+
+### Quando o usuário escolhe a opção 8:
+
+```
+CLAUDE: Ótimo! Você quer preparar o projeto completo para desenvolvimento.
+
+        Isso vai criar toda a documentação necessária NA ORDEM CERTA:
+
+        1️⃣ PRD         → O QUE vamos construir
+        2️⃣ Arquitetura → COMO vamos construir
+        3️⃣ Roadmap     → QUANDO vamos construir cada parte
+        4️⃣ Design      → COMO VAI FICAR visualmente
+
+        ⚠️ IMPORTANTE:
+        - Vou fazer perguntas em cada etapa
+        - Você precisa aprovar cada documento antes de continuar
+        - NÃO vou implementar código (só documentação)
+
+        Posso começar pelo PRD? (SIM/NÃO)
+
+🛑 STOP_POINT_CONFIRMACAO
+```
+
+### Fluxo da Opção 8:
+
+```
+SE usuário disser SIM:
+
+  ETAPA 1: *prd
+  → Execute o protocolo 18-PRD.md
+  → Crie docs/PRD.md
+  → PARAR e esperar aprovação
+
+  ETAPA 2: *arquitetura
+  → Execute o protocolo 22-ARQUITETURA.md
+  → Crie docs/ARQUITETURA/
+  → PARAR e esperar aprovação
+
+  ETAPA 3: *roadmap
+  → Execute o protocolo 21-ROADMAP.md
+  → Crie docs/ROADMAP.md
+  → PARAR e esperar aprovação
+
+  ETAPA 4: *design
+  → Execute o protocolo 09-DESIGN.md
+  → Crie docs/DESIGN/ ou configure Tailwind
+  → PARAR e esperar aprovação
+
+  FINALIZAÇÃO:
+  → Mostre verificação de pré-requisitos (todos ✅)
+  → Pergunte se quer começar a desenvolver (*desenvolver)
+
+SE usuário disser NÃO:
+  → Pergunte qual opção do menu ele prefere
+```
 
 ---
 
@@ -238,6 +301,7 @@ CLAUDE: Entendi! Você está com um problema de login.
 ║     5. 💡 Tirar dúvida sobre termo                            ║
 ║     6. 📚 Ver todos os comandos                               ║
 ║     7. 🤖 Usar agentes especializados                         ║
+║     8. 🏗️ Preparar projeto para desenvolvimento              ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```

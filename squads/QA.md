@@ -104,3 +104,47 @@ Testes, validação de funcionalidades, edge cases, garantia de que tudo funcion
 - NÃO implementa correções (isso é do DEVELOPER)
 - NÃO faz auditoria de segurança (isso é do SECURITY)
 - NÃO decide arquitetura (isso é do ARCHITECT)
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [QA] Testes Concluídos
+
+**Status:** ✅ PASSOU / ⚠️ PASSOU COM RESSALVAS / ❌ FALHOU
+
+**Casos testados:**
+| Cenário | Resultado | Obs |
+|---------|-----------|-----|
+| Happy path | ✅ | Fluxo completo OK |
+| Pagamento recusado | ✅ | Tratamento correto |
+| Timeout API | ❌ | Faltou retry |
+
+**Falhas encontradas:**
+- #1: Timeout não tratado (Severidade: Alta)
+
+**Próximos passos:**
+- Se passou: Feature pronta para deploy
+- Se falhou: DEVELOPER deve corrigir
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [QA] Testes Concluídos...",
+  "verdict": "passed",
+  "testCases": [
+    {"scenario": "Happy path", "result": "pass"},
+    {"scenario": "Timeout API", "result": "fail"}
+  ],
+  "failures": [
+    {"id": 1, "description": "Timeout não tratado", "severity": "high"}
+  ],
+  "ready": true
+}
+```

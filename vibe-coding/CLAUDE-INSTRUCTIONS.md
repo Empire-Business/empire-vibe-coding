@@ -126,7 +126,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 |---------|------|-------------|
 | `*workflow` | Criar workflows | Leia `vibe-coding/PROTOCOLOS/13-WORKFLOW.md`, configure CI/CD, automações |
 | `*orquestrar` | Orquestrar comandos | Leia `vibe-coding/PROTOCOLOS/14-ORQUESTRAR.md`, combine múltiplos comandos |
-| `*tarefas` | Gerenciar tarefas | Leia `vibe-coding/PROTOCOLOS/15-TAREFAS.md`, use TaskCreate/Update/Get/List |
+| `*tarefas` | Gerenciar tarefas | Leia `vibe-coding/PROTOCOLOS/15-TAREFAS.md`, use Task tool |
 
 #### COMANDOS DE PLANEJAMENTO (3)
 
@@ -147,7 +147,7 @@ Quando o usuário digitar um comando com `*`, execute a função correspondente:
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
 | `*nerd` | Problemas complexos | Leia `vibe-coding/PROTOCOLOS/17-NERD.md`, debug profundo, profiling, otimização |
-| `*agentes` | Usar Agent Teams | Leia `vibe-coding/PROTOCOLOS/20-AGENTES.md` - **Sistema de Squads** |
+| `*agentes` | Usar Agent Teams | Leia `vibe-coding/PROTOCOLOS/20-AGENTES.md` - líder + subagentes |
 | `*melhorar` | Refatorar | Leia `vibe-coding/PROTOCOLOS/03-MELHORAR.md` |
 
 #### COMANDO DE AJUDA
@@ -187,19 +187,27 @@ COMPORTAMENTO OBRIGATÓRIO:
 PROIBIDO: Implementar código durante *prd
 ```
 
-### `*agentes` - Sistema de Squads
+### `*agentes` - Agent Teams
 
 ```
 COMPORTAMENTO OBRIGATÓRIO:
 
 1. IDENTIFICAR necessidade
-2. SELECIONAR agentes do diretório squads/
-3. CRIAR tarefas com TaskCreate
-4. EXECUTAR sequencialmente
-5. REPORTAR progresso
+2. CRIAR PM-líder com Task tool
+3. GERAR plano de especialistas
+4. CRIAR subagentes com Task tool
+5. EXECUTAR por dependências/paralelismo
+6. CONSOLIDAR progresso e resultado final
 
 Consultar: vibe-coding/PROTOCOLOS/20-AGENTES.md
 ```
+
+### ATIVAÇÃO AUTOMÁTICA DE AGENT TEAMS
+
+Ative Agent Teams mesmo sem `*agentes` quando houver:
+- multi-domínio técnico
+- alto risco (segurança, auth, pagamentos, dados sensíveis)
+- escopo grande com várias frentes
 
 ---
 
@@ -255,7 +263,7 @@ projeto/
 │       ├── 00-COMEÇAR.md       ← Tutorial interativo
 │       ├── 01-SETUP-TECNICO.md ← Setup técnico
 │       ├── ... (outros)
-│       └── 20-AGENTES.md       ← Sistema de Squads
+│       └── 20-AGENTES.md       ← Agent Teams (líder + subagentes)
 │
 ├── squads/                     ← AGENTES ESPECIALIZADOS
 │   ├── README.md

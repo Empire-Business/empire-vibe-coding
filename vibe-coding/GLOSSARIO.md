@@ -648,7 +648,7 @@ Geralmente é:
 Agora que você entende os termos básicos:
 
 1. **Leia BANDEIRAS-VERMELHAS.md** para saber o que NÃO fazer
-2. **Vá para 00-INICIAR.md** quando estiver pronto para criar seu projeto
+2. **Vá para 00-COMEÇAR.md** quando estiver pronto para criar seu projeto
 3. **Pergunte à IA sempre que não entender algo**
 
 ---

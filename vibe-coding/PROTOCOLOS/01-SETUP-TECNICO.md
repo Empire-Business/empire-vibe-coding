@@ -14,7 +14,7 @@ Ao guiar o usuário através deste documento:
 10. Seja paciente - o usuário está aprendendo enquanto constrói
 ---
 
-# 00-INICIAR.md
+# 00-COMEÇAR.md
 
 ## Protocolo: Iniciando um Novo Projeto com Claude Code + Supabase
 

@@ -10,8 +10,14 @@
   "license": "MIT",
   "scripts": {
     "web:dev": "cd web && npm run dev",
+    "web:dashboard": "cd web && npm run dashboard",
     "web:build": "cd web && npm run build",
-    "web:start": "cd web && npm start"
+    "web:start": "cd web && npm start",
+    "web:test": "cd web && npm run test",
+    "cli:test": "cd packages/create-empire-vibe-coding && npm test",
+    "test:behavior": "node ./scripts/test-behavior.mjs",
+    "dashboard": "cd web && npm run dashboard",
+    "test": "npm run web:test && npm run cli:test && npm run test:behavior"
   },
   "keywords": [
     "vibe-coding",

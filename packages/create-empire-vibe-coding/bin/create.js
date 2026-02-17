@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execSync } from 'child_process'
-import { existsSync, mkdirSync, writeFileSync, copyFileSync, readdirSync, statSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs'
 import { join, basename } from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
@@ -28,7 +28,53 @@ ${blue('════════════════════════
 console.log(banner)
 
 // GitHub raw URL
-const GITHUB_RAW = 'https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main'
+const GITHUB_RAW = process.env.EMPIRE_VIBE_CODING_GITHUB_RAW || 'https://raw.githubusercontent.com/Empire-Business/empire-vibe-coding/main'
+const AGENT_TEAMS_ENV_KEY = 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'
+
+function ensureAgentTeamsEnv(settingsPath) {
+  if (!existsSync(settingsPath)) return false
+
+  try {
+    const raw = readFileSync(settingsPath, 'utf8')
+    const parsed = JSON.parse(raw)
+
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return false
+    }
+
+    if (!parsed.env || typeof parsed.env !== 'object' || Array.isArray(parsed.env)) {
+      parsed.env = {}
+    }
+
+    parsed.env[AGENT_TEAMS_ENV_KEY] = '1'
+    writeFileSync(settingsPath, `${JSON.stringify(parsed, null, 2)}\n`)
+    return true
+  } catch {
+    return false
+  }
+}
+
+function ensureLocalSettingsFile(targetDir) {
+  const claudeDir = join(targetDir, '.claude')
+  const settingsPath = join(claudeDir, 'settings.json')
+  const settingsLocalPath = join(claudeDir, 'settings.local.json')
+
+  if (!existsSync(claudeDir)) {
+    mkdirSync(claudeDir, { recursive: true })
+  }
+
+  if (!existsSync(settingsLocalPath)) {
+    if (existsSync(settingsPath)) {
+      const content = readFileSync(settingsPath, 'utf8')
+      writeFileSync(settingsLocalPath, `${content.replace(/\s*$/, '')}\n`)
+    } else {
+      writeFileSync(settingsLocalPath, `{\n  "env": {\n    "${AGENT_TEAMS_ENV_KEY}": "1"\n  }\n}\n`)
+    }
+  }
+
+  ensureAgentTeamsEnv(settingsPath)
+  ensureAgentTeamsEnv(settingsLocalPath)
+}
 
 // Arquivos para baixar
 const FILES_TO_DOWNLOAD = {
@@ -284,7 +330,7 @@ Quando o usuário digitar um comando com \`*\`, execute a função correspondent
 
 | Comando | Ação | O que fazer |
 |---------|------|-------------|
-| \`*começar\` | Iniciar projeto | Leia \`vibe-coding/PROTOCOLOS/00-INICIAR.md\` e \`vibe-coding/PROTOCOLOS/18-PRD.md\`, guie o planejamento, preencha \`docs/PRD.md\` |
+| \`*começar\` | Iniciar projeto | Leia \`vibe-coding/PROTOCOLOS/00-COMEÇAR.md\` e \`vibe-coding/PROTOCOLOS/18-PRD.md\`, guie o planejamento, preencha \`docs/PRD.md\` |
 | \`*desenvolver\` | Modo dev | Leia \`vibe-coding/PROTOCOLOS/01-DESENVOLVER.md\`, ative protocolo de desenvolvimento |
 | \`*bug\` | Resolver bug | Leia \`vibe-coding/PROTOCOLOS/02-BUGS.md\`, investigue e corrija |
 | \`*erro\` | Resolver erro | Leia \`vibe-coding/TROUBLESHOOTING.md\`, ajude passo a passo |
@@ -406,7 +452,7 @@ projeto/
 │   ├── BANDEIRAS-VERMELHAS.md
 │   ├── TROUBLESHOOTING.md
 │   └── PROTOCOLOS/
-│       ├── 00-INICIAR.md
+│       ├── 00-COMEÇAR.md
 │       ├── 01-DESENVOLVER.md
 │       ├── 02-BUGS.md
 │       ├── 03-MELHORAR.md
@@ -509,7 +555,7 @@ Para começar um projeto do zero, o usuário deve digitar:
 
 Você deve:
 1. Perguntar qual é a ideia do projeto
-2. Ler \`vibe-coding/PROTOCOLOS/00-INICIAR.md\`
+2. Ler \`vibe-coding/PROTOCOLOS/00-COMEÇAR.md\`
 3. Seguir o protocolo de planejamento
 4. Preencher \`docs/PRD.md\` com as informações
 5. Criar \`docs/ROADMAP.md\` com os próximos passos
@@ -541,12 +587,16 @@ async function downloadFile(url, dest) {
 
 // Função principal
 async function main() {
+  const pathArg = process.argv[2] && !process.argv[2].startsWith('-')
+    ? process.argv[2]
+    : '.'
+
   // Perguntar onde instalar
   const response = await prompts({
     type: 'text',
     name: 'path',
     message: 'Onde você quer instalar o Empire Vibe Coding?',
-    initial: '.',
+    initial: pathArg,
     validate: (value) => {
       if (!value) return 'Digite um caminho'
       return true
@@ -627,6 +677,9 @@ async function main() {
       }
     }
 
+    spinner.text = 'Configurando Agent Teams...'
+    ensureLocalSettingsFile(targetDir)
+
     spinner.succeed('Instalação concluída!')
 
     console.log('')
@@ -635,6 +688,7 @@ async function main() {
     console.log(blue('═══════════════════════════════════════════════════════════'))
     console.log('')
     console.log(`${green('✓')} ${downloaded} arquivos baixados`)
+    console.log(`${green('✓')} .claude/settings.local.json com Agent Teams habilitado`)
     if (failed > 0) {
       console.log(`${yellow('⚠')} ${failed} arquivos falharam (verifique sua conexão)`)
     }

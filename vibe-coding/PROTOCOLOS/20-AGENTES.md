@@ -1,432 +1,296 @@
 ---
 ## PARA CLAUDE (AI INSTRUCTIONS)
 
-IMPORTANTE - LEIA COM ATENÇÃO:
+Este protocolo define como usar **Agent Teams do Claude Code** para criar um agente líder e subagentes automaticamente.
 
-1. Sempre identifique a natureza da tarefa primeiro
-2. Selecione agentes apropriados do diretório squads/
-3. Use TaskCreate para criar tarefas para cada agente
-4. Execute agentes sequencialmente, passando contexto
-5. Reporte progresso após cada agente
-6. Pare e informe o usuário se encontrar problemas críticos
+Regras obrigatórias:
+1. Use a ferramenta `Task` (não `TaskCreate/TaskUpdate`) para invocar subagentes.
+2. Sempre rode um **líder PM** primeiro para planejar o time.
+3. Depois, a sessão principal cria os subagentes com base no plano do líder.
+4. Consolide resultados e reporte progresso em linguagem simples.
+5. Se Agent Teams não estiver disponível, faça fallback para execução manual/sequencial e avise.
+
+Limitação importante do Claude Code:
+- Subagentes não criam outros subagentes diretamente.
+- Portanto: o líder planeja, e a sessão principal cria os subagentes.
 ---
 
-# 20-AGENTES.md - Protocolo de Sistema de Squads
+# 20-AGENTES.md - Protocolo Agent Teams (Líder + Subagentes)
 
-## Quando Usar
+## Objetivo
 
-- `*agentes` → Ativar sistema de squads
-- Tarefas complexas que precisam de múltiplas especialidades
-- Quando usuário pede ajuda para problema complexo
-- Features grandes que envolvem arquitetura + código + testes
-
----
-
-## PM - O Orquestrador
-
-O PM (Project Manager) é o agente que **dá um jeito**. Ele não é especialista em nada específico — é especialista em **resolver problemas**.
-
-Quando usar o PM:
-- Não sabe qual agente chamar? → PM
-- Tarefa complexa com múltiplas etapas? → PM
-- Precisa orquestrar vários agentes? → PM
-- Usuário pediu algo vago? → PM
-
-**O PM é o ponto de entrada padrão.** Leia `squads/PM.md` para entender como ele funciona.
+Usar Agent Teams para resolver tarefas complexas com mais velocidade e qualidade, mantendo:
+- liderança central (PM)
+- especialistas por domínio
+- contexto controlado
+- output consolidado
 
 ---
 
-## CHECKPOINT INICIAL (OBRIGATÓRIO)
+## Pré-requisitos
 
-### ANTES de começar, SEMPRE mostre:
+### 1) Agent Teams habilitado
 
+No terminal onde o Claude Code roda:
+
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│  🤖 Sistema de Squads - Agentes Especializados                 │
-│                                                                 │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  Analisei sua solicitação e identifiquei que precisamos         │
-│  de uma equipe de agentes especializados.                       │
-│                                                                 │
-│  ✅ VOU FAZER:                                                  │
-│                                                                 │
-│     1. Identificar agentes necessários                          │
-│     2. Criar tarefas com TaskCreate                             │
-│     3. Executar cada agente sequencialmente                     │
-│     4. Passar contexto entre agentes                            │
-│     5. Reportar progresso após cada etapa                       │
-│                                                                 │
-│  ❌ NÃO VOU FAZER:                                              │
-│                                                                 │
-│     ✗ Pular etapas de validação                                 │
-│     ✗ Executar agentes em paralelo (para manter contexto)       │
-│     ✗ Ignorar problemas reportados por agentes                  │
-│                                                                 │
-│  📋 AGENTES DISPONÍVEIS:                                        │
-│                                                                 │
-│     - ARCHITECT (Arquitetura)                                   │
-│     - DEVELOPER (Desenvolvimento)                               │
-│     - REVIEWER (Code Review)                                    │
-│     - QA (Testes e Qualidade)                                   │
-│     - SECURITY (Segurança)                                      │
-│     - DESIGNER (Design e UX)                                    │
-│     - DATA (Dados e Performance)                                │
-│                                                                 │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  Agentes sugeridos para sua tarefa: [lista]                     │
-│                                                                 │
-│  Posso continuar? (SIM/NÃO)                                     │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+
+### 2) Papéis disponíveis
+
+Use os papéis em `squads/` como base de comportamento:
+- PM (líder)
+- ARCHITECT
+- DEVELOPER
+- REVIEWER
+- QA
+- SECURITY
+- DESIGNER
+- DATA
+
+---
+
+## Quando ativar Agent Teams
+
+### Ativação explícita (comando)
+
+Ative sempre quando o usuário usar:
+- `*agentes`
+- `*agentes [tipo] [objetivo]`
+
+### Ativação automática (sem comando)
+
+Ative automaticamente quando a tarefa tiver **score >= 3**:
+
+| Critério | Pontos |
+|---|---:|
+| Envolve 2+ domínios (ex: backend + frontend, código + segurança) | +1 |
+| Envolve 6+ arquivos ou 2+ pastas principais | +1 |
+| Toca área de alto risco (auth, pagamentos, dados sensíveis, migração) | +1 |
+| Tem 3+ blocos independentes executáveis em paralelo | +1 |
+| É bug crítico/incidente de produção | +1 |
+
+Se `score >= 3`, informar:
+- que vai ativar Agent Teams
+- quem será o líder
+- quais especialistas serão acionados
+
+---
+
+## Fluxo oficial (Líder + Subagentes)
+
+### PASSO 0 - Checkpoint curto
+
+Antes da execução, mostrar:
+- O que vai fazer
+- O que não vai fazer
+- Time sugerido
+- Pedido de confirmação (quando necessário pelas regras do projeto)
 
 🛑 STOP_POINT_CONFIRMACAO
-```
 
----
+### PASSO 1 - Criar o líder (PM)
 
-## FLUXO DE EXECUÇÃO
+A sessão principal invoca um subagente via `Task` com:
+- `subagent_type`: `general-purpose` (ou custom PM, se existir)
+- `prompt`: instruções para planejar execução, dependências e critérios de pronto
 
-### PASSO 1: Identificar Necessidade
+Output obrigatório do líder:
 
-```
-Analise a solicitação do usuário e identifique:
-
-1. Tipo de tarefa:
-   - [ ] Feature nova
-   - [ ] Bug/correção
-   - [ ] Performance
-   - [ ] Segurança
-   - [ ] Refatoração
-   - [ ] Design/UX
-   - [ ] Dados/analytics
-
-2. Agentes necessários (consultar squads/):
-   - [ ] ARCHITECT
-   - [ ] DEVELOPER
-   - [ ] REVIEWER
-   - [ ] QA
-   - [ ] SECURITY
-   - [ ] DESIGNER
-   - [ ] DATA
-
-3. Ordem de execução
-```
-
-### PASSO 2: Criar Tarefas
-
-```
-Para cada agente, criar tarefa com TaskCreate:
-
+```json
 {
-  subject: "[AGENTE]: [Tarefa específica]",
-  description: "[Contexto e objetivos detalhados]",
-  activeForm: "[Agente] está trabalhando..."
+  "team_name": "Feature Squad",
+  "objective": "...",
+  "specialists": [
+    {
+      "role": "ARCHITECT",
+      "goal": "...",
+      "inputs": ["..."],
+      "deliverables": ["..."],
+      "depends_on": [],
+      "done_criteria": ["..."]
+    }
+  ],
+  "execution_order": ["ARCHITECT", "DEVELOPER", "REVIEWER", "QA"],
+  "parallel_groups": [["ARCHITECT", "DESIGNER"], ["REVIEWER", "QA"]],
+  "risks": ["..."],
+  "quality_gates": ["..."]
 }
 ```
 
-### PASSO 3: Executar Sequencialmente
+### PASSO 2 - Criar subagentes especialistas
 
-```
-Para cada agente na ordem definida:
+A sessão principal cria subagentes (um `Task` por especialista), usando:
+- objetivo específico do especialista
+- contexto mínimo necessário
+- critérios de pronto definidos pelo líder
+- referência do arquivo em `squads/[ROLE].md`
 
-1. Marcar tarefa como in_progress (TaskUpdate)
-2. Ler arquivo do agente em squads/
-3. Executar comportamento do agente
-4. Capturar output
-5. Marcar tarefa como completed (TaskUpdate)
-6. Reportar progresso ao usuário
-7. Passar contexto para próximo agente
-```
+### PASSO 3 - Resolver dependências
 
-### PASSO 4: Reportar Progresso
+Respeitar ordem e paralelismo:
+- tarefas no mesmo grupo paralelo podem rodar juntas
+- tarefas dependentes só começam após outputs necessários
 
-```
-Após cada agente, mostrar:
+### PASSO 4 - Consolidação final
 
-┌─────────────────────────────────────────┐
-│  ✅ [AGENTE] concluído                   │
-│                                         │
-│  Resultado:                             │
-│  [Resumo do que o agente fez]           │
-│                                         │
-│  Próximo: [PRÓXIMO_AGENTE]              │
-└─────────────────────────────────────────┘
-```
+No fim, consolidar:
+- decisões técnicas
+- alterações realizadas
+- riscos remanescentes
+- próximos passos recomendados
+
+Se houver conflito entre especialistas, chamar o líder novamente para decisão final.
 
 ---
 
-## SQUADS PRÉ-DEFINIDOS
+## Templates por tipo de squad
 
 ### Feature Squad
-Para desenvolver novas funcionalidades:
 
-```
-ORDEM: ARCHITECT → DEVELOPER → REVIEWER → QA
-
-┌─────────────┐
-│  ARCHITECT  │ → Define arquitetura e estrutura
-└──────┬──────┘
-       │ Output: Estrutura, decisões técnicas
-       ▼
-┌─────────────┐
-│ DEVELOPER   │ → Implementa código
-└──────┬──────┘
-       │ Output: Código implementado
-       ▼
-┌─────────────┐
-│  REVIEWER   │ → Revisa qualidade do código
-└──────┬──────┘
-       │ Output: Aprovação ou ajustes
-       ▼
-┌─────────────┐
-│     QA      │ → Testa e valida
-└─────────────┘
-       │ Output: Validação final
-       ▼
-    CONCLUÍDO
-```
+Líder + especialistas:
+- PM-LÍDER
+- ARCHITECT
+- DEVELOPER
+- REVIEWER
+- QA
+- SECURITY (obrigatório se envolver auth/pagamento/dados sensíveis)
+- DESIGNER (se houver UI/UX relevante)
 
 ### Bug Squad
-Para corrigir problemas:
 
-```
-ORDEM: DEVELOPER → QA → SECURITY (se crítico)
-
-┌─────────────┐
-│ DEVELOPER   │ → Investiga e corrige
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│     QA      │ → Valida correção
-└──────┬──────┘
-       │
-       ▼ (se crítico)
-┌─────────────┐
-│  SECURITY   │ → Verifica vulnerabilidades
-└─────────────┘
-```
+Líder + especialistas:
+- PM-LÍDER
+- DEVELOPER
+- QA
+- SECURITY (se bug crítico ou superfície sensível)
 
 ### Performance Squad
-Para otimizações:
 
-```
-ORDEM: DATA → DEVELOPER → QA
-
-┌─────────────┐
-│    DATA     │ → Identifica gargalos
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│ DEVELOPER   │ → Implementa otimizações
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│     QA      │ → Valida melhorias
-└─────────────┘
-```
+Líder + especialistas:
+- PM-LÍDER
+- DATA
+- DEVELOPER
+- QA
 
 ### Security Squad
-Para auditorias:
 
+Líder + especialistas:
+- PM-LÍDER
+- SECURITY
+- DEVELOPER
+- REVIEWER
+
+---
+
+## Mapeamento por comando (auto-disparo)
+
+| Comando | Quando usar time automático |
+|---|---|
+| `*desenvolver` | Feature média/grande, integração externa, múltiplos módulos |
+| `*bug` | Bug crítico, comportamento intermitente, causa não clara |
+| `*arquitetura` | Mudança estrutural com impacto em implementação |
+| `*melhorar` | Refatoração em cadeia com risco de regressão |
+| `*seguranca` | Vulnerabilidade, auth, LGPD, segredos, permissões |
+
+Se for tarefa pequena e local (1 arquivo, 1 domínio), não abrir team completo.
+
+---
+
+## Prompt-base do líder (PM)
+
+Use este modelo ao invocar o líder:
+
+```text
+Você é o PM-LÍDER do Agent Team.
+Objetivo do usuário: [objetivo]
+Contexto do projeto: [resumo]
+Arquivos/pastas relevantes: [lista]
+
+Sua missão:
+1) Definir especialistas necessários
+2) Definir ordem/dependências/paralelismo
+3) Definir entregáveis e critérios de pronto
+4) Apontar riscos e quality gates
+
+Responda no JSON obrigatório do protocolo 20-AGENTES.
 ```
-ORDEM: SECURITY → DEVELOPER → REVIEWER
 
-┌─────────────┐
-│  SECURITY   │ → Faz auditoria
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│ DEVELOPER   │ → Corrige vulnerabilidades
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  REVIEWER   │ → Revisa correções
-└─────────────┘
-```
+## Prompt-base dos especialistas
 
-### Design Squad
-Para UI/UX:
+```text
+Você é o especialista [ROLE].
+Siga o papel descrito em squads/[ROLE].md.
+Objetivo: [goal]
+Entradas: [inputs]
+Critérios de pronto: [done_criteria]
 
-```
-ORDEM: DESIGNER → DEVELOPER → QA
-
-┌─────────────┐
-│  DESIGNER   │ → Define UX e visual
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│ DEVELOPER   │ → Implementa interface
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│     QA      │ → Valida experiência
-└─────────────┘
+Responda com:
+1) O que foi feito
+2) Arquivos afetados
+3) Decisões tomadas
+4) Pendências/riscos
 ```
 
 ---
 
-## EXEMPLOS DE USO
+## Fallbacks obrigatórios
 
-### Exemplo 1: Feature Nova
+### Se Agent Teams estiver desligado
 
-```
-USUÁRIO: *agentes
-Quero criar um sistema de pagamentos com Stripe
+- Avisar claramente
+- Executar em modo manual/sequencial
+- Manter mesmo plano de líder + especialistas (sem subagentes reais)
 
-CLAUDE: [Mostra checkpoint]
+### Se o líder falhar em planejar
 
-USUÁRIO: SIM
-
-CLAUDE: Analisando sua solicitação...
-
-        Agentes selecionados: Feature Squad
-        - ARCHITECT: Planejar integração
-        - DEVELOPER: Implementar código
-        - REVIEWER: Revisar implementação
-        - QA: Testar fluxo de pagamento
-
-        Iniciando execução...
-
-        ─────────────────────────────
-        🏗️ ARCHITECT - Trabalhando...
-        ─────────────────────────────
-
-        [Executa ARCHITECT]
-
-        ✅ ARCHITECT concluído
-        Resultado: Arquitetura definida, endpoints mapeados
-
-        ─────────────────────────────
-        💻 DEVELOPER - Trabalhando...
-        ─────────────────────────────
-
-        [Executa DEVELOPER]
-
-        ✅ DEVELOPER concluído
-        Resultado: Código implementado
-
-        [... continua com REVIEWER e QA ...]
-
-        ═══════════════════════════════════
-        🎉 SQUAD CONCLUÍDO!
-        ═══════════════════════════════════
-
-        Resumo:
-        - ✅ Arquitetura definida
-        - ✅ Código implementado
-        - ✅ Code review aprovado
-        - ✅ Testes passando
-
-        Próximos passos sugeridos:
-        1. *api stripe - Documentar API (se não feito)
-        2. *lançar - Checklist de deploy
-```
-
-### Exemplo 2: Bug Crítico
-
-```
-USUÁRIO: *agentes
-Login está permitindo acessar conta de outros usuários
-
-CLAUDE: 🚨 BUG CRÍTICO IDENTIFICADO!
-
-        Este é um problema de segurança grave.
-        Ativando Bug Squad + Security:
-
-        - DEVELOPER: Corrigir
-        - QA: Validar
-        - SECURITY: Auditoria completa
-
-        Posso continuar? (SIM/NÃO)
-```
+- Aplicar template padrão do squad escolhido
+- Prosseguir com escopo reduzido
+- Informar limitação ao usuário
 
 ---
 
-## TRATAMENTO DE ERROS
-
-### Se um agente encontrar problema crítico:
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  ⚠️ PROBLEMA CRÍTICO DETECTADO                                  │
-│                                                                 │
-│  Agente: [AGENTE]                                               │
-│  Problema: [Descrição]                                          │
-│                                                                 │
-│  🔴 BLOQUEIO: Não é seguro continuar sem resolver.              │
-│                                                                 │
-│  Opções:                                                        │
-│  1. Resolver agora (vou tentar corrigir)                        │
-│  2. Pausar e discutir solução                                   │
-│  3. Cancelar execução do squad                                  │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-
-🛑 STOP_POINT - ESPERE decisão do usuário
-```
-
----
-
-## REGRAS DO SISTEMA
-
-### Regra #1: Ordem é Importante
-Execute agentes na ordem correta. ARCHITECT antes de DEVELOPER, REVIEWER antes de QA.
-
-### Regra #2: Contexto é Passado
-O output de um agente alimenta o próximo. Mantenha contexto.
-
-### Regra #3: Pare em Problemas
-Se encontrar problema crítico, pare e informe. Não continue automaticamente.
-
-### Regra #4: Documente Tudo
-Cada agente deve atualizar documentação apropriada em `docs/`.
-
-### Regra #5: Reporte Progresso
-Mostre ao usuário o que cada agente está fazendo e fez.
-
----
-
-## SCRIPT DE PROGRESSO
-
-Use este template para reportar progresso:
+## Output final para o usuário
 
 ```markdown
-─────────────────────────────────────
-🔄 [AGENTE] - [Ação em andamento]
-─────────────────────────────────────
+✅ Agent Team concluído
 
-[Detalhes do que está sendo feito]
+**Líder:** PM
+**Especialistas acionados:** [lista]
 
-✅ [AGENTE] concluído
+**Resumo do que foi entregue:**
+- [item]
+- [item]
 
-**Resultado:**
-- [Item 1]
-- [Item 2]
+**Arquivos/áreas impactadas:**
+- [item]
 
-**Próximo:** [PRÓXIMO_AGENTE] ou "Nenhum (concluído)"
+**Riscos pendentes:**
+- [item] ou "Nenhum crítico"
+
+**Próximo passo recomendado:**
+1. [ação]
+2. [ação]
 ```
 
 ---
 
-## RESUMO
+## Regras de segurança e qualidade
 
-| Ação | Comportamento |
-|------|---------------|
-| Identificar | Analisar tarefa e selecionar agentes |
-| Criar | Usar TaskCreate para cada agente |
-| Executar | Rodar agentes em sequência |
-| Contexto | Passar output de um para outro |
-| Reportar | Mostrar progresso após cada agente |
-| Parar | Interromper se problema crítico |
+- Não ocultar falhas de subagente.
+- Não pular validação quando houver risco alto.
+- Não declarar concluído sem checar critérios de pronto.
+- Sempre registrar mudanças e decisões nos docs do projeto quando aplicável.
 
-**Lembre-se:** Squads são equipes coordenadas, não execuções paralelas aleatórias!
+---
+
+## Resumo rápido
+
+1. Detectar necessidade (comando ou auto-score)
+2. Criar líder PM via `Task`
+3. Gerar plano estruturado
+4. Criar subagentes especializados via `Task`
+5. Consolidar outputs + reportar
+
+Este é o padrão oficial para Agent Teams neste projeto.

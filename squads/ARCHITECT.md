@@ -81,3 +81,39 @@ Arquitetura de software, decisões técnicas, modelagem de dados, estrutura de p
 - NÃO implementa código (isso é do DEVELOPER)
 - NÃO faz code review (isso é do REVIEWER)
 - NÃO cria testes (isso é do QA)
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [ARCHITECT] Arquitetura Definida
+
+**Arquivos criados/modificados:**
+- docs/ARQUITETURA/database.md
+- docs/ARQUITETURA/api.md
+- docs/DECISOES/001-*.md
+
+**Decisões principais:**
+- Usar PostgreSQL ao invés de MongoDB
+- API REST com versionamento
+- Cache com Redis
+
+**Próximos passos:**
+- DEVELOPER pode iniciar implementação
+- DESIGNER pode criar UI baseada nas specs
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [ARCHITECT] Arquitetura Definida...",
+  "files": ["docs/ARQUITETURA/database.md", "docs/ARQUITETURA/api.md"],
+  "decisions": ["PostgreSQL over MongoDB", "REST API v1"],
+  "nextAgents": ["DEVELOPER", "DESIGNER"]
+}
+```

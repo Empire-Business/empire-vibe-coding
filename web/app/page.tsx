@@ -1,6 +1,6 @@
 'use client'
 
-import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, Copy, Check, Terminal, Github, Download, FolderOpen, ChevronDown, ChevronUp, Palette, MousePointer, Star, CheckCircle, Database, Layers, GitBranch, ListTodo, Calendar, Brain, HelpCircle } from 'lucide-react'
+import { Rocket, Code, Bug, AlertCircle, BookOpen, Shield, Upload, Map, FileText, RefreshCw, Settings, BarChart3, Users, Search, Sparkles, Copy, Check, Terminal, Github, Download, FolderOpen, ChevronDown, ChevronUp, Palette, MousePointer, Star, CheckCircle, Database, Layers, GitBranch, ListTodo, Calendar, Brain, HelpCircle, Globe } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 
@@ -52,13 +52,17 @@ const infraCommands: Command[] = [
 const automationCommands: Command[] = [
   { cmd: '*workflow', name: 'Criar Workflows', description: 'GitHub Actions, CI/CD, automações', example: '*workflow\n\nQuero CI para testes', icon: GitBranch, color: 'bg-slate-100 text-slate-600' },
   { cmd: '*orquestrar', name: 'Orquestrar Comandos', description: 'Combina múltiplos comandos', example: '*orquestrar\n\nMeu app está lento', icon: Layers, color: 'bg-indigo-100 text-indigo-600' },
-  { cmd: '*tarefas', name: 'Gerenciar Tarefas', description: 'TaskCreate/Update/Get/List do Claude Code', icon: ListTodo, color: 'bg-orange-100 text-orange-600' },
+  { cmd: '*tarefas', name: 'Gerenciar Tarefas', description: 'Usa o Task tool do Claude Code para dividir e acompanhar tarefas', icon: ListTodo, color: 'bg-orange-100 text-orange-600' },
 ]
 
 const planningCommands: Command[] = [
   { cmd: '*planejar', name: 'Planejamento Detalhado', description: 'WBS, estimativas, riscos, critérios', example: '*planejar\n\nSistema de pagamentos', icon: Calendar, color: 'bg-blue-100 text-blue-600' },
   { cmd: '*especificar', name: 'Criar Spec', description: 'Cria especificação técnica de uma feature', example: '*especificar\n\nSistema de pagamento', icon: FileText, color: 'bg-slate-100 text-slate-600' },
   { cmd: '*prd', name: 'Gerar PRD Completo', description: 'PRD com seção leiga e técnica, 20 seções', example: '*prd\n\nApp de gestão financeira', icon: FileText, color: 'bg-cyan-100 text-cyan-600' },
+]
+
+const integrationCommands: Command[] = [
+  { cmd: '*api', name: 'Documentar API Externa', description: 'Pesquisa e documenta APIs antes da integração', example: '*api\n\nstripe', icon: Globe, color: 'bg-emerald-100 text-emerald-600' },
 ]
 
 const specialistCommands: Command[] = [
@@ -165,7 +169,7 @@ function CommandSection({ title, commands, defaultOpen = true }: { title: string
 export default function HomePage() {
   const totalCommands = mainCommands.length + docCommands.length + designCommands.length +
     qualityCommands.length + infraCommands.length + automationCommands.length +
-    planningCommands.length + specialistCommands.length
+    planningCommands.length + integrationCommands.length + specialistCommands.length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -462,7 +466,7 @@ export default function HomePage() {
               *começar
             </div>
             <p className="text-blue-200 mt-2 sm:mt-3 text-xs sm:text-sm">
-              O Claude vai explicar os próximos passos: digite *PRD para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
+              O Claude vai explicar os próximos passos: digite *prd para criar o documento de requisitos, depois *arquitetura para definir a arquitetura.
             </p>
           </div>
 
@@ -486,6 +490,9 @@ export default function HomePage() {
 
           {/* Comandos de Planejamento */}
           <CommandSection title="Planejamento" commands={planningCommands} />
+
+          {/* Comandos de Integração */}
+          <CommandSection title="Integração" commands={integrationCommands} />
 
           {/* Comandos de Especialistas */}
           <CommandSection title="Especialistas" commands={specialistCommands} />

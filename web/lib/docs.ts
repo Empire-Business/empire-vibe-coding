@@ -260,7 +260,7 @@ export function extractErrorGuides(content: string): ErrorGuide[] {
  * Lista de seções de protocolos disponíveis
  */
 export const PROTOCOL_SECTIONS = [
-  { id: 'iniciar', title: 'Iniciar Projeto', path: '00-INICIAR.md' },
+  { id: 'iniciar', title: 'Iniciar Projeto', path: '00-COMEÇAR.md' },
   { id: 'desenvolver', title: 'Desenvolvimento', path: '01-DESENVOLVER.md' },
   { id: 'bugs', title: 'Correção de Bugs', path: '02-BUGS.md' },
   { id: 'melhorar', title: 'Melhorar Código', path: '03-MELHORAR.md' },

@@ -69,30 +69,54 @@ Exemplo CORRETO:
 ### LEI #5: DESENVOLVIMENTO BLOQUEADO SEM PRÉ-REQUISITOS
 
 ```
-PROIBIDO implementar código sem verificar antes:
+PROIBIDO implementar código sem VERIFICAR EXPLICITAMENTE os pré-requisitos.
 
-┌─────────────────────────────────────────────────────────────┐
-│  CHECKLIST OBRIGATÓRIO ANTES DE *desenvolver:               │
-│                                                              │
-│  1. [ ] docs/PRD.md existe e está preenchido?                │
-│  2. [ ] docs/ARQUITETURA.md existe e está preenchido?        │
-│  3. [ ] docs/ROADMAP.md existe e tem tarefas?                │
-│  4. [ ] Design System está definido?                         │
-│       → docs/DESIGN/tokens.md OU                             │
-│       → Tailwind configurado OU                              │
-│       → Padrões visuais documentados                         │
-│                                                              │
-│  Se QUALQUER item estiver FALTANDO:                          │
-│  🛑 BLOQUEAR desenvolvimento                                 │
-│  → Mostrar qual está faltando                                │
-│  → Direcionar para comando correto (*prd, *arquitetura, etc) │
-│  → NÃO PROSSEGUIR até resolver                               │
-└─────────────────────────────────────────────────────────────┘
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 ORDEM OBRIGATÓRIA DE DOCUMENTAÇÃO:                                   ║
+║                                                                           ║
+║  1. *prd         → Define O QUE construir                                ║
+║  2. *arquitetura → Define COMO construir tecnicamente                    ║
+║  3. *roadmap     → Define QUANDO e em que ordem                          ║
+║  4. *design      → Define VISUALMENTE como vai ser                       ║
+║                                                                           ║
+║  Só depois: *desenvolver                                                 ║
+║                                                                           ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                           ║
+║  VERIFICAÇÃO OBRIGATÓRIA (EXECUTE REALMENTE com ls ou Read):              ║
+║                                                                           ║
+║  [✅/❌] PRD         docs/PRD.md                                          ║
+║  [✅/❌] Arquitetura docs/ARQUITETURA/                                    ║
+║  [✅/❌] Roadmap     docs/ROADMAP.md                                      ║
+║  [✅/❌] Design      docs/DESIGN/ ou tailwind.config.*                    ║
+║                                                                           ║
+║  Se QUALQUER item tiver ❌:                                               ║
+║  → PARAR                                                                  ║
+║  → Mostrar trava visual com itens faltando                               ║
+║  → Direcionar para comando correto                                       ║
+║  → NÃO PROSSEGUIR até todos serem ✅                                      ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+COMO VERIFICAR (EXEMPLO):
+
+  # Verificar PRD
+  ls docs/PRD.md && echo "✅" || echo "❌"
+
+  # Verificar Arquitetura
+  ls -d docs/ARQUITETURA && echo "✅" || echo "❌"
+
+  # Verificar Roadmap
+  ls docs/ROADMAP.md && echo "✅" || echo "❌"
+
+  # Verificar Design
+  (ls docs/DESIGN || ls tailwind.config.* 2>/dev/null) && echo "✅" || echo "❌"
 
 EXCEÇÕES (quando NÃO bloquear):
 - *bug e *erro → não precisam dos 4 pré-requisitos
 - Manutenção simples (typos, dependências, refatoração sem mudança de comportamento)
-- Projetos já estabelecidos com código funcionando
+- Projetos já estabelecidos com código funcionando há tempos
 ```
 
 ---
@@ -267,18 +291,39 @@ ETAPA 4 - PRÓXIMOS PASSOS:
 PROIBIDO: Implementar código durante *prd
 ```
 
-### `*agentes` - SISTEMA DE SQUADS
+### `*agentes` - AGENT TEAMS
 
 ```
 COMPORTAMENTO OBRIGATÓRIO:
 
 1. IDENTIFICAR necessidade
-2. MOSTRAR agentes disponíveis (consultar squads/)
-3. CRIAR tarefas com TaskCreate
-4. EXECUTAR sequencialmente
-5. REPORTAR progresso
+2. CRIAR agente líder (PM) com Task tool
+3. GERAR plano de execução pelo líder
+4. CRIAR subagentes especialistas com Task tool
+5. EXECUTAR por dependências/paralelismo
+6. CONSOLIDAR saída final e reportar progresso
 
 Consultar: vibe-coding/PROTOCOLOS/20-AGENTES.md
+```
+
+### ATIVAÇÃO AUTOMÁTICA DE AGENT TEAMS
+
+```
+Mesmo sem comando *agentes, ativar Agent Teams quando:
+
+- Escopo multi-domínio (ex: arquitetura + implementação + QA)
+- Risco alto (auth, pagamentos, segurança, dados sensíveis)
+- Tarefa grande com múltiplas frentes de trabalho
+
+Fluxo obrigatório:
+1. Checkpoint curto (o que vai fazer / não vai fazer)
+2. PM-líder
+3. Especialistas
+4. Consolidação final
+
+Regra de ferramenta:
+- Use Task tool (subagent_type + prompt)
+- Não use TaskCreate/TaskUpdate para Agent Teams
 ```
 
 ---

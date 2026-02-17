@@ -89,3 +89,43 @@ Implementação de código, desenvolvimento de features, refatoração, correç�
 - NÃO decide arquitetura sozinho (consultar ARCHITECT)
 - NÃO aprova próprio código (precisa de REVIEWER)
 - NÃO testa próprio código (precisa de QA)
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [DEVELOPER] Implementação Concluída
+
+**Arquivos criados/modificados:**
+- src/features/payment/PaymentService.ts
+- src/features/payment/PaymentController.ts
+- src/lib/stripe.ts
+
+**Funcionalidades implementadas:**
+- [x] Criação de checkout session
+- [x] Webhook handler para Stripe
+- [x] Validação de pagamento
+
+**Decisões de implementação:**
+- Usado pattern Repository para abstração
+- Tratamento de erros com Result pattern
+
+**Próximos passos:**
+- REVIEWER pode revisar código
+- QA pode testar fluxo de pagamento
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [DEVELOPER] Implementação Concluída...",
+  "files": ["src/features/payment/PaymentService.ts"],
+  "features": ["checkout session", "webhook handler"],
+  "nextAgents": ["REVIEWER", "QA"]
+}
+```

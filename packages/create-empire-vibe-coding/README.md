@@ -28,6 +28,10 @@ npx create-empire-vibe-coding minha-pasta
    - `docs/DECISOES.md`
    - `docs/ARQUITETURA.md`
 
+4. Configura Agent Teams automaticamente em:
+   - `.claude/settings.local.json`
+   - com `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"`
+
 ## Próximos Passos
 
 Depois de instalar:
@@ -45,7 +49,7 @@ claude
 
 ## Requisitos
 
-- Node.js 16 ou superior
+- Node.js 18 ou superior
 - Claude Code instalado ([como instalar](https://docs.anthropic.com/claude-code))
 
 ## Links

@@ -34,3 +34,9 @@ npm-debug.log*
 
 # Debug
 *.pem
+
+# Local SQLite data
+data/*.db
+data/*.db-*
+web/data/*.db
+web/data/*.db-*

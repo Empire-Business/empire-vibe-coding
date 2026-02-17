@@ -111,3 +111,46 @@ Interface de usuário, experiência do usuário, design system, acessibilidade, 
 - NÃO cria designs visuais finais (ferramentas específicas)
 - NÃO implementa código (isso é do DEVELOPER)
 - NÃO substitui pesquisa com usuários real
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [DESIGNER] Design Definido
+
+**Arquivos criados/modificados:**
+- docs/DESIGN/design-system.md
+- docs/DESIGN/components.md
+
+**Decisões de design:**
+- Paleta: Azul (#3B82F6) como primária
+- Tipografia: Inter para UI, headings em Poppins
+- Espaçamento: Sistema de 4px base
+
+**Componentes definidos:**
+- Button (variantes: primary, secondary, ghost)
+- Input (estados: default, focus, error, disabled)
+- Card (com header, body, footer)
+
+**Próximos passos:**
+- DEVELOPER pode implementar componentes
+- Atualizar tailwind.config com tokens
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [DESIGNER] Design Definido...",
+  "files": ["docs/DESIGN/design-system.md"],
+  "designTokens": {
+    "primaryColor": "#3B82F6",
+    "fontFamily": "Inter"
+  },
+  "components": ["Button", "Input", "Card"],
+  "nextAgent": "DEVELOPER"
+}

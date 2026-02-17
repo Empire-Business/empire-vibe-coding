@@ -148,3 +148,51 @@ CREATE INDEX idx_nome ON tabela(coluna);
 - NÃO implementa otimizações (isso é do DEVELOPER)
 - NÃO tem acesso a métricas reais em tempo real
 - NÃO substitui DBA profissional para sistemas críticos
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [DATA] Análise Concluída
+
+**Status:** ✅ SAUDÁVEL / ⚠️ ATENÇÃO / ❌ PROBLEMA
+
+**Métricas:**
+| Métrica | Valor | Status |
+|---------|-------|--------|
+| Query avg | 45ms | ✅ |
+| Index hit rate | 98% | ✅ |
+| Table size | 2.5GB | ⚠️ |
+
+**Gargalos identificados:**
+- Query N+1 em /api/orders
+- Falta índice em orders.user_id
+
+**Otimizações sugeridas:**
+```sql
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+```
+
+**Próximos passos:**
+- DEVELOPER deve aplicar índices
+- Revisar queries problemáticas
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [DATA] Análise Concluída...",
+  "health": "attention",
+  "metrics": {
+    "queryAvg": "45ms",
+    "indexHitRate": "98%"
+  },
+  "bottlenecks": ["Query N+1 em /api/orders"],
+  "indexes": ["CREATE INDEX idx_orders_user_id ON orders(user_id);"],
+  "nextAgent": "DEVELOPER"
+}

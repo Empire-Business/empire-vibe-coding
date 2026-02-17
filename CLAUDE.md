@@ -28,8 +28,34 @@ Antes de cada ação: explique O QUE vai fazer, O QUE NÃO vai fazer, peça conf
 Comandos são GUIAS, não autorizações para fazer tudo automaticamente.
 
 ### LEI #5: DESENVOLVIMENTO BLOQUEADO SEM PRÉ-REQUISITOS
-Antes de `*desenvolver`, verificar: PRD, ARQUITETURA, ROADMAP, Design System.
-Se faltar qualquer um → BLOQUEAR e direcionar para comando correto.
+
+Antes de `*desenvolver`, **VERIFICAR EXPLICITAMENTE** (com `ls` ou `Read`):
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 ORDEM OBRIGATÓRIA:                                                    ║
+║                                                                           ║
+║  1. *prd         → Define O QUE construir                                ║
+║  2. *arquitetura → Define COMO construir tecnicamente                    ║
+║  3. *roadmap     → Define QUANDO e em que ordem                          ║
+║  4. *design      → Define VISUALMENTE como vai ser                       ║
+║                                                                           ║
+║  Só depois: *desenvolver                                                 ║
+║                                                                           ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                           ║
+║  [✅/❌] PRD         docs/PRD.md                                          ║
+║  [✅/❌] Arquitetura docs/ARQUITETURA/                                    ║
+║  [✅/❌] Roadmap     docs/ROADMAP.md                                      ║
+║  [✅/❌] Design      docs/DESIGN/ ou tailwind.config.*                    ║
+║                                                                           ║
+║  Se QUALQUER item tiver ❌ → PARAR, mostrar trava, direcionar.           ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+**Exceções:** `*bug`, `*erro`, manutenção simples, projetos já estabelecidos.
 
 ---
 
@@ -158,9 +184,12 @@ When users type commands starting with `*` (e.g., `*começar`, `*bug`), Claude s
 |---------|-----------|-----------|
 | `*começar` | 00-COMEÇAR.md | Tutorial interativo para novos projetos |
 | `*prd` | 18-PRD.md | Gera PRD com checkpoints |
+| `*arquitetura` | 22-ARQUITETURA.md | Define arquitetura técnica |
+| `*roadmap` | 21-ROADMAP.md | Cria plano de entregas |
+| `*design` | 09-DESIGN.md | Configura Design System |
 | `*desenvolver` | 01-DESENVOLVER.md | Modo desenvolvimento |
 | `*bug` | 02-BUGS.md | Correção de bugs |
-| `*agentes` | 20-AGENTES.md | Sistema de squads |
+| `*agentes` | 20-AGENTES.md | Agent Teams (líder + subagentes) |
 | `*api` | 19-API.md | Documenta API externa |
 | `*ajuda` | - | Lista todos os comandos |
 
@@ -196,17 +225,30 @@ COMPORTAMENTO OBRIGATÓRIO:
 PROIBIDO: Implementar código durante *prd
 ```
 
-### `*agentes` - Sistema de Squads
+### `*agentes` - Agent Teams
 
 ```
 COMPORTAMENTO OBRIGATÓRIO:
 
 1. IDENTIFICAR necessidade
-2. MOSTRAR agentes disponíveis em squads/
-3. CRIAR tarefas com TaskCreate
-4. EXECUTAR sequencialmente
-5. REPORTAR progresso
+2. CRIAR agente líder (PM) via Task tool
+3. USAR plano do líder para criar subagentes especialistas via Task tool
+4. EXECUTAR por dependências/paralelismo (quando aplicável)
+5. CONSOLIDAR e reportar progresso
 ```
+
+### Ativação Automática de Agent Teams
+
+Mesmo sem `*agentes`, ativar Agent Teams automaticamente quando:
+- tarefa envolver múltiplos domínios (ex: arquitetura + código + testes)
+- houver alto risco (auth, pagamentos, segurança, dados sensíveis)
+- escopo exigir coordenação entre especialistas
+
+Fluxo obrigatório:
+1. checkpoint curto
+2. líder PM
+3. especialistas
+4. consolidação final
 
 ---
 
@@ -261,3 +303,78 @@ Você deve:
 3. DIRECIONAR para o comando adequado
 
 **NÃO criar arquivos automaticamente!**
+
+---
+
+## Dashboard de Tarefas
+
+Execute `npm run dashboard` para abrir o dashboard em localhost:3001.
+
+```
+npm run dashboard
+# Abre em http://localhost:3001
+```
+
+### O que o dashboard oferece:
+
+- **Task Board (Kanban)** — Visualize tarefas por status (pending, running, completed, blocked)
+- **DAG View** — Veja dependências entre tarefas em grafo visual
+- **Terminal Prompts** — Prompts prontos para copiar/colar no Claude Code
+- **Logs em tempo real** — Acompanhe execução via Server-Sent Events (SSE)
+- **Execução paralela** — Tarefas independentes executam simultaneamente
+
+### Comandos do Dashboard:
+
+| Comando | Função |
+|---------|--------|
+| `*dashboard` | Inicia servidor do dashboard (somente consulta) |
+
+### Arquitetura do Dashboard:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  DASHBOARD (localhost:3001)                 │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │  TASK BOARD │  │  DAG VIEW   │  │   TERMINAL PROMPTS  │  │
+│  │  (Kanban)   │  │  (ReactFlow)│  │   (Copy-paste)      │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                            │ SSE (real-time)
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    API ROUTES (Next.js)                     │
+│  GET /api/tasks           - Consulta tarefas               │
+│  GET /api/tasks/events    - SSE para updates em tempo real │
+│  GET /api/squads          - Consulta squads                │
+│  Rotas de escrita         - Bloqueadas (read-only)         │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   TASK ORCHESTRATOR (Core)                  │
+│  - DAG Engine (dependências entre tarefas)                  │
+│  - Parallel Executor (Promise.all por nível)                │
+│  - Event Emitter (notifica dashboard)                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Execução Paralela por Nível:
+
+Tarefas são organizadas em níveis baseados em dependências:
+
+```
+NÍVEL 0 (sem dependências, executam em PARALELO):
+├── ARCHITECT → Define arquitetura
+├── DESIGNER  → Define UI/UX
+└── DATA      → Analisa requisitos de dados
+
+NÍVEL 1 (aguarda Nível 0):
+└── DEVELOPER → Implementa código
+
+NÍVEL 2 (aguarda Nível 1, executam em PARALELO):
+├── REVIEWER  → Code review
+├── QA        → Testes
+└── SECURITY  → Auditoria
+```
+
+Isso reduz tempo de execução em 60-80% comparado à execução sequencial.

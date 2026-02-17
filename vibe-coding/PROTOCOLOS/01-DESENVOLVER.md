@@ -14,7 +14,7 @@ Ao guiar o usuário através deste documento:
 10. Seja paciente - o usuário está aprendendo enquanto constrói
 ---
 
-# 01-DESENVOLVIMENTO.md
+# 01-DESENVOLVER.md
 
 ## Protocolo: Desenvolvimento Diário
 
@@ -22,73 +22,101 @@ Este documento estabelece o protocolo padrão para o fluxo de trabalho diário d
 
 ---
 
-## 🛑 CHECKPOINT INICIAL OBRIGATÓRIO
+## 🛑 PASSO 0: VERIFICAÇÃO DE PRÉ-REQUISITOS (OBRIGATÓRIO)
 
-### ANTES DE QUALQUER DESENVOLVIMENTO, VERIFICAR:
+### ANTES DE QUALQUER DESENVOLVIMENTO, EXECUTE A VERIFICAÇÃO:
+
+**USE `ls` ou `Read` para VERIFICAR EXPLICITAMENTE cada arquivo/pasta.**
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  VERIFICAÇÃO DE PRÉ-REQUISITOS                              │
-└─────────────────────────────────────────────────────────────┘
-
-Execute esta verificação ANTES de começar qualquer desenvolvimento:
-
-1. docs/PRD.md existe e tem conteúdo?
-   ├── NÃO → 🛑 BLOQUEAR
-   │        "Você precisa criar o PRD primeiro."
-   │        "Execute: *prd"
-   │        PARAR AQUI
-   └── SIM → ✅ Continuar
-
-2. docs/ARQUITETURA.md existe e tem conteúdo?
-   ├── NÃO → 🛑 BLOQUEAR
-   │        "Você precisa definir a arquitetura primeiro."
-   │        "Execute: *arquitetura"
-   │        PARAR AQUI
-   └── SIM → ✅ Continuar
-
-3. docs/ROADMAP.md existe e tem tarefas?
-   ├── NÃO → 🛑 BLOQUEAR
-   │        "Você precisa criar o roadmap primeiro."
-   │        "Execute: *roadmap"
-   │        PARAR AQUI
-   └── SIM → ✅ Continuar
-
-4. Design System está definido?
-   ├── Verificar: docs/DESIGN/tokens.md OU tailwind.config.* OU padrões visuais documentados
-   ├── NÃO → 🛑 BLOQUEAR
-   │        "Você precisa definir o Design System primeiro."
-   │        "Execute: *design"
-   │        PARAR AQUI
-   └── SIM → ✅ PERMITIR DESENVOLVIMENTO
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 VERIFICAÇÃO DE PRÉ-REQUISITOS                                        ║
+║                                                                           ║
+║  Antes de desenvolver, preciso verificar se você tem a documentação      ║
+║  necessária. Vou checar cada item:                                        ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
 ```
 
-### MENSAGEM DE BLOQUEIO
+### VERIFICAÇÃO EXPLÍCITA (EXECUTE REALMENTE):
 
-Quando um pré-requisito estiver faltando, mostrar:
+```
+1. Execute: ls docs/PRD.md 2>/dev/null && echo "✅ Existe" || echo "❌ Faltando"
+2. Execute: ls -d docs/ARQUITETURA 2>/dev/null && echo "✅ Existe" || echo "❌ Faltando"
+3. Execute: ls docs/ROADMAP.md 2>/dev/null && echo "✅ Existe" || echo "❌ Faltando"
+4. Execute: (ls docs/DESIGN 2>/dev/null || ls tailwind.config.* 2>/dev/null) && echo "✅ Existe" || echo "❌ Faltando"
+```
+
+### MENSAGEM DE STATUS (MOSTRE APÓS VERIFICAR):
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 VERIFICAÇÃO DE PRÉ-REQUISITOS                                        ║
+║                                                                           ║
+║  [✅/❌] PRD         docs/PRD.md                                          ║
+║  [✅/❌] Arquitetura docs/ARQUITETURA/                                    ║
+║  [✅/❌] Roadmap     docs/ROADMAP.md                                      ║
+║  [✅/❌] Design      docs/DESIGN/ ou tailwind.config.*                    ║
+║                                                                           ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                           ║
+║  ORDEM OBRIGATÓRIA:                                                       ║
+║                                                                           ║
+║  1. *prd         → Define O QUE construir                                ║
+║  2. *arquitetura → Define COMO construir tecnicamente                    ║
+║  3. *roadmap     → Define QUANDO e em que ordem                          ║
+║  4. *design      → Define VISUALMENTE como vai ser                       ║
+║                                                                           ║
+║  Só depois: *desenvolver                                                 ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+### SE QUALQUER ITEM TIVER ❌:
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
 ║  🛑 DESENVOLVIMENTO BLOQUEADO                                 ║
 ║                                                               ║
-║  Antes de desenvolver, você precisa ter:                      ║
+║  O(s) seguinte(s) pré-requisito(s) está(ão) faltando:        ║
 ║                                                               ║
-║  1. [STATUS] PRD (docs/PRD.md)                                ║
-║     [→ Execute: *prd] se faltando                             ║
+║  [LISTAR itens com ❌]                                        ║
 ║                                                               ║
-║  2. [STATUS] Arquitetura (docs/ARQUITETURA.md)                ║
-║     [→ Execute: *arquitetura] se faltando                     ║
+║  Para resolver, execute o comando correspondente:             ║
 ║                                                               ║
-║  3. [STATUS] Roadmap (docs/ROADMAP.md)                        ║
-║     [→ Execute: *roadmap] se faltando                         ║
+║  • Se falta PRD:         Execute *prd                        ║
+║  • Se falta Arquitetura: Execute *arquitetura                ║
+║  • Se falta Roadmap:     Execute *roadmap                    ║
+║  • Se falta Design:      Execute *design                     ║
 ║                                                               ║
-║  4. [STATUS] Design System                                    ║
-║     [→ Execute: *design] se faltando                          ║
+║  💡 Dica: Siga a ordem acima (PRD → Arquitetura → Roadmap → Design) ║
 ║                                                               ║
-║  Complete os itens faltando antes de desenvolver.             ║
+║  NÃO POSSO PROSSEGUIR COM DESENVOLVIMENTO até resolver.       ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
+
+🛑 STOP_POINT_BLOQUEIO
+→ NÃO prossiga com desenvolvimento
+→ ESPERE o usuário resolver o pré-requisito
+→ Após resolver, execute a verificação novamente
+```
+
+### SE TODOS OS ITENS TIVEREM ✅:
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  ✅ PRÉ-REQUISITOS COMPLETOS                                  ║
+║                                                               ║
+║  Todos os documentos necessários estão em dia!               ║
+║  Podemos prosseguir com o desenvolvimento.                   ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+→ Continue para o CHECKPOINT de desenvolvimento
 ```
 
 ### EXCEÇÕES (NÃO bloquear)
@@ -97,7 +125,13 @@ Esta verificação NÃO se aplica quando:
 - O comando é `*bug` ou `*erro`
 - É manutenção simples (typos, atualização de dependências)
 - É refatoração sem mudança de comportamento
-- O projeto já tem código funcionando (assumir que passou pela fase de documentação)
+- O projeto já tem código funcionando há tempos (não é projeto novo)
+
+---
+
+## 🛑 CHECKPOINT INICIAL OBRIGATÓRIO
+
+### DEPOIS DE PASSAR PELA VERIFICAÇÃO, MOSTRE:
 
 ---
 

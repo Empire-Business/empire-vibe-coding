@@ -5,7 +5,7 @@ Este protocolo é invocado pelo CLAUDE.md.
 Execute conforme as regras definidas no CLAUDE.md e em COMUNICACAO.md.
 ---
 
-# 04-MANUTENCAO-PROJETOS-PRONTOS.md
+# 04-MANUTENCAO.md
 
 ## Protocolo: Manutenção de Projetos em Produção
 

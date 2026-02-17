@@ -413,3 +413,96 @@ Quando planejando:
 | Ver detalhes | `*tarefas ver [id]` |
 
 **Lembre-se:** Tarefas quebram trabalho grande em pedaços menores. Cada pedaço concluído é uma vitória!
+
+---
+
+## Dashboard de Tarefas (NOVO)
+
+### Iniciar Dashboard
+
+```bash
+npm run dashboard
+# Abre em http://localhost:3001
+```
+
+O dashboard oferece visualização em tempo real das tarefas com:
+- **Kanban Board** — Tarefas por status
+- **DAG View** — Dependências visuais
+- **Terminal Prompts** — Copiar/colar para executar
+- **Logs em tempo real** — Via Server-Sent Events
+
+---
+
+## Campos de DAG (NOVO)
+
+Tarefas no dashboard suportam campos extras para execução paralela:
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `blockedBy` | string[] | IDs de tarefas que precisam completar primeiro |
+| `blocks` | string[] | IDs de tarefas que esta tarefa bloqueia |
+| `level` | number | Nível no DAG (0 = sem dependências, pode executar imediatamente) |
+| `terminalPrompt` | string | Prompt pronto para copiar/colar no Claude Code |
+| `agent` | string | Agente responsável (PM, ARCHITECT, DEVELOPER, etc) |
+| `protocol` | string | Arquivo de protocolo relacionado |
+
+### Exemplo de Tarefa Completa
+
+```json
+{
+  "id": "task-123",
+  "subject": "Implementar sistema de pagamentos",
+  "description": "Criar integração com Stripe para processar pagamentos",
+  "status": "pending",
+  "agent": "DEVELOPER",
+  "level": 1,
+  "blockedBy": ["task-arch-001", "task-design-002"],
+  "blocks": ["task-review-003", "task-qa-004"],
+  "terminalPrompt": "claude \"Implemente o sistema de pagamentos conforme definido em docs/ARQUITETURA.md. Use o protocolo 01-DESENVOLVER.md\"",
+  "protocol": "01-DESENVOLVER.md",
+  "progress": 0,
+  "logs": []
+}
+```
+
+---
+
+## Execução Paralela por Nível (NOVO)
+
+O orchestrator executa tarefas em paralelo quando não há dependências:
+
+```
+NÍVEL 0 (executam em PARALELO - sem dependências):
+├── Task A (agent: ARCHITECT)
+├── Task B (agent: DESIGNER)
+└── Task C (agent: DATA)
+
+NÍVEL 1 (executa SEQUENCIAL - aguarda Nível 0):
+└── Task D (agent: DEVELOPER) → blockedBy: [A, B, C]
+
+NÍVEL 2 (executam em PARALELO - aguardam Nível 1):
+├── Task E (agent: REVIEWER) → blockedBy: [D]
+├── Task F (agent: QA) → blockedBy: [D]
+└── Task G (agent: SECURITY) → blockedBy: [D]
+```
+
+### Benefícios
+
+- **60-80% mais rápido** que execução sequencial
+- Visualização clara de bloqueios
+- Logs centralizados
+- Prompts prontos para usar
+
+---
+
+## Comandos do Dashboard
+
+| Comando | Função |
+|---------|--------|
+| `*dashboard` | Inicia o dashboard em localhost:3001 (somente consulta) |
+
+### Observação importante
+
+No modo dashboard, mutações de tarefa/squad ficam bloqueadas por design:
+- `POST`, `PATCH` e `DELETE` retornam `403`
+- a interface é destinada a consulta, monitoramento e acompanhamento

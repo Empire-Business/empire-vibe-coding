@@ -98,3 +98,43 @@ Code review, detecção de problemas, sugestões de melhoria, garantia de qualid
 - NÃO implementa correções (isso é do DEVELOPER)
 - NÃO executa testes formais (isso é do QA)
 - NÃO faz auditoria de segurança profunda (isso é do SECURITY)
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [REVIEWER] Code Review Concluído
+
+**Veredito:** ✅ APROVADO / ⚠️ AJUSTES NECESSÁRIOS / ❌ REPROVADO
+
+**Problemas encontrados:**
+| Severidade | Arquivo | Problema |
+|------------|---------|----------|
+| Crítica | PaymentService.ts:45 | SQL injection potencial |
+| Média | PaymentController.ts:12 | Falta tratamento de erro |
+
+**Pontos positivos:**
+- Código bem estruturado
+- Boa separação de responsabilidades
+
+**Próximos passos:**
+- Se aprovado: QA pode testar
+- Se ajustes: DEVELOPER deve corrigir
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [REVIEWER] Code Review Concluído...",
+  "verdict": "approved",
+  "issues": [
+    {"severity": "critical", "file": "PaymentService.ts", "line": 45}
+  ],
+  "nextAgent": "QA"
+}
+```

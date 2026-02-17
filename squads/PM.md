@@ -99,10 +99,10 @@ Isso não é drama. É responsabilidade real.
 - `DESIGNER` — UI/UX, acessibilidade
 - `DATA` — Queries, performance, analytics
 
-### Tasks (TaskCreate/TaskUpdate)
-- Criar tarefas para rastrear progresso
-- Delegar para outros agentes
-- Marcar concluído quando finalizar
+### Task Tool (Agent Teams)
+- Invocar subagentes com `Task`
+- Definir objetivo e critérios de pronto
+- Consolidar respostas dos especialistas
 
 ---
 
@@ -221,6 +221,55 @@ PM executa:
 
 ---
 
+## ⚠️ CHECKPOINT DE PRÉ-REQUISITOS (OBRIGATÓRIO)
+
+### ANTES DE DELEGAR PARA DEVELOPER, VERIFIQUE:
+
+**Se o pedido envolve implementar código novo, VERIFIQUE os pré-requisitos:**
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 VERIFICAÇÃO DE PRÉ-REQUISITOS DO PM                                   ║
+║                                                                           ║
+║  Antes de delegar para o DEVELOPER, preciso verificar:                   ║
+║                                                                           ║
+║  1. [✅/❌] PRD         docs/PRD.md                                       ║
+║  2. [✅/❌] Arquitetura docs/ARQUITETURA/                                 ║
+║  3. [✅/❌] Roadmap     docs/ROADMAP.md                                   ║
+║  4. [✅/❌] Design      docs/DESIGN/ ou tailwind.config.*                 ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+### SE FALTAR QUALQUER ITEM:
+
+```
+🛑 BLOQUEAR delegação para DEVELOPER
+
+Diga ao usuário:
+  "Antes de implementar, precisamos ter a documentação completa."
+  "Está faltando: [listar itens]"
+  "Por favor, execute primeiro: [comando correspondente]"
+
+Ordem recomendada:
+  1. *prd         → Define O QUE construir
+  2. *arquitetura → Define COMO construir tecnicamente
+  3. *roadmap     → Define QUANDO e em que ordem
+  4. *design      → Define VISUALMENTE como vai ser
+
+Só depois chame *desenvolver ou delegue para DEVELOPER.
+```
+
+### EXCEÇÕES (não precisa verificar):
+
+- Bug fix (`*bug`)
+- Manutenção simples
+- Refatoração sem nova funcionalidade
+- Projetos já estabelecidos com código funcionando
+
+---
+
 ## Checkpoint Obrigatório
 
 Antes de iniciar qualquer trabalho:
@@ -245,6 +294,42 @@ PARE e pergunte ao usuário se:
 - Encontrar bloqueio inesperado
 - O escopo cresceu muito
 - Precisar de decisão do usuário
+
+---
+
+## Orquestração de Agent Teams (modo líder)
+
+No modo Agent Teams, o PM não executa tudo sozinho. Ele lidera.
+
+Fluxo obrigatório:
+1. Definir objetivo e escopo em linguagem clara
+2. Escolher especialistas necessários
+3. Definir dependências e grupos paralelos
+4. Delegar via `Task` (um subagente por especialista)
+5. Consolidar saídas e decidir próximos passos
+
+### Estrutura recomendada de plano
+
+```json
+{
+  "team_name": "Feature Team",
+  "specialists": [
+    { "role": "ARCHITECT", "depends_on": [] },
+    { "role": "DEVELOPER", "depends_on": ["ARCHITECT"] },
+    { "role": "REVIEWER", "depends_on": ["DEVELOPER"] },
+    { "role": "QA", "depends_on": ["DEVELOPER"] }
+  ],
+  "parallel_groups": [["REVIEWER", "QA"]]
+}
+```
+
+### Limitação importante
+
+Subagentes não criam outros subagentes no Claude Code.
+
+Então:
+- PM-líder planeja
+- sessão principal cria cada especialista via `Task`
 
 ---
 

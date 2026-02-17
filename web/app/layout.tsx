@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Empire Vibe Coding',
   description: 'Desenvolva software com IA sem saber programar. Instale o Empire Vibe Coding no seu projeto.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 const GTM_ID = 'GTM-WPGPLJSL'

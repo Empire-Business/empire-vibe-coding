@@ -480,7 +480,7 @@ SEMPRE que fizer mudança:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <DiagramBox title="00-INICIAR.md" icon={Rocket} color="blue">
+              <DiagramBox title="00-COMEÇAR.md" icon={Rocket} color="blue">
                 Como começar um projeto do zero: setup, estrutura, configurações
               </DiagramBox>
               <DiagramBox title="01-DESENVOLVER.md" icon={Code} color="green">

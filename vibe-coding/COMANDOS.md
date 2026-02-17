@@ -6,6 +6,51 @@ Digite o comando no Claude Code para ativar a função correspondente.
 
 ---
 
+## FLUXO OBRIGATÓRIO DE DOCUMENTAÇÃO
+
+### Antes de desenvolver QUALQUER projeto, siga esta ordem:
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  🔒 ORDEM OBRIGATATÓRIA - Não pule etapas!                               ║
+║                                                                           ║
+║  1️⃣ *prd         → Define O QUE construir                               ║
+║                    Cria docs/PRD.md                                      ║
+║                                                                           ║
+║  2️⃣ *arquitetura → Define COMO construir tecnicamente                   ║
+║                    Cria docs/ARQUITETURA/                                ║
+║                                                                           ║
+║  3️⃣ *roadmap     → Define QUANDO e em que ordem                         ║
+║                    Cria docs/ROADMAP.md                                  ║
+║                                                                           ║
+║  4️⃣ *design      → Define VISUALMENTE como vai ser                      ║
+║                    Cria docs/DESIGN/ ou configura Tailwind               ║
+║                                                                           ║
+║  5️⃣ *desenvolver → Só agora pode codificar!                             ║
+║                    Verifica os 4 pré-requisitos antes de permitir        ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+### Por que essa ordem?
+
+| Etapa | Responde | Sem isso... |
+|-------|----------|-------------|
+| PRD | O que estamos construindo? | Você codifica sem saber o que fazer |
+| Arquitetura | Como vamos construir? | Você escolhe tecnologias erradas |
+| Roadmap | O que fazer primeiro? | Você perde tempo em coisas erradas |
+| Design | Como vai ficar visualmente? | Você refaz UI várias vezes |
+
+### Exceções (podem pular a verificação):
+
+- `*bug` - Correção de bugs
+- `*erro` - Resolução de erros
+- Manutenção simples (typos, dependências)
+- Projetos já estabelecidos
+
+---
+
 ## Comandos Principais
 
 | Comando | Função | O que acontece |
@@ -57,7 +102,14 @@ Digite o comando no Claude Code para ativar a função correspondente.
 |---------|--------|----------------|
 | `*workflow` | Criar workflows | GitHub Actions, CI/CD, automações |
 | `*orquestrar` | Orquestrar comandos | Combina múltiplos comandos |
-| `*tarefas` | Gerenciar tarefas | TaskCreate/Update/Get/List do Claude Code |
+| `*tarefas` | Gerenciar tarefas | Task tool do Claude Code (planejamento e acompanhamento) |
+| `*dashboard` | Abrir dashboard | Inicia servidor em localhost:3001 para consulta de tarefas em tempo real (somente leitura) |
+
+## Comandos de Dashboard (NOVO!)
+
+| Comando | Função | O que acontece |
+|---------|--------|----------------|
+| `*dashboard` | Iniciar dashboard | Abre interface visual de tarefas em localhost:3001 (somente leitura) |
 
 ## Comandos de Planejamento
 
@@ -78,7 +130,7 @@ Digite o comando no Claude Code para ativar a função correspondente.
 | Comando | Função | O que acontece |
 |---------|--------|----------------|
 | `*nerd` | Problemas complexos | Debug profundo, profiling, otimização |
-| `*agentes` | Usar Agent Teams | **Sistema de Squads** - cria equipe de agentes especializados |
+| `*agentes` | Usar Agent Teams | Cria líder (PM) + subagentes automaticamente |
 | `*melhorar` | Refatorar código | Sugere melhorias no código |
 
 ## Comando de Ajuda
@@ -105,10 +157,21 @@ Digite o comando no Claude Code para ativar a função correspondente.
 ║  4. 💡 Tirar dúvida sobre termo       ║
 ║  5. 📚 Ver todos os comandos          ║
 ║  6. 🤖 Usar agentes especializados    ║
+║  7. 🏗️ Preparar projeto completo     ║
 ╚═══════════════════════════════════════╝
 ```
 
 **NÃO cria arquivos automaticamente!**
+
+### Opção 7: Preparar Projeto Completo (NOVO)
+
+Executa em sequência (com paradas para aprovação):
+1. `*prd` → Cria PRD
+2. `*arquitetura` → Cria arquitetura
+3. `*roadmap` → Cria roadmap
+4. `*design` → Cria design system
+
+Só depois permite `*desenvolver`.
 
 ### `*prd` - Com Checkpoints (NOVO COMPORTAMENTO)
 
@@ -128,14 +191,14 @@ Digite o comando no Claude Code para ativar a função correspondente.
 
 **NÃO implementa código!**
 
-### `*agentes` - Sistema de Squads (NOVO)
+### `*agentes` - Agent Teams (Líder + Subagentes)
 
 ```
 USUÁRIO: *agentes
 Quero criar um sistema de pagamentos
 
 CLAUDE: Agentes selecionados: Feature Squad
-        - PM → Orquestrar e garantir entrega
+        - PM (Líder) → Planejar e coordenar
         - ARCHITECT → Planejar
         - DEVELOPER → Implementar
         - REVIEWER → Revisar
@@ -144,9 +207,13 @@ CLAUDE: Agentes selecionados: Feature Squad
         Posso continuar?
 ```
 
-**O PM é o orquestrador padrão.** Ele recebe o pedido, planeja estratégia, delega para especialistas e garante entrega.
+**O PM é o líder padrão.** Ele define o plano do time e a sessão principal cria os especialistas a partir desse plano.
 
-**Usa TaskCreate para coordenar agentes!**
+**Usa a `Task` tool do Claude Code para invocar subagentes.**
+
+### Ativação Automática (sem `*agentes`)
+
+Se a tarefa for complexa (multi-domínio, alto risco, múltiplas frentes), o sistema ativa Agent Teams automaticamente e informa o plano antes de executar.
 
 ---
 
@@ -217,7 +284,7 @@ Meu app está lento e não sei por quê
 
 ---
 
-## Agentes do Sistema de Squads
+## Agentes do Agent Teams
 
 **PM é o orquestrador padrão.** Se não souber qual agente usar, use o PM.
 
@@ -234,7 +301,7 @@ Meu app está lento e não sei por quê
 
 ---
 
-## Squads Pré-definidos
+## Times Pré-definidos
 
 | Squad | Agentes | Quando Usar |
 |-------|---------|-------------|
@@ -275,7 +342,9 @@ Meu app está lento e não sei por quê
 | Bugs | PROTOCOLOS/02-BUGS.md |
 | PRD Generator | PROTOCOLOS/18-PRD.md |
 | API Externa | PROTOCOLOS/19-API.md |
-| Sistema de Squads | PROTOCOLOS/20-AGENTES.md |
+| Agent Teams | PROTOCOLOS/20-AGENTES.md |
+| Roadmap | PROTOCOLOS/21-ROADMAP.md |
+| Arquitetura | PROTOCOLOS/22-ARQUITETURA.md |
 
 ---
 

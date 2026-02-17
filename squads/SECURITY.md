@@ -128,3 +128,48 @@ Auditoria de segurança, vulnerabilidades, LGPD/compliance, proteção de dados.
 - NÃO implementa correções (isso é do DEVELOPER)
 - NÃO faz penetration testing real
 - NÃO substitui auditoria profissional
+
+---
+
+## Output para Dashboard
+
+Ao concluir sua tarefa, formate o output para o dashboard consumir:
+
+```markdown
+✅ [SECURITY] Auditoria Concluída
+
+**Veredito:** ✅ SEGURO / ⚠️ RISCO MÉDIO / ❌ RISCO ALTO
+
+**Vulnerabilidades encontradas:**
+| Severidade | Quantidade |
+|------------|------------|
+| Crítica    | 0          |
+| Alta       | 1          |
+| Média      | 3          |
+| Baixa      | 2          |
+
+**Itens críticos:**
+- SQL injection em /api/users (CORRIGIR ANTES DEPLOY)
+
+**Próximos passos:**
+- DEVELOPER deve corrigir vulnerabilidades críticas
+- Revisar após correções
+```
+
+### Formato JSON para API (se usando dashboard)
+
+```json
+{
+  "status": "completed",
+  "output": "✅ [SECURITY] Auditoria Concluída...",
+  "verdict": "at_risk",
+  "vulnerabilities": {
+    "critical": 0,
+    "high": 1,
+    "medium": 3,
+    "low": 2
+  },
+  "blockingIssues": ["SQL injection em /api/users"],
+  "readyForProduction": false,
+  "nextAgent": "DEVELOPER"
+}
