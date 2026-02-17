@@ -18,13 +18,57 @@ if (!fs.existsSync(DB_DIR)) {
 // Initialize database
 const db = new Database(DB_PATH);
 
-// Enable WAL mode for better concurrency
-db.pragma('journal_mode = WAL');
+type SqliteErrorLike = {
+  code?: string;
+  message?: string;
+};
+
+function isSqliteBusyError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const maybeError = error as SqliteErrorLike;
+  const code = maybeError.code || '';
+  const message = maybeError.message || '';
+  return code === 'SQLITE_BUSY' || /database is locked/i.test(message);
+}
+
+function tryPragma(pragma: string): void {
+  try {
+    db.pragma(pragma);
+  } catch (error) {
+    if (isSqliteBusyError(error)) {
+      console.warn(`[db] Skipping pragma "${pragma}" due to SQLITE_BUSY`);
+      return;
+    }
+    throw error;
+  }
+}
+
+function withBusyRetry(run: () => void, label: string): void {
+  const maxAttempts = 5;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      run();
+      return;
+    } catch (error) {
+      if (!isSqliteBusyError(error) || attempt === maxAttempts) {
+        throw error;
+      }
+      console.warn(`[db] ${label} busy (attempt ${attempt}/${maxAttempts}), retrying...`);
+    }
+  }
+}
+
+// Busy timeout helps concurrent route module initialization during build/runtime.
+tryPragma('busy_timeout = 5000');
+
+// Enable WAL mode for better concurrency. If locked, keep default mode to avoid build failure.
+tryPragma('journal_mode = WAL');
 
 // Initialize schema
 function initializeSchema(): void {
   // Tasks table
-  db.exec(`
+  withBusyRetry(() => db.exec(`
     CREATE TABLE IF NOT EXISTS tasks (
       id TEXT PRIMARY KEY,
       subject TEXT NOT NULL,
@@ -81,7 +125,7 @@ function initializeSchema(): void {
 
     CREATE INDEX IF NOT EXISTS idx_squads_status ON squads(status);
     CREATE INDEX IF NOT EXISTS idx_squads_type ON squads(type);
-  `);
+  `), 'Schema initialization');
 }
 
 // Run schema initialization
