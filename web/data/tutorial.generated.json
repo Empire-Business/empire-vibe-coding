@@ -4,7 +4,7 @@
     "protocolsDir": "vibe-coding/PROTOCOLOS"
   },
   "metrics": {
-    "totalCommands": 34,
+    "totalCommands": 35,
     "totalProtocols": 26,
     "totalCategories": 10
   },
@@ -12,12 +12,17 @@
     {
       "key": "principais",
       "name": "Principais",
-      "count": 7,
+      "count": 8,
       "commands": [
         {
           "command": "*começar",
           "title": "Iniciar projeto",
           "description": "Tutorial interativo: mostra menu, espera resposta e direciona"
+        },
+        {
+          "command": "*setup",
+          "title": "Configurar ambiente tecnico",
+          "description": "Executa setup tecnico guiado com base em `01-SETUP-TECNICO.md`"
         },
         {
           "command": "*desenvolver",
@@ -255,6 +260,12 @@
       "command": "*começar",
       "title": "Iniciar projeto",
       "description": "Tutorial interativo: mostra menu, espera resposta e direciona",
+      "category": "Principais"
+    },
+    {
+      "command": "*setup",
+      "title": "Configurar ambiente tecnico",
+      "description": "Executa setup tecnico guiado com base em `01-SETUP-TECNICO.md`",
       "category": "Principais"
     },
     {

@@ -34,7 +34,15 @@ function main() {
   const codexCanonical = readOrFail(paths.codexCanonical, 'vibe-coding/CODEX-INSTRUCTIONS.md');
 
   if (!claudeCanonical.equals(codexCanonical)) {
-    fail('Drift detectado: CLAUDE-INSTRUCTIONS.md e CODEX-INSTRUCTIONS.md não estão idênticos byte a byte.');
+    fail('Drift detectado: CLAUDE-INSTRUCTIONS.md e CODEX-INSTRUCTIONS.md não estão idênticos byte a byte. Rode: npm run agents:sync');
+  }
+
+  if (!claudeRoot.equals(claudeCanonical)) {
+    fail('Drift canônico detectado: CLAUDE.md diverge de vibe-coding/CLAUDE-INSTRUCTIONS.md. Rode: npm run agents:sync');
+  }
+
+  if (!agentsRoot.equals(claudeCanonical)) {
+    fail('Drift canônico detectado: AGENTS.md diverge de vibe-coding/CLAUDE-INSTRUCTIONS.md. Rode: npm run agents:sync');
   }
 
   console.log('Agent files em sincronia.');

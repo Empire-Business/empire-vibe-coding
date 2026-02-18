@@ -38,6 +38,7 @@ Excecoes: `*bug`, `*erro`, manutencao simples e ajustes localizados.
 | Comando | Funcao | O que acontece |
 |---------|--------|----------------|
 | `*começar` | Iniciar projeto | Tutorial interativo: mostra menu, espera resposta e direciona |
+| `*setup` | Configurar ambiente tecnico | Executa setup tecnico guiado com base em `01-SETUP-TECNICO.md` |
 | `*desenvolver` | Modo desenvolvimento | Ativa protocolo de desenvolvimento |
 | `*bug` | Reportar problema | Ativa protocolo de correcao de bugs |
 | `*erro` | Resolver erro | Ajuda guiada para erros de terminal/navegador |
@@ -127,6 +128,12 @@ Excecoes: `*bug`, `*erro`, manutencao simples e ajustes localizados.
 - sempre espera resposta do usuario
 - nao cria arquivos automaticamente
 
+### `*setup`
+
+- executa setup tecnico do projeto
+- usa `vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md` como fonte
+- prepara ambiente antes de desenvolvimento amplo
+
 ### `*dashboard`
 
 - foco em acompanhamento local
@@ -161,7 +168,7 @@ Excecoes: `*bug`, `*erro`, manutencao simples e ajustes localizados.
 
 | Categoria | Qtd | Comandos |
 |-----------|-----|----------|
-| Principais | 7 | começar, desenvolver, bug, erro, termo, comando, lançar |
+| Principais | 8 | começar, setup, desenvolver, bug, erro, termo, comando, lançar |
 | Documentacao | 5 | roadmap, decisão, mudança, arquitetura, status |
 | Design & UX | 2 | design, ux |
 | Qualidade | 4 | seguranca, qualidade, garantir, revisar |
@@ -171,7 +178,7 @@ Excecoes: `*bug`, `*erro`, manutencao simples e ajustes localizados.
 | Integracao | 1 | api |
 | Especialistas | 3 | nerd, agentes, melhorar |
 | Ajuda | 1 | ajuda |
-| **TOTAL** | **34** | |
+| **TOTAL** | **35** | |
 
 ---
 

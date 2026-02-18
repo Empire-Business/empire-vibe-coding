@@ -198,6 +198,16 @@ function assertSingleModeFiles(projectDir) {
     true,
     'CLAUDE-INSTRUCTIONS.md and CODEX-INSTRUCTIONS.md must be byte-identical'
   );
+  assert.equal(
+    claudeBuffer.equals(claudeInstructionsBuffer),
+    true,
+    'CLAUDE.md must match vibe-coding/CLAUDE-INSTRUCTIONS.md byte-by-byte'
+  );
+  assert.equal(
+    agentsBuffer.equals(claudeInstructionsBuffer),
+    true,
+    'AGENTS.md must match vibe-coding/CLAUDE-INSTRUCTIONS.md byte-by-byte'
+  );
 
   assertAgentTeamsEnabled(claudeSettings);
 }
@@ -211,6 +221,8 @@ function assertCanonicalCommandsAndSyncRules() {
   const claudeInstructions = readFileSync(claudeInstructionsPath, 'utf8');
   const codexInstructions = readFileSync(codexInstructionsPath, 'utf8');
 
+  assert.match(commands, /\*setup/);
+  assert.match(commands, /01-SETUP-TECNICO\.md/);
   assert.match(commands, /\*atualizar/);
   assert.match(commands, /\*sincronizar/);
   assert.match(commands, /24-SINCRONIZAR\.md/);
@@ -322,6 +334,48 @@ async function testDashboardReadOnly() {
 
 async function testTutorialDataSync() {
   await runCommand('node', ['./scripts/generate-web-tutorial-data.mjs', '--check']);
+}
+
+async function testAgentsCheckStrictCanonicalAndSync() {
+  const sandboxDir = mkdtempSync(join(tmpdir(), 'empire-agents-check-'));
+  const checkScript = join(REPO_ROOT, 'scripts', 'check-agent-files-sync.mjs');
+  const syncScript = join(REPO_ROOT, 'scripts', 'sync-agent-files.mjs');
+  const canonicalDir = join(sandboxDir, 'vibe-coding');
+  const claudeRoot = join(sandboxDir, 'CLAUDE.md');
+  const agentsRoot = join(sandboxDir, 'AGENTS.md');
+  const claudeCanonical = join(canonicalDir, 'CLAUDE-INSTRUCTIONS.md');
+  const codexCanonical = join(canonicalDir, 'CODEX-INSTRUCTIONS.md');
+
+  try {
+    mkdirSync(canonicalDir, { recursive: true });
+
+    const canonicalContent = 'canonical-instructions\n';
+    writeFileSync(claudeCanonical, canonicalContent);
+    writeFileSync(codexCanonical, canonicalContent);
+    writeFileSync(claudeRoot, canonicalContent);
+    writeFileSync(agentsRoot, canonicalContent);
+
+    await runCommand('node', [checkScript], { cwd: sandboxDir });
+
+    const driftContent = 'custom-instructions\n';
+    writeFileSync(claudeRoot, driftContent);
+    writeFileSync(agentsRoot, driftContent);
+
+    const driftError = await runExpectingFailure('node', [checkScript], { cwd: sandboxDir });
+    assert.match(driftError, /drift canônico/i);
+    assert.match(driftError, /agents:sync/i);
+
+    await runCommand('node', [syncScript], { cwd: sandboxDir });
+    await runCommand('node', [checkScript], { cwd: sandboxDir });
+
+    const syncedClaude = readFileSync(claudeRoot);
+    const syncedAgents = readFileSync(agentsRoot);
+    const syncedCanonical = readFileSync(claudeCanonical);
+    assert.equal(syncedClaude.equals(syncedAgents), true);
+    assert.equal(syncedClaude.equals(syncedCanonical), true);
+  } finally {
+    rmSync(sandboxDir, { recursive: true, force: true });
+  }
 }
 
 async function testInstallScript(baseUrl) {
@@ -450,6 +504,7 @@ async function testInstallersParityAndSettings() {
 async function main() {
   assertCanonicalCommandsAndSyncRules();
   await testTutorialDataSync();
+  await testAgentsCheckStrictCanonicalAndSync();
   await testDashboardReadOnly();
   await testInstallersParityAndSettings();
   console.log('Behavior checks passed');

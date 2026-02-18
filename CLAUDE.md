@@ -38,6 +38,7 @@ Use `vibe-coding/COMANDOS.md` como catálogo canônico para todos os comandos.
 Comandos de operação diária obrigatórios:
 
 - `*começar`
+- `*setup`
 - `*dashboard`
 - `*agentes`
 - `*atualizar`
@@ -52,6 +53,12 @@ Comandos de operação diária obrigatórios:
 - esperar resposta
 - direcionar para o comando correto
 - não criar PRD/código automaticamente
+
+### `*setup`
+
+- ler `vibe-coding/PROTOCOLOS/01-SETUP-TECNICO.md`
+- executar setup técnico guiado (ferramentas, integrações e pré-requisitos)
+- confirmar dependências críticas antes de liberar desenvolvimento
 
 ### `*dashboard`
 
