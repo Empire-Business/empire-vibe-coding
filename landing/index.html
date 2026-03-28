@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Vibe Coding — Framework para Claude Code</title>
+  <meta name="description" content="Framework de desenvolvimento vibe coding para Claude Code. Setup automático, segurança nativa e documentação viva para apps React + TypeScript + Supabase." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── DS1 Silver Empire — Tokens ─────────────────────────────── */
+    :root {
+      --void:     #070C14;
+      --empire:   #0D1829;
+      --steel:    #243B55;
+      --platinum: #BFC5CC;
+      --gold:     #C9A240;
+      --bone:     #F2EFE8;
+      --ink:      #1A1F2E;
+      --ghost:    #E4E2DC;
+      --mist:     #F7F6F2;
+      --white:    #FFFFFF;
+      --danger:   #8B2E2E;
+
+      --font: 'Inter', system-ui, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+
+      --s4:  4px;  --s8:  8px;  --s12: 12px; --s16: 16px;
+      --s20: 20px; --s24: 24px; --s32: 32px; --s40: 40px;
+      --s48: 48px; --s56: 56px; --s64: 64px; --s80: 80px;
+      --s96: 96px; --s128: 128px;
+    }
+
+    /* ─── Reset & Base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bone);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Typography ─────────────────────────────────────────────── */
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+    h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
+    p  { font-size: 1rem; font-weight: 400; line-height: 1.7; }
+
+    .eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── Layout helpers ─────────────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--s24);
+    }
+
+    .section { padding: var(--s96) 0; }
+    .section-sm { padding: var(--s64) 0; }
+
+    /* ─── Divider ────────────────────────────────────────────────── */
+    .gold-line {
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--gold);
+      margin: var(--s20) 0 var(--s32);
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(242, 239, 232, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--ghost);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--s24);
+    }
+
+    .nav-logo { height: 28px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--s32);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--steel);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      padding: var(--s8) var(--s20);
+      background: var(--ink);
+      color: var(--white) !important;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-nav:hover { background: var(--steel); }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    #hero {
+      background: var(--void);
+      padding: calc(var(--s128) + 64px) 0 var(--s128);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201, 162, 64, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+    }
+
+    #hero .eyebrow { color: var(--gold); }
+
+    #hero h1 {
+      color: var(--white);
+      margin-top: var(--s16);
+    }
+
+    #hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      color: var(--platinum);
+      font-size: 1.125rem;
+      margin-top: var(--s20);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    .hero-sub-en {
+      color: var(--steel);
+      font-size: 0.9375rem;
+      margin-top: var(--s8);
+      max-width: 560px;
+      font-style: italic;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: var(--s16);
+      margin-top: var(--s40);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      padding: var(--s16) var(--s32);
+      background: var(--gold);
+      color: var(--void);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-ghost-light {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      padding: var(--s16) var(--s32);
+      border: 1px solid var(--steel);
+      color: var(--platinum);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost-light:hover { border-color: var(--platinum); color: var(--white); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      margin-top: var(--s48);
+      padding: var(--s8) var(--s16);
+      background: rgba(201, 162, 64, 0.08);
+      border: 1px solid rgba(201, 162, 64, 0.2);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* ─── FEATURES ───────────────────────────────────────────────── */
+    #features { background: var(--bone); }
+
+    .features-header { max-width: 560px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--s24);
+      margin-top: var(--s56);
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--ghost);
+      border-radius: var(--radius-lg);
+      padding: var(--s32);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      border-color: rgba(201, 162, 64, 0.3);
+      box-shadow: 0 4px 24px rgba(7, 12, 20, 0.06);
+    }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-md);
+      background: var(--mist);
+      border: 1px solid var(--ghost);
+      font-size: 1.25rem;
+      margin-bottom: var(--s20);
+    }
+
+    .feature-card h3 { color: var(--ink); margin-bottom: var(--s8); }
+    .feature-card p { color: var(--steel); font-size: 0.9375rem; }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────────────── */
+    #how { background: var(--mist); border-top: 1px solid var(--ghost); border-bottom: 1px solid var(--ghost); }
+
+    .how-header { max-width: 560px; }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      margin-top: var(--s56);
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 22px; left: 0; right: 0;
+      height: 1px;
+      background: var(--ghost);
+    }
+
+    .timeline-step {
+      position: relative;
+      padding: var(--s48) var(--s24) var(--s32) var(--s24);
+      text-align: center;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--bone);
+      border: 1px solid var(--ghost);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--steel);
+      margin-bottom: var(--s20);
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-step.active .step-number {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--white);
+    }
+
+    .timeline-step h3 { font-size: 1rem; color: var(--ink); margin-bottom: var(--s8); }
+    .timeline-step p  { font-size: 0.875rem; color: var(--steel); }
+
+    /* ─── INSTALL ────────────────────────────────────────────────── */
+    #install { background: var(--bone); }
+
+    .install-header { max-width: 560px; }
+
+    .install-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s40);
+      margin-top: var(--s56);
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .install-grid { grid-template-columns: 1fr; }
+    }
+
+    .install-steps { display: flex; flex-direction: column; gap: var(--s32); }
+
+    .install-step {
+      display: flex;
+      gap: var(--s20);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .step-content h3 { font-size: 0.9375rem; margin-bottom: var(--s4); }
+    .step-content p  { font-size: 0.875rem; color: var(--steel); margin-bottom: var(--s12); }
+
+    .code-block {
+      background: var(--empire);
+      border-radius: var(--radius-md);
+      padding: var(--s16) var(--s20);
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      color: var(--platinum);
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .code-block .comment { color: var(--steel); }
+    .code-block .cmd     { color: var(--white); }
+    .code-block .highlight { color: var(--gold); }
+
+    .install-note {
+      background: var(--white);
+      border: 1px solid var(--ghost);
+      border-left: 3px solid var(--gold);
+      border-radius: var(--radius-md);
+      padding: var(--s20) var(--s24);
+    }
+
+    .install-note p { font-size: 0.875rem; color: var(--steel); }
+    .install-note strong { color: var(--ink); }
+
+    /* ─── VERSION ────────────────────────────────────────────────── */
+    #version { background: var(--empire); }
+
+    .version-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s64);
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .version-grid { grid-template-columns: 1fr; gap: var(--s40); }
+    }
+
+    #version .eyebrow { color: var(--gold); }
+    #version h2 { color: var(--white); }
+    #version p  { color: var(--platinum); }
+
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      padding: var(--s8) var(--s16);
+      background: rgba(201, 162, 64, 0.12);
+      border: 1px solid rgba(201, 162, 64, 0.25);
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-top: var(--s24);
+    }
+
+    .changelog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s16);
+    }
+
+    .changelog-item {
+      display: flex;
+      gap: var(--s16);
+      align-items: flex-start;
+    }
+
+    .changelog-dot {
+      flex-shrink: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 7px;
+    }
+
+    .changelog-item p {
+      font-size: 0.9375rem;
+      color: var(--platinum);
+      line-height: 1.5;
+    }
+
+    .changelog-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s8);
+      margin-top: var(--s32);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gold);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .changelog-link:hover { opacity: 0.75; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--void);
+      padding: var(--s64) 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--s24);
+    }
+
+    .footer-logo { height: 22px; opacity: 0.8; }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: var(--s24);
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--steel);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--platinum); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--steel);
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero-ctas { flex-direction: column; align-items: flex-start; }
+      .timeline::before { display: none; }
+      .timeline { grid-template-columns: 1fr; }
+      .timeline-step { text-align: left; padding: var(--s24) var(--s16); }
+      .step-number { margin-bottom: var(--s12); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <img src="assets/logo-light.png" alt="Empire Business" class="nav-logo" />
+      <ul class="nav-links">
+        <li><a href="#features">O que é</a></li>
+        <li><a href="#how">Como funciona</a></li>
+        <li><a href="#install" class="btn-nav">Instalar</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="eyebrow">Empire Vibe Coding · Skill para Claude Code</span>
+        <h1>Seu app do zero<br/>ao deploy com <em>método</em>.</h1>
+        <p class="hero-sub">
+          Framework de desenvolvimento que instala regras, garante segurança e mantém documentação viva — tudo guiado pelo Claude Code.
+        </p>
+        <p class="hero-sub-en">
+          A development framework that sets up rules, enforces security, and keeps docs alive — all driven by Claude Code.
+        </p>
+        <div class="hero-ctas">
+          <a href="#install" class="btn-primary">
+            Instalar agora
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener" class="btn-ghost-light">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          v1.0 · React + TypeScript + Supabase + Vercel
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="features-header">
+        <span class="eyebrow">O que é</span>
+        <span class="gold-line"></span>
+        <h2>Estrutura para quem constrói com IA</h2>
+        <p style="color: var(--steel); margin-top: var(--s16);">
+          Uma skill que você ativa no Claude Code e que transforma qualquer projeto numa máquina de desenvolvimento organizada, segura e documentada.
+        </p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Setup Automático</h3>
+          <p>Instala o <code>CLAUDE.md</code> padrão Empire no seu projeto. Se você já tem um, faz merge inteligente — sem apagar nada do que você construiu.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Segurança Nativa</h3>
+          <p>Garante que a skill <code>/security-auditor</code> está instalada e atualizada globalmente. Auditoria obrigatória antes de qualquer deploy.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Tasks 100% do Tempo</h3>
+          <p>Toda ação cria tasks visíveis antes de executar. Você sempre sabe exatamente o que o Claude está fazendo — e por quê.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>Documentação Viva</h3>
+          <p>Toda doc vai para <code>docs/</code>. O <code>CLAUDE.md</code> é um índice enxuto. Ao remover código, a doc morre junto — sem lixo acumulando.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Auto-atualização</h3>
+          <p>Peça "verifique atualizações" e a skill faz <code>git pull</code>, atualiza o security-auditor se necessário e reporta o que mudou.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏗️</div>
+          <h3>Stack Definida</h3>
+          <p>React 18 + TypeScript + Vite + Tailwind + shadcn/ui + Supabase + Vercel. Nenhuma decisão de arquitetura fica sem documentar.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="container">
+      <div class="how-header">
+        <span class="eyebrow">Como funciona</span>
+        <span class="gold-line"></span>
+        <h2>Da primeira ativação ao deploy</h2>
+        <p style="color: var(--steel); margin-top: var(--s16);">
+          A skill detecta automaticamente em qual fase seu projeto está e age de forma correspondente.
+        </p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-step active">
+          <div class="step-number">01</div>
+          <h3>Ativar</h3>
+          <p>Digite <code>/empire-vibe-coding</code> no Claude Code. A skill lê o estado do projeto.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">02</div>
+          <h3>Setup</h3>
+          <p>Instala CLAUDE.md, verifica o security-auditor e cria o state document <code>.empire/state.json</code>.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">03</div>
+          <h3>Codar</h3>
+          <p>Em cada pedido, cria tasks, lê o CLAUDE.md e executa seguindo as regras definidas.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">04</div>
+          <h3>Deploy</h3>
+          <p>Audita segurança obrigatoriamente, documenta o deploy e atualiza o CHANGELOG.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install" class="section">
+    <div class="container">
+      <div class="install-header">
+        <span class="eyebrow">Instalação</span>
+        <span class="gold-line"></span>
+        <h2>Três passos para começar</h2>
+        <p style="color: var(--steel); margin-top: var(--s16);">
+          Funciona em qualquer projeto. Não importa se você está começando do zero ou já tem código rodando.
+          <br/><em style="font-size:0.875rem;">Works with any project — new or existing.</em>
+        </p>
+      </div>
+      <div class="install-grid">
+        <div class="install-steps">
+
+          <div class="install-step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Clone o repositório na pasta de skills</h3>
+              <p>Baixe a skill direto para onde o Claude Code procura por skills globais.</p>
+              <div class="code-block">
+<span class="comment"># Clone into Claude Code global skills directory</span>
+<span class="cmd">git clone https://github.com/Empire-Business/empire-vibe-coding \
+  ~/.claude/skills/empire-vibe-coding</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="install-step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Abra seu projeto no Claude Code</h3>
+              <p>Navegue até a pasta do seu projeto (novo ou existente).</p>
+              <div class="code-block">
+<span class="comment"># Open your project</span>
+<span class="cmd">cd meu-projeto
+claude</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="install-step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Ative a skill</h3>
+              <p>A skill faz todo o resto: detecta o estado, instala CLAUDE.md, verifica o security-auditor.</p>
+              <div class="code-block">
+<span class="highlight">/empire-vibe-coding</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--s20);">
+          <div class="install-note">
+            <p><strong>Requisitos</strong><br/>
+            Claude Code instalado · Git · macOS ou Linux</p>
+          </div>
+          <div class="install-note">
+            <p><strong>Para manter atualizado</strong><br/>
+            Peça ao Claude: <em>"verifique atualizações da skill"</em> — ele faz <code>git pull</code> e atualiza o security-auditor se necessário.</p>
+          </div>
+          <div class="install-note">
+            <p><strong>Projeto existente com CLAUDE.md?</strong><br/>
+            Sem problema. A skill faz merge — preserva tudo que você já tem e adiciona apenas o que está faltando.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERSION -->
+  <section id="version" class="section-sm">
+    <div class="container">
+      <div class="version-grid">
+        <div>
+          <span class="eyebrow">Versão atual</span>
+          <span class="gold-line"></span>
+          <h2>v1.0</h2>
+          <p>Lançamento inicial do Empire Vibe Coding Framework.</p>
+          <div class="version-badge">
+            <span class="badge-dot"></span>
+            Security-auditor bundled: v1.5
+          </div>
+          <a href="https://github.com/Empire-Business/empire-vibe-coding/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="changelog-link">
+            Ver CHANGELOG completo
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div>
+          <ul class="changelog-list">
+            <li class="changelog-item">
+              <span class="changelog-dot"></span>
+              <p>Setup automático de CLAUDE.md com merge inteligente para projetos existentes</p>
+            </li>
+            <li class="changelog-item">
+              <span class="changelog-dot"></span>
+              <p>Verificação e instalação automática da skill /security-auditor (v1.5)</p>
+            </li>
+            <li class="changelog-item">
+              <span class="changelog-dot"></span>
+              <p>State document (.empire/state.json) para rastrear fase e versões</p>
+            </li>
+            <li class="changelog-item">
+              <span class="changelog-dot"></span>
+              <p>Tasks obrigatórias em 100% das execuções — visibilidade total</p>
+            </li>
+            <li class="changelog-item">
+              <span class="changelog-dot"></span>
+              <p>Auto-atualização via git pull com relatório do que mudou</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <img src="assets/logo-dark.png" alt="Empire Business" class="footer-logo" />
+        <ul class="footer-links">
+          <li><a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/Empire-Business/empire-vibe-coding/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+        </ul>
+        <p class="footer-copy">Empire Business · DS1 Silver Empire v2.0</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
