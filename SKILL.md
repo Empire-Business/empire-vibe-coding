@@ -23,7 +23,7 @@ description: |
 
 | Campo | Valor |
 |-------|-------|
-| Versão da skill | **1.2** |
+| Versão da skill | **1.3** |
 | Security-auditor mínimo requerido | **v1.5** |
 | GitHub (esta skill) | https://github.com/Empire-Business/omnx-code |
 | GitHub (security-auditor) | https://github.com/Empire-Business/security-auditor |
@@ -154,16 +154,7 @@ Leia a primeira linha `## vX.Y` do resultado para obter a versão mais recente d
 | Versão instalada < v1.5 (mínimo) e git pull não ajudou | Reinstalar via clone (ver fallback abaixo) |
 | Versão instalada >= versão remota | Nada a fazer — reportar versão encontrada |
 
-**Fallback — se git/curl não estiver disponível:**
-
-```bash
-mkdir -p ~/.claude/skills/security-auditor/references
-cp bundled-skills/security-auditor/SKILL.md ~/.claude/skills/security-auditor/
-cp bundled-skills/security-auditor/CHANGELOG.md ~/.claude/skills/security-auditor/
-cp bundled-skills/security-auditor/references/*.md ~/.claude/skills/security-auditor/references/
-```
-
-> O fallback usa a versão bundled neste repo (pode estar um pouco defasada). Informe ao usuário que a versão instalada é a bundled e recomende fazer `git pull` depois.
+Se `git` ou `curl` não estiverem disponíveis, informe ao usuário que a instalação requer `git` e encerre com erro claro.
 
 Após concluir, atualize no state:
 ```json
@@ -304,5 +295,4 @@ Se o diretório não for um repo git (instalação via fallback), usar o fluxo d
 |---------------|----------|
 | `references/modelo-claude.md` | Template padrão do CLAUDE.md a instalar nos projetos |
 | `CHANGELOG.md` | Histórico de versões desta skill |
-| `bundled-skills/security-auditor/` | Versão bundled do security-auditor (fallback offline) |
-| https://github.com/Empire-Business/security-auditor | Repo oficial do security-auditor (fonte primária) |
+| https://github.com/Empire-Business/security-auditor | Repo oficial do security-auditor |

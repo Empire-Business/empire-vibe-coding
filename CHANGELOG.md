@@ -4,6 +4,13 @@ Histórico de versões da skill. Ao fazer qualquer atualização, registre aqui 
 
 ---
 
+## v1.3 — 2026-03-28
+
+### Modificado
+- **Removido `bundled-skills/security-auditor/`**: fallback offline eliminado. Security-auditor é instalado exclusivamente via `git clone https://github.com/Empire-Business/security-auditor`. Se `git` não estiver disponível, a skill retorna erro claro.
+
+---
+
 ## v1.2 — 2026-03-28
 
 ### Modificado
