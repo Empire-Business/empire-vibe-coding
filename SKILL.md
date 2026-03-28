@@ -1,18 +1,18 @@
 ---
-name: empire-vibe-coding
+name: omnx-code
 description: |
   Framework "vibe coding" completo para apps React + TypeScript + Supabase + Vercel.
-  Instala e mantém o CLAUDE.md do projeto seguindo o padrão Empire Business, garante
+  Instala e mantém o CLAUDE.md do projeto seguindo o padrão OMNX, garante
   que a skill /security-auditor está instalada e atualizada globalmente, e executa
   qualquer trabalho de desenvolvimento guiado pelo CLAUDE.md — com tasks 100% do tempo.
 
   Use SEMPRE que o usuário pedir para começar um projeto novo, codar qualquer feature,
-  estruturar documentação, auditar segurança, ou sempre que mencionar "empire",
-  "vibe coding", "empire-vibe-coding", ou pedir para "ativar o framework".
+  estruturar documentação, auditar segurança, ou sempre que mencionar "omnx",
+  "omnx-code", "omnx code", ou pedir para "ativar o framework".
   Em projetos novos, esta skill é o primeiro passo obrigatório antes de qualquer código.
 ---
 
-# Empire Vibe Coding
+# OMNX Code
 
 > Framework de desenvolvimento orientado a clareza, segurança e documentação viva.
 > Tudo que você faz aqui é guiado pelo `CLAUDE.md` do projeto e executado com tasks visíveis.
@@ -23,9 +23,9 @@ description: |
 
 | Campo | Valor |
 |-------|-------|
-| Versão da skill | **1.1** |
+| Versão da skill | **1.2** |
 | Security-auditor mínimo requerido | **v1.5** |
-| GitHub (esta skill) | https://github.com/Empire-Business/empire-vibe-coding |
+| GitHub (esta skill) | https://github.com/Empire-Business/omnx-code |
 | GitHub (security-auditor) | https://github.com/Empire-Business/security-auditor |
 | State document | `.empire/state.json` (na raiz do projeto do usuário) |
 
@@ -77,7 +77,7 @@ Crie a pasta `.empire/` e o arquivo `state.json` se ainda não existirem:
 
 ```json
 {
-  "empire_version": "1.0",
+  "omnx_version": "1.2",
   "setup_complete": false,
   "claude_md_installed": false,
   "claude_md_merged_at": null,
@@ -182,7 +182,7 @@ Marque o setup como concluído:
 Apresente ao usuário um resumo do que foi feito:
 
 ```
-✅ Setup Empire Vibe Coding concluído
+✅ Setup OMNX Code concluído
 
 - CLAUDE.md: [instalado / mesclado com projeto existente]
 - /security-auditor: [instalado v1.5 / já estava atualizado v1.X]
@@ -240,7 +240,7 @@ Quando o usuário pedir "verifique atualizações", "atualize a skill" ou simila
 ### Tasks a criar
 
 ```
-Task 1: Atualizar empire-vibe-coding via git pull
+Task 1: Atualizar omnx-code via git pull
 Task 2: Verificar versão remota do security-auditor
 Task 3: Atualizar security-auditor se necessário
 Task 4: Registrar last_update_check no state document
@@ -252,7 +252,7 @@ Task 5: Reportar ao usuário o que mudou
 **Task 1 — Atualizar esta skill:**
 
 ```bash
-cd ~/.claude/skills/empire-vibe-coding
+cd ~/.claude/skills/omnx-code
 git fetch origin
 # Salvar versão anterior para comparar depois
 ANTES=$(git log -1 --format="%H")
@@ -292,7 +292,7 @@ Se o diretório não for um repo git (instalação via fallback), usar o fluxo d
 ```
 
 **Task 5:** apresente ao usuário:
-- Versão anterior vs nova da skill empire-vibe-coding (com diff do CHANGELOG)
+- Versão anterior vs nova da skill omnx-code (com diff do CHANGELOG)
 - Versão do security-auditor antes e depois
 - Se alguma das duas estava na versão mais recente, reportar sem ruído
 

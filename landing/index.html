@@ -3,36 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Empire Vibe Coding — Skill gratuita para Claude Code</title>
-  <meta name="description" content="Skill gratuita para Claude Code que instala método, segurança e documentação automática em qualquer app React + TypeScript + Supabase. Grátis para sempre." />
+  <title>OMNX Code — Skill gratuita para Claude Code</title>
+  <meta name="description" content="Skill gratuita para Claude Code. Instala método, segurança e documentação automática em qualquer app React + TypeScript + Supabase. Grátis para sempre." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── DS1 Silver Empire — Tokens ─────────────────────────────── */
+    /* ─── OMNX Design System ─────────────────────────────────────── */
     :root {
-      --void:     #070C14;
-      --empire:   #0D1829;
-      --steel:    #243B55;
-      --platinum: #BFC5CC;
-      --gold:     #C9A240;
-      --bone:     #F2EFE8;
-      --ink:      #1A1F2E;
-      --ghost:    #E4E2DC;
-      --mist:     #F7F6F2;
-      --white:    #FFFFFF;
-
-      --font-body:  'IBM Plex Sans', system-ui, sans-serif;
-      --font-mono:  'JetBrains Mono', 'Menlo', monospace;
-
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
-
-      --s4:4px; --s8:8px; --s12:12px; --s16:16px; --s20:20px;
-      --s24:24px; --s32:32px; --s40:40px; --s48:48px;
-      --s56:56px; --s64:64px; --s80:80px; --s96:96px; --s128:128px;
+      --black:       #000000;
+      --surface-1:   #0A0A0A;
+      --surface-2:   #111111;
+      --surface-3:   #181818;
+      --border:      #1C1C1C;
+      --border-dim:  #222222;
+      --green:       #00FF88;
+      --green-dim:   #00CC6A;
+      --green-glow:  rgba(0,255,136,0.12);
+      --green-faint: rgba(0,255,136,0.05);
+      --muted:       #888888;
+      --muted-2:     #BBBBBB;
+      --white:       #FFFFFF;
+      --font-mono:   'JetBrains Mono', 'Menlo', monospace;
+      --font-body:   'Inter', system-ui, sans-serif;
     }
 
     /* ─── Reset ──────────────────────────────────────────────────── */
@@ -40,7 +33,7 @@
     html { font-size: 16px; scroll-behavior: smooth; }
     body {
       font-family: var(--font-body);
-      background: var(--void);
+      background: var(--black);
       color: var(--white);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
@@ -48,889 +41,747 @@
     }
 
     /* ─── Typography ─────────────────────────────────────────────── */
-    h1 { font-family: var(--font-mono); font-size: clamp(2rem, 5vw, 3.75rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; }
-    h2 { font-family: var(--font-mono); font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
-    h3 { font-size: 1.0625rem; font-weight: 600; }
-    p  { font-size: 1rem; line-height: 1.7; }
-
-    .eyebrow {
+    h1, h2, h3 {
       font-family: var(--font-mono);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
     }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800; }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 700; }
+    h3 { font-size: 1.15rem; font-weight: 700; }
+    p  { color: var(--muted-2); line-height: 1.75; }
 
-    .gold-line { display:block; width:40px; height:2px; background:var(--gold); margin: var(--s16) 0 var(--s28); }
+    a { color: var(--green); text-decoration: none; transition: opacity .15s; }
+    a:hover { opacity: .75; }
 
     /* ─── Layout ─────────────────────────────────────────────────── */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 var(--s24); }
-    .section    { padding: var(--s96) 0; }
-    .section-sm { padding: var(--s64) 0; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
 
-    /* ─── Free badge ─────────────────────────────────────────────── */
-    .free-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s8);
-      padding: var(--s8) var(--s20);
-      background: rgba(201,162,64,.12);
-      border: 1.5px solid rgba(201,162,64,.5);
-      border-radius: 100px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      cursor: default;
-    }
-    .free-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); animation: pulse 2s infinite; }
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:.5; transform:scale(1.3); }
-    }
-    @media (prefers-reduced-motion: reduce) { .free-dot { animation: none; } }
-
-    /* ─── NAV ────────────────────────────────────────────────────── */
+    /* ─── Navbar ─────────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(7,12,20,.88);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(0,0,0,0.85);
+      border-bottom: 1px solid var(--border);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      -webkit-backdrop-filter: blur(16px);
     }
     .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      height: 60px;
       display: flex; align-items: center; justify-content: space-between;
-      height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 var(--s24);
     }
-    .nav-logo { height: 26px; }
-    .nav-links { display: flex; align-items: center; gap: var(--s32); list-style: none; }
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 1.2rem; font-weight: 800;
+      color: var(--green);
+      letter-spacing: -0.02em;
+    }
+    .wordmark span { color: var(--muted); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
     .nav-links a {
-      font-size: 0.875rem; font-weight: 500; color: var(--platinum);
-      text-decoration: none; transition: color .2s;
+      font-family: var(--font-mono);
+      font-size: .8rem; font-weight: 500;
+      color: var(--white);
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: color .15s;
     }
     .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: .8rem; font-weight: 700;
+      color: var(--black) !important;
+      background: var(--green);
+      padding: 7px 18px; border-radius: 4px;
+      transition: background .15s !important;
+    }
+    .nav-cta:hover { background: var(--green-dim) !important; opacity: 1 !important; }
 
-    .btn-nav {
-      display: inline-flex; align-items: center; gap: var(--s8);
-      padding: var(--s8) var(--s20);
-      background: rgba(201,162,64,.12);
-      border: 1px solid rgba(201,162,64,.4);
-      color: var(--gold) !important;
-      border-radius: var(--radius-md);
-      font-size: 0.875rem; font-weight: 600;
-      text-decoration: none; transition: background .2s, border-color .2s;
+    /* ─── Hero ───────────────────────────────────────────────────── */
+    .hero {
+      padding-top: 160px; padding-bottom: 96px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: .35;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--black));
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: .75rem; font-weight: 500;
+      color: var(--green);
+      border: 1px solid rgba(0,255,136,.25);
+      background: var(--green-faint);
+      padding: 5px 12px; border-radius: 100px;
+      margin-bottom: 28px;
+      letter-spacing: .04em;
+    }
+    .hero-badge::before { content: '●'; font-size: .55rem; }
+    .hero h1 { color: var(--white); margin-bottom: 8px; }
+    .hero h1 .accent { color: var(--green); }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--muted-2);
+      max-width: 560px; margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: var(--font-mono);
+      font-size: .875rem; font-weight: 700;
+      background: var(--green); color: var(--black);
+      padding: 12px 28px; border-radius: 6px;
+      transition: background .15s, box-shadow .15s;
       cursor: pointer;
     }
-    .btn-nav:hover { background: rgba(201,162,64,.2); border-color: var(--gold); }
-
-    /* ─── HERO ───────────────────────────────────────────────────── */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding: calc(64px + var(--s64)) 0 var(--s96);
-      position: relative; overflow: hidden;
-      background: var(--void);
+    .btn-primary:hover {
+      background: var(--green-dim);
+      box-shadow: 0 0 24px rgba(0,255,136,.3);
+      opacity: 1;
     }
-    #hero::before {
-      content:'';
-      position:absolute; inset:0;
-      background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(201,162,64,.1) 0%, transparent 65%);
-      pointer-events:none;
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: .875rem; font-weight: 600;
+      color: var(--muted-2);
+      border: 1px solid var(--border-dim);
+      padding: 12px 24px; border-radius: 6px;
+      transition: color .15s, border-color .15s;
+      cursor: pointer;
     }
-    #hero::after {
-      content:'';
-      position:absolute;
-      bottom:0; left:0; right:0; height:1px;
-      background: linear-gradient(90deg, transparent, rgba(201,162,64,.3), transparent);
+    .btn-ghost:hover { color: var(--white); border-color: var(--muted); opacity: 1; }
+    .hero-free {
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      font-size: .78rem; color: var(--muted);
     }
+    .hero-free strong { color: var(--green); }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s64);
-      align-items: center;
-      position: relative; z-index: 1;
-    }
-    @media (max-width: 768px) {
-      .hero-grid { grid-template-columns: 1fr; gap: var(--s48); }
-      .hero-terminal { display: none; }
-    }
-
-    .hero-eyebrow { display: flex; align-items: center; gap: var(--s12); margin-bottom: var(--s24); }
-    .hero-eyebrow .eyebrow { color: var(--platinum); }
-
-    #hero h1 { color: var(--white); margin-bottom: var(--s20); }
-    #hero h1 .accent { color: var(--gold); }
-
-    .hero-sub {
-      font-size: 1.125rem; color: var(--platinum); line-height: 1.7;
-      margin-bottom: var(--s8); max-width: 520px;
-    }
-    .hero-sub-en {
-      font-size: 0.9375rem; color: var(--steel); font-style: italic;
-      margin-bottom: var(--s40); max-width: 520px;
-    }
-
-    .hero-ctas { display: flex; align-items: center; gap: var(--s16); flex-wrap: wrap; }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: var(--s8);
-      padding: var(--s16) var(--s32);
-      background: var(--gold); color: var(--void);
-      font-size: 0.9375rem; font-weight: 700; border-radius: var(--radius-md);
-      text-decoration: none; letter-spacing:.01em;
-      transition: opacity .2s, transform .15s; cursor: pointer;
-    }
-    .btn-primary:hover { opacity:.88; transform: translateY(-1px); }
-
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: var(--s8);
-      padding: var(--s16) var(--s32);
-      border: 1px solid rgba(255,255,255,.15); color: var(--platinum);
-      font-size: 0.9375rem; font-weight: 500; border-radius: var(--radius-md);
-      text-decoration: none; transition: border-color .2s, color .2s; cursor: pointer;
-    }
-    .btn-outline:hover { border-color: var(--platinum); color: var(--white); }
-
-    /* ─── Terminal ───────────────────────────────────────────────── */
-    .hero-terminal {
-      background: rgba(13,24,41,.8);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius-xl);
+    /* ─── Terminal Mockup ────────────────────────────────────────── */
+    .terminal-wrap {
+      margin-top: 64px;
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(201,162,64,.06);
+      background: var(--surface-1);
+      box-shadow: 0 0 60px rgba(0,255,136,.06), 0 24px 80px rgba(0,0,0,.6);
     }
     .terminal-bar {
-      display: flex; align-items: center; gap: var(--s8);
-      padding: var(--s12) var(--s16);
-      background: rgba(255,255,255,.03);
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: var(--surface-2);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
     }
-    .terminal-dot {
-      width:10px; height:10px; border-radius:50%;
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.r { background: #FF5F57; }
+    .t-dot.y { background: #FFBD2E; }
+    .t-dot.g { background: #28C840; }
+    .terminal-title {
+      margin-left: auto; margin-right: auto;
+      font-family: var(--font-mono); font-size: .72rem;
+      color: var(--muted);
     }
-    .terminal-dot.red   { background:#FF5F57; }
-    .terminal-dot.amber { background:#FEBC2E; }
-    .terminal-dot.green { background:#28C840; }
-    .terminal-title { font-family:var(--font-mono); font-size:.75rem; color:var(--steel); margin-left:auto; margin-right:auto; }
-
-    .terminal-body { padding: var(--s24) var(--s20); font-family:var(--font-mono); font-size:.8125rem; line-height:1.8; }
-    .t-prompt { color: var(--gold); }
-    .t-cmd    { color: var(--white); }
-    .t-out    { color: var(--platinum); }
-    .t-green  { color: #28C840; }
-    .t-dim    { color: var(--steel); }
+    .terminal-body { padding: 24px 28px; font-family: var(--font-mono); font-size: .82rem; line-height: 1.9; }
+    .t-prompt { color: var(--green); }
+    .t-cmd { color: var(--white); }
+    .t-out { color: var(--muted-2); }
+    .t-success { color: var(--green); }
     .t-cursor {
-      display: inline-block; width:.55em; height:1em;
-      background: var(--gold); vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
+      display: inline-block; width: 8px; height: 1em;
+      background: var(--green); vertical-align: text-bottom;
+      animation: blink 1.1s step-end infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    @media (prefers-reduced-motion: reduce) { .t-cursor { animation:none; } }
 
-    /* ─── STATS ──────────────────────────────────────────────────── */
-    #stats {
-      background: var(--empire);
-      border-top: 1px solid rgba(255,255,255,.06);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      padding: var(--s48) 0;
+    /* ─── Stats ──────────────────────────────────────────────────── */
+    .stats {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--s32);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      padding: 28px 24px;
+      border-right: 1px solid var(--border);
       text-align: center;
     }
-    @media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-
+    .stat-item:last-child { border-right: none; }
     .stat-num {
       font-family: var(--font-mono);
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 700; color: var(--gold);
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--green);
       line-height: 1;
+      margin-bottom: 6px;
     }
-    .stat-label { font-size: .875rem; color: var(--platinum); margin-top: var(--s8); }
+    .stat-label { font-size: .82rem; color: var(--muted); }
 
-    /* ─── INSTALL HERO (1 step) ──────────────────────────────────── */
-    #install-quick {
-      background: linear-gradient(135deg, rgba(13,24,41,1) 0%, rgba(7,12,20,1) 100%);
-      border-top: 1px solid rgba(255,255,255,.05);
-      border-bottom: 1px solid rgba(255,255,255,.05);
-      padding: var(--s80) 0;
-    }
-    .install-quick-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s64);
-      align-items: center;
-    }
-    @media (max-width: 768px) { .install-quick-inner { grid-template-columns: 1fr; gap: var(--s40); } }
-
-    #install-quick h2 { color: var(--white); margin-bottom: var(--s16); }
-    #install-quick p  { color: var(--platinum); font-size: 1.0625rem; }
-
-    .install-card {
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(201,162,64,.2);
-      border-radius: var(--radius-xl);
-      padding: var(--s32);
-    }
-    .install-step-num {
-      display: inline-flex; align-items:center; justify-content:center;
-      width:32px; height:32px; border-radius:50%;
-      background: var(--gold); color: var(--void);
-      font-family: var(--font-mono); font-size:.875rem; font-weight:700;
-      margin-bottom: var(--s16);
-    }
-    .install-card h3 { color: var(--white); font-size:1.125rem; margin-bottom: var(--s8); }
-    .install-card p  { color: var(--platinum); font-size:.9375rem; margin-bottom: var(--s20); }
-
-    .chat-bubble {
-      background: var(--empire);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius-lg);
-      border-bottom-left-radius: 4px;
-      padding: var(--s16) var(--s20);
+    /* ─── Section header ─────────────────────────────────────────── */
+    .section-tag {
       font-family: var(--font-mono);
-      font-size: .8125rem;
+      font-size: .72rem; font-weight: 600;
+      color: var(--green); letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title { color: var(--white); margin-bottom: 16px; }
+    .section-sub { max-width: 540px; }
+
+    /* ─── Install ────────────────────────────────────────────────── */
+    .install-card {
+      margin-top: 48px;
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface-1);
+    }
+    .install-step {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .install-step:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-size: .78rem; font-weight: 700;
+      color: var(--green);
+    }
+    .step-body { flex: 1; }
+    .step-title {
+      font-family: var(--font-mono);
+      font-size: 1rem; font-weight: 700;
+      color: var(--white); margin-bottom: 8px;
+    }
+    .step-desc { font-size: .9rem; color: var(--muted-2); margin-bottom: 12px; }
+    .code-block {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: .82rem;
       color: var(--white);
+      line-height: 1.7;
+    }
+    .code-block .c-green { color: var(--green); }
+    .code-block .c-muted { color: var(--muted-2); }
+
+    /* chat bubble */
+    .chat-bubble {
+      background: var(--surface-3);
+      border: 1px solid var(--border-dim);
+      border-radius: 0 12px 12px 12px;
+      padding: 14px 18px;
+      font-size: .88rem; color: var(--muted-2);
       line-height: 1.6;
+      max-width: 480px;
       position: relative;
     }
-    .chat-bubble .link { color: var(--gold); }
-
-    .install-note {
-      display: flex; align-items: flex-start; gap: var(--s12);
-      margin-top: var(--s20);
-      padding: var(--s16);
-      background: rgba(40,200,64,.06);
-      border: 1px solid rgba(40,200,64,.2);
-      border-radius: var(--radius-md);
+    .chat-bubble::before {
+      content: 'Você → Claude';
+      display: block;
+      font-family: var(--font-mono);
+      font-size: .7rem; color: var(--green);
+      margin-bottom: 6px;
     }
-    .install-note-icon { color: #28C840; flex-shrink:0; margin-top:1px; }
-    .install-note p { font-size:.875rem; color: var(--platinum); }
-    .install-note strong { color: var(--white); }
+    .chat-bubble em { color: var(--white); font-style: normal; }
 
-    /* ─── FEATURES ───────────────────────────────────────────────── */
-    #features {
-      background: var(--void);
-      padding: var(--s96) 0;
+    /* ─── Daily Use ──────────────────────────────────────────────── */
+    .usage-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; background: var(--border-dim);
+      border-radius: 10px; overflow: hidden;
+      margin-top: 48px;
     }
-    .features-header { max-width: 600px; margin-bottom: var(--s56); }
-    .features-header h2 { color: var(--white); margin-top: var(--s12); }
-    .features-header p  { color: var(--platinum); margin-top: var(--s16); font-size: 1.0625rem; }
+    .usage-block {
+      background: var(--surface-1);
+      padding: 32px;
+    }
+    .usage-block h3 { color: var(--white); margin-bottom: 12px; }
+    .usage-block p { font-size: .9rem; }
+    .tag-list {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 16px;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: .72rem; font-weight: 600;
+      color: var(--green);
+      border: 1px solid rgba(0,255,136,.2);
+      padding: 4px 10px; border-radius: 4px;
+    }
+    .golden-rule {
+      grid-column: 1 / -1;
+      background: var(--green-faint);
+      border-top: 2px solid var(--green);
+      padding: 28px 32px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .rule-icon {
+      font-family: var(--font-mono);
+      font-size: 1.5rem; color: var(--green);
+      flex-shrink: 0;
+    }
+    .golden-rule p {
+      font-size: .92rem; color: var(--muted-2);
+    }
+    .golden-rule strong { color: var(--white); }
 
+    /* ─── Features ───────────────────────────────────────────────── */
     .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--s20);
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; background: var(--border-dim);
+      border-radius: 10px; overflow: hidden;
+      margin-top: 48px;
     }
-    .feature-card {
-      background: rgba(13,24,41,.6);
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: var(--radius-lg);
-      padding: var(--s28) var(--s28);
-      transition: border-color .25s, transform .2s;
-      cursor: default;
+    .feat-card {
+      background: var(--surface-1);
+      padding: 32px;
+      transition: background .2s;
     }
-    .feature-card:hover {
-      border-color: rgba(201,162,64,.25);
-      transform: translateY(-2px);
+    .feat-card:hover { background: var(--surface-2); }
+    .feat-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--green-faint);
+      border: 1px solid rgba(0,255,136,.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
     }
-    @media (prefers-reduced-motion: reduce) { .feature-card:hover { transform: none; } }
-    .feature-icon {
-      width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center;
-      border-radius: var(--radius-md);
-      background: rgba(201,162,64,.1);
-      border: 1px solid rgba(201,162,64,.2);
-      margin-bottom: var(--s16);
-      color: var(--gold);
-    }
-    .feature-card h3 { color: var(--white); margin-bottom: var(--s8); font-size:1rem; }
-    .feature-card p  { color: var(--platinum); font-size:.9375rem; line-height:1.6; }
+    .feat-icon svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .feat-card h3 { color: var(--white); margin-bottom: 10px; }
+    .feat-card p { font-size: .88rem; }
 
-    /* ─── COMPARE ────────────────────────────────────────────────── */
-    #compare {
-      background: var(--empire);
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: var(--s96) 0;
-    }
-    .compare-header { text-align: center; max-width: 560px; margin: 0 auto var(--s56); }
-    .compare-header h2 { color: var(--white); margin-top: var(--s12); }
-    .compare-header p  { color: var(--platinum); margin-top: var(--s16); }
-
+    /* ─── Compare ────────────────────────────────────────────────── */
     .compare-table {
-      width: 100%; border-collapse: collapse; border-radius: var(--radius-lg); overflow: hidden;
+      width: 100%; border-collapse: collapse;
+      margin-top: 48px;
+      border-radius: 10px; overflow: hidden;
     }
     .compare-table th {
-      padding: var(--s20) var(--s24);
-      font-family: var(--font-mono); font-size: .8125rem; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-      background: rgba(255,255,255,.04);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      text-align: left;
+      font-family: var(--font-mono);
+      font-size: .78rem; font-weight: 700;
+      text-align: left; padding: 16px 24px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
     }
-    .compare-table th.col-with { color: var(--gold); }
-    .compare-table th.col-without { color: #AAB4BE; }
+    .compare-table th:first-child { color: var(--muted-2); }
+    .compare-table th.col-yes { color: var(--green); }
+    .compare-table th.col-no  { color: var(--muted); }
     .compare-table td {
-      padding: var(--s16) var(--s24);
-      font-size: .9375rem;
-      border-bottom: 1px solid rgba(255,255,255,.05);
-      vertical-align: middle;
+      padding: 14px 24px;
+      font-size: .88rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-1);
+      color: var(--white);
     }
     .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table td:first-child { color: var(--platinum); font-size:.875rem; }
-    .compare-table td.yes {
-      color: #28C840;
-      font-family: var(--font-mono); font-size:.875rem;
-    }
-    .compare-table td.no {
-      color: #AAB4BE;
-      font-family: var(--font-mono); font-size:.875rem;
-      text-decoration: line-through;
-      text-decoration-color: rgba(170,180,190,.35);
-    }
-    .compare-table tr:hover td { background: rgba(255,255,255,.02); }
+    .compare-table td.yes { color: var(--green); font-family: var(--font-mono); font-size: .82rem; }
+    .compare-table td.no  { color: #666; font-family: var(--font-mono); font-size: .82rem; text-decoration: line-through; text-decoration-color: #444; }
 
-    /* ─── FINAL CTA ──────────────────────────────────────────────── */
-    #cta-final {
-      background: var(--void);
-      padding: var(--s96) 0;
+    /* ─── Community ──────────────────────────────────────────────── */
+    .community-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 48px;
       text-align: center;
+      margin-top: 48px;
       position: relative; overflow: hidden;
     }
-    #cta-final::before {
-      content:'';
-      position:absolute; inset:0;
-      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,162,64,.07) 0%, transparent 70%);
-      pointer-events:none;
+    .community-card::before {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(0,255,136,.06) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .cta-final-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
-    #cta-final .free-pill { margin-bottom: var(--s24); }
-    #cta-final h2 { color: var(--white); margin-bottom: var(--s16); }
-    #cta-final p  { color: var(--platinum); font-size: 1.0625rem; margin-bottom: var(--s40); }
-    .cta-final-btns { display: flex; justify-content: center; gap: var(--s16); flex-wrap: wrap; }
+    .community-card h2 { color: var(--white); margin-bottom: 16px; }
+    .community-card p { max-width: 480px; margin: 0 auto 32px; font-size: .95rem; }
+    .gh-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .gh-badge {
+      font-family: var(--font-mono);
+      font-size: .72rem; font-weight: 600;
+      color: var(--muted-2);
+      border: 1px solid var(--border-dim);
+      background: var(--surface-2);
+      padding: 5px 12px; border-radius: 4px;
+    }
 
-    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    /* ─── CTA ────────────────────────────────────────────────────── */
+    .cta-section {
+      text-align: center;
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+    .cta-section h2 { color: var(--white); margin-bottom: 16px; }
+    .cta-section p { margin: 0 auto 36px; max-width: 440px; }
+    .cta-note {
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: .75rem; color: var(--muted);
+    }
+    .cta-note strong { color: var(--green); }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
     footer {
-      background: rgba(0,0,0,.4);
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding: var(--s40) 0;
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
     }
     .footer-inner {
+      max-width: 1080px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: var(--s20);
+      flex-wrap: wrap; gap: 16px;
     }
-    .footer-logo { height: 22px; opacity: .7; }
-    .footer-links { display:flex; align-items:center; gap:var(--s24); list-style:none; }
+    footer .wordmark { font-size: 1rem; }
+    .footer-links { display: flex; gap: 24px; }
     .footer-links a {
-      font-size:.875rem; color:var(--steel); text-decoration:none; transition: color .2s;
-    }
-    .footer-links a:hover { color: var(--platinum); }
-    .footer-copy { font-size:.75rem; color:var(--steel); font-family: var(--font-mono); }
-
-    /* ─── Usage examples ────────────────────────────────────────── */
-    .usage-example { display: flex; flex-direction: column; gap: var(--s10); }
-    .usage-label {
       font-family: var(--font-mono);
-      font-size: .6875rem; font-weight: 600;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--steel);
-      padding-left: var(--s4);
+      font-size: .75rem; color: var(--muted);
+      transition: color .15s;
     }
-    :root { --s10: 10px; }
-
-    /* ─── Golden rule box ────────────────────────────────────────── */
-    .golden-rule-box {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--s20);
-      background: rgba(201,162,64,.06);
-      border: 1.5px solid rgba(201,162,64,.25);
-      border-radius: var(--radius-lg);
-      padding: var(--s28) var(--s28);
-    }
-    .golden-rule-icon {
-      flex-shrink: 0;
-      width: 40px; height: 40px;
-      border-radius: var(--radius-md);
-      background: rgba(201,162,64,.1);
-      display: flex; align-items: center; justify-content: center;
-      margin-top: 2px;
-    }
-    .golden-rule-title {
+    .footer-links a:hover { color: var(--white); opacity: 1; }
+    .footer-copy {
       font-family: var(--font-mono);
-      font-size: .6875rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: var(--s8);
-    }
-    .golden-rule-text {
-      font-size: .9375rem; color: var(--platinum); line-height: 1.7;
-    }
-    @media (max-width: 640px) {
-      .golden-rule-box { flex-direction: column; }
+      font-size: .72rem; color: var(--muted);
     }
 
-    /* ─── SVG Icons helper ───────────────────────────────────────── */
-    svg { display:block; }
-
-    /* ─── Spacing utility ────────────────────────────────────────── */
-    .mt-s { margin-top: var(--s16); }
-    :root { --s28: 28px; }
-
-    /* ─── Responsive nav ─────────────────────────────────────────── */
+    /* ─── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      #community .container > div { grid-template-columns: 1fr !important; gap: var(--s40) !important; }
-    }
-    @media (max-width: 640px) {
-      .nav-links li:not(:last-child) { display: none; }
-      .hero-ctas { flex-direction: column; align-items: flex-start; }
-      .cta-final-btns { flex-direction: column; align-items: center; }
+      .nav-links { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .usage-grid { grid-template-columns: 1fr; }
+      .compare-table { font-size: .8rem; }
+      .compare-table td, .compare-table th { padding: 12px 14px; }
+      .community-card { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ─── NAV ─────────────────────────────────────────────────────── -->
 <nav>
   <div class="nav-inner">
-    <img src="assets/logo-dark.png" alt="Empire Business" class="nav-logo" />
-    <ul class="nav-links">
-      <li><a href="#install-quick">Instalar</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#compare">Comparar</a></li>
-      <li><a href="#community">Contribuir</a></li>
-      <li>
-        <a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener" class="btn-nav">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          GitHub
-        </a>
-      </li>
-    </ul>
+    <span class="wordmark">OMNX<span>.</span>code</span>
+    <div class="nav-links">
+      <a href="#install">Instalar</a>
+      <a href="#features">Features</a>
+      <a href="#community">Comunidade</a>
+      <a href="https://github.com/Empire-Business/omnx-code" target="_blank" rel="noopener" class="nav-cta">GitHub →</a>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<section id="hero">
+<!-- ─── HERO ─────────────────────────────────────────────────────── -->
+<section class="hero">
   <div class="container">
-    <div class="hero-grid">
-      <div>
-        <div class="hero-eyebrow">
-          <div class="free-pill">
-            <span class="free-dot"></span>
-            Grátis para sempre · Free forever
-          </div>
-        </div>
+    <div class="hero-badge">Skill gratuita para Claude Code</div>
+    <h1>
+      O Claude que<br/>
+      <span class="accent">não inventa nada</span><br/>
+      fora das suas regras.
+    </h1>
+    <p class="hero-sub">
+      OMNX Code é uma skill que instala método, segurança e documentação automática
+      em qualquer app React + TypeScript + Supabase. Toda ação visível. Zero código morto.
+    </p>
+    <div class="hero-actions">
+      <a href="#install" class="btn-primary">Instalar grátis</a>
+      <a href="https://github.com/Empire-Business/omnx-code" target="_blank" rel="noopener" class="btn-ghost">Ver no GitHub</a>
+    </div>
+    <p class="hero-free"><strong>100% gratuito</strong> e open source — para sempre.</p>
 
-        <h1>Vibe coding<br/>com <span class="accent">método</span><br/>e segurança.</h1>
-
-        <p class="hero-sub">
-          Uma skill gratuita para Claude Code que instala estrutura, documentação viva e auditoria de segurança automática em qualquer projeto.
-        </p>
-        <p class="hero-sub-en">
-          A free Claude Code skill that sets up structure, living docs and security auditing in any project — automatically.
-        </p>
-
-        <div class="hero-ctas">
-          <a href="#install-quick" class="btn-primary">
-            Instalar agora — é grátis
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener" class="btn-outline">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            Ver no GitHub
-          </a>
-        </div>
+    <div class="terminal-wrap">
+      <div class="terminal-bar">
+        <span class="t-dot r"></span>
+        <span class="t-dot y"></span>
+        <span class="t-dot g"></span>
+        <span class="terminal-title">claude — omnx-code</span>
       </div>
-
-      <!-- Terminal mockup -->
-      <div class="hero-terminal">
-        <div class="terminal-bar">
-          <span class="terminal-dot red"></span>
-          <span class="terminal-dot amber"></span>
-          <span class="terminal-dot green"></span>
-          <span class="terminal-title">claude — meu-projeto</span>
-        </div>
-        <div class="terminal-body">
-          <div><span class="t-prompt">></span> <span class="t-cmd">/empire-vibe-coding</span></div>
-          <br/>
-          <div><span class="t-green">✔</span> <span class="t-out">Detectando estado do projeto...</span></div>
-          <div><span class="t-dim">  → primeira execução encontrada</span></div>
-          <br/>
-          <div><span class="t-green">✔</span> <span class="t-out">Task 1: Criando .empire/state.json</span></div>
-          <div><span class="t-green">✔</span> <span class="t-out">Task 2: Instalando CLAUDE.md</span></div>
-          <div><span class="t-green">✔</span> <span class="t-out">Task 3: Instalando /security-auditor v1.5</span></div>
-          <div><span class="t-green">✔</span> <span class="t-out">Task 4: Setup concluído</span></div>
-          <br/>
-          <div><span class="t-out">✅ Pronto para codar com método.</span></div>
-          <div><span class="t-dim">   stack: React · TS · Supabase · Vercel</span></div>
-          <br/>
-          <div><span class="t-prompt">></span> <span class="t-cursor"></span></div>
-        </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">›</span> <span class="t-cmd">/omnx-code adicionar autenticação com Supabase</span></div>
+        <div class="t-out">✓ Lendo CLAUDE.md do projeto...</div>
+        <div class="t-out">✓ Criando tasks antes de qualquer ação...</div>
+        <div class="t-success">  Task 1: Verificar tabela auth.users existente</div>
+        <div class="t-success">  Task 2: Criar hook useAuth com Context API</div>
+        <div class="t-success">  Task 3: Proteger rotas no React Router</div>
+        <div class="t-success">  Task 4: Configurar RLS policies no Supabase</div>
+        <div class="t-success">  Task 5: Documentar decisões em docs/AUTH.md</div>
+        <div class="t-out">Seguindo stack obrigatória: React 18 + TS strict + Supabase</div>
+        <div><span class="t-prompt">›</span> <span class="t-cursor"></span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<section id="stats">
+<!-- ─── STATS ─────────────────────────────────────────────────────── -->
+<div class="stats">
   <div class="container">
     <div class="stats-grid">
-      <div>
-        <div class="stat-num" data-target="0">0</div>
-        <div class="stat-label">Configuração manual</div>
+      <div class="stat-item">
+        <div class="stat-num">0</div>
+        <div class="stat-label">código morto tolerado</div>
       </div>
-      <div>
-        <div class="stat-num" data-target="100">0<span>%</span></div>
-        <div class="stat-label">Tasks visíveis sempre</div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">das ações com task visível</div>
       </div>
-      <div>
-        <div class="stat-num" data-target="27">0</div>
-        <div class="stat-label">Categorias de segurança auditadas</div>
+      <div class="stat-item">
+        <div class="stat-num">1</div>
+        <div class="stat-label">passo para instalar</div>
       </div>
-      <div>
-        <div class="stat-num" data-target="1">0</div>
-        <div class="stat-label">Comando para instalar tudo</div>
+      <div class="stat-item">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">projetos, grátis</div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- INSTALL — 1 STEP -->
-<section id="install-quick">
+<!-- ─── INSTALL ───────────────────────────────────────────────────── -->
+<section id="install">
   <div class="container">
-    <div class="install-quick-inner">
-      <div>
-        <span class="eyebrow">Instalação</span>
-        <h2 style="color:var(--white); margin-top:var(--s12);">Um único passo.<br/>O Claude faz o resto.</h2>
-        <p style="color:var(--platinum); margin-top:var(--s16); font-size:1.0625rem;">
-          Não precisa de terminal, npm, ou configuração. Manda o link do GitHub pro Claude Code e pede pra ele instalar a skill globalmente. É só isso.
-        </p>
-        <p style="color:var(--steel); font-size:.9375rem; font-style:italic; margin-top:var(--s8);">
-          No terminal, no npm, no config needed. Just send the GitHub link to Claude Code and ask him to install the skill globally.
-        </p>
-      </div>
-      <div>
-        <div class="install-card">
-          <div class="install-step-num">1</div>
-          <h3>Mande esta mensagem pro Claude Code</h3>
-          <p>Abra qualquer projeto no Claude Code e cole a mensagem abaixo:</p>
-          <div class="chat-bubble">
-            Instale globalmente a skill empire-vibe-coding a partir deste repositório:<br/>
-            <span class="link">https://github.com/Empire-Business/empire-vibe-coding</span>
-          </div>
-          <div class="install-note">
-            <svg class="install-note-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" stroke="#28C840" stroke-width="1.5"/><path d="M8 7v4M8 5.5v.5" stroke="#28C840" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <p><strong>O Claude clona o repo, instala a skill em ~/.claude/skills/ e já ativa.</strong> Depois é só digitar /empire-vibe-coding em qualquer projeto.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p class="section-tag">// instalação</p>
+    <h2 class="section-title">1 passo.<br/>Claude faz o resto.</h2>
+    <p class="section-sub">
+      Não precisa de terminal. Não precisa de npm. Só manda o link pro Claude e ele instala tudo sozinho.
+    </p>
 
-    <!-- Regra de ouro -->
-    <div style="margin-top:var(--s48); border-top:1px solid rgba(255,255,255,.06); padding-top:var(--s48);">
-      <div style="text-align:center; max-width:640px; margin:0 auto var(--s40);">
-        <span class="eyebrow">Como usar no dia a dia</span>
-        <h2 style="color:var(--white); margin-top:var(--s12);">Chame sempre que quiser algo novo no app.</h2>
-        <p style="color:var(--platinum); margin-top:var(--s16); font-size:1.0625rem;">
-          A skill lê o seu <code style="font-family:var(--font-mono); font-size:.9em; color:var(--gold)">CLAUDE.md</code> antes de agir. Isso garante que o Claude segue <em>suas</em> regras, stack e arquitetura — e não inventa nada por conta própria.
-        </p>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:var(--s16); margin-bottom:var(--s40);">
-
-        <div class="usage-example">
-          <div class="usage-label">Quero uma nova feature</div>
-          <div class="chat-bubble">
-            /empire-vibe-coding<br/>
-            <span style="color:var(--platinum);">Crie uma página de perfil do usuário com foto e bio</span>
-          </div>
-        </div>
-
-        <div class="usage-example">
-          <div class="usage-label">Quero refatorar algo</div>
-          <div class="chat-bubble">
-            /empire-vibe-coding<br/>
-            <span style="color:var(--platinum);">Refatore o módulo de autenticação para usar Zustand</span>
-          </div>
-        </div>
-
-        <div class="usage-example">
-          <div class="usage-label">Quero remover algo</div>
-          <div class="chat-bubble">
-            /empire-vibe-coding<br/>
-            <span style="color:var(--platinum);">Remova o módulo de chat — não vamos mais usar</span>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="golden-rule-box">
-        <div class="golden-rule-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.09 4.26L17 7.27l-3.5 3.41.83 4.82L10 13.27l-4.33 2.23.83-4.82L3 7.27l4.91-.71L10 2Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div>
-          <p class="golden-rule-title">Regra de ouro</p>
-          <p class="golden-rule-text">
-            Sempre comece qualquer pedido importante com <code style="font-family:var(--font-mono); font-size:.9em; color:var(--gold)">/empire-vibe-coding</code>. Sem a skill, o Claude age livremente — pode criar arquivos fora da estrutura, ignorar a stack definida e acumular código sem documentar. Com a skill ativada, ele lê o CLAUDE.md primeiro e só age dentro do que você definiu.
+    <div class="install-card">
+      <div class="install-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Mande o link pro Claude e peça pra instalar</div>
+          <p class="step-desc">
+            Abra o Claude Code, cole a mensagem abaixo e envie. O Claude vai instalar a skill globalmente por conta própria.
           </p>
-          <p class="golden-rule-text" style="margin-top:var(--s8); color:var(--steel); font-style:italic;">
-            Always start any important request with /empire-vibe-coding. Without it, Claude acts freely — it may create files outside your structure, ignore the defined stack, and pile up undocumented code.
-          </p>
+          <div class="chat-bubble">
+            Instale globalmente a skill omnx-code a partir deste repositório: <em>https://github.com/Empire-Business/omnx-code</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="install-step">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <div class="step-title">Pronto — use em qualquer projeto</div>
+          <p class="step-desc">A skill está instalada em <code style="font-family:var(--font-mono);font-size:.82rem;color:var(--green)">~/.claude/skills/omnx-code</code>. Para ativar em um projeto:</p>
+          <div class="code-block">
+            <span class="c-green">/omnx-code</span> <span class="c-muted">começa um projeto novo</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- ─── DAILY USE ─────────────────────────────────────────────────── -->
+<section id="uso">
+  <div class="container">
+    <p class="section-tag">// uso diário</p>
+    <h2 class="section-title">Chame a skill<br/>sempre que for codar algo novo.</h2>
+    <p class="section-sub">
+      Cada vez que você iniciar uma feature, refatorar ou documentar algo importante,
+      chame <code style="font-family:var(--font-mono);color:var(--green);font-size:.9rem">/omnx-code</code> antes. Isso garante que o Claude vai seguir as suas regras
+      — e não inventar nada por conta própria.
+    </p>
+
+    <div class="usage-grid">
+      <div class="usage-block">
+        <h3>Quando usar</h3>
+        <p>Chame a skill antes de qualquer ação que importe para o seu app.</p>
+        <div class="tag-list">
+          <span class="tag">/omnx-code nova feature</span>
+          <span class="tag">/omnx-code refatorar auth</span>
+          <span class="tag">/omnx-code auditar segurança</span>
+          <span class="tag">/omnx-code documentar API</span>
+          <span class="tag">/omnx-code deletar componente</span>
+        </div>
+      </div>
+      <div class="usage-block">
+        <h3>O que a skill garante</h3>
+        <p>Antes de codar qualquer coisa, o Claude lê o CLAUDE.md do projeto e cria tasks visíveis. Nenhuma ação ocorre sem que você veja o plano primeiro.</p>
+        <div class="tag-list">
+          <span class="tag">tasks obrigatórias</span>
+          <span class="tag">CLAUDE.md como lei</span>
+          <span class="tag">stack validada</span>
+          <span class="tag">docs atualizados</span>
+        </div>
+      </div>
+      <div class="golden-rule">
+        <div class="rule-icon">//</div>
+        <p>
+          <strong>Regra de ouro:</strong> o Claude nunca começa a codar sem antes mostrar o plano.
+          Se ele tentou fazer algo sem criar tasks — chame <code style="font-family:var(--font-mono);color:var(--green)">/omnx-code</code> e recomece.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ──────────────────────────────────────────────────── -->
 <section id="features">
   <div class="container">
-    <div class="features-header">
-      <span class="eyebrow">O que você ganha</span>
-      <h2 style="color:var(--white); margin-top:var(--s12);">Tudo que falta no vibe coding padrão.</h2>
-      <p>Sem framework, o Claude esquece o contexto, deixa código morto, ignora segurança. Com empire-vibe-coding, cada ação tem método.</p>
-    </div>
-    <div class="features-grid">
+    <p class="section-tag">// features</p>
+    <h2 class="section-title">Tudo que um projeto<br/>sério precisa por padrão.</h2>
 
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <h3>CLAUDE.md automático</h3>
-        <p>Instala um <code style="font-family:var(--font-mono); font-size:.85em; color:var(--gold)">CLAUDE.md</code> padronizado no seu projeto. Se você já tem um, faz merge inteligente — sem apagar nada.</p>
+        <p>Instala ou mescla o template de CLAUDE.md no seu projeto sem destruir o que você já escreveu.</p>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 7v6l7 5 7-5V7l-7-5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
-        <h3>Segurança nativa</h3>
-        <p>Instala e mantém a skill <code style="font-family:var(--font-mono); font-size:.85em; color:var(--gold)">/security-auditor</code> atualizada globalmente. 27 categorias auditadas antes de cada deploy.</p>
+        <h3>Tasks 100% visíveis</h3>
+        <p>Toda ação é precedida de um plano. O Claude nunca executa nada sem que você veja cada etapa antes.</p>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 5h12M4 10h8M4 15h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <h3>Tasks 100% do tempo</h3>
-        <p>Antes de qualquer ação, cria tasks visíveis. Você sempre sabe exatamente o que o Claude está fazendo — e pode pausar ou redirecionar.</p>
+        <h3>Security Auditor integrado</h3>
+        <p>Instala e mantém a skill /security-auditor atualizada. Auditorias de RLS, auth e OWASP a um comando.</p>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M7 8h6M7 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
-        <h3>Documentação viva</h3>
-        <p>Toda doc vai para <code style="font-family:var(--font-mono); font-size:.85em; color:var(--gold)">docs/</code>. O CLAUDE.md é um índice. Ao remover código, a doc morre junto — zero lixo acumulado.</p>
+        <h3>Sem código morto</h3>
+        <p>Ao remover uma feature, a skill garante que código, docs e imports relacionados também sejam deletados.</p>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v3M10 14v3M3 10h3M14 10h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h3>Stack validada</h3>
+        <p>React 18 + TypeScript strict + Vite + Tailwind + shadcn/ui + Supabase + Vercel. Nenhuma dependência fora da stack sem aprovação explícita.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </div>
         <h3>Auto-atualização</h3>
-        <p>Peça "verifique atualizações" — a skill faz <code style="font-family:var(--font-mono); font-size:.85em; color:var(--gold)">git pull</code> em si mesma e no security-auditor e reporta o que mudou.</p>
+        <p>Peça ao Claude para verificar atualizações — a skill faz git pull em si mesma e no security-auditor automaticamente.</p>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l-3 6 3 6M14 4l3 6-3 6M11 3l-2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <h3>Stack definida</h3>
-        <p>React 18 + TypeScript + Vite + Tailwind + shadcn/ui + Supabase + Vercel. Nenhuma decisão de arquitetura fica sem documentar.</p>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- COMPARE -->
-<section id="compare">
+<!-- ─── COMPARE ───────────────────────────────────────────────────── -->
+<section>
   <div class="container">
-    <div class="compare-header">
-      <span class="eyebrow">Comparativo</span>
-      <h2>Com e sem o framework</h2>
-      <p>O vibe coding sem estrutura funciona — até a segunda semana.</p>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th>Situação</th>
-            <th class="col-without">Sem empire-vibe-coding</th>
-            <th class="col-with">Com empire-vibe-coding</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Setup do projeto</td>
-            <td class="no">Manual, esquecido</td>
-            <td class="yes">Automático, padronizado</td>
-          </tr>
-          <tr>
-            <td>CLAUDE.md</td>
-            <td class="no">Não tem ou fica desatualizado</td>
-            <td class="yes">Instalado e mantido como índice</td>
-          </tr>
-          <tr>
-            <td>Auditoria de segurança</td>
-            <td class="no">Esquecida ou manual</td>
-            <td class="yes">Obrigatória antes de cada deploy</td>
-          </tr>
-          <tr>
-            <td>Visibilidade do Claude</td>
-            <td class="no">Executa sem avisar</td>
-            <td class="yes">Tasks criadas antes de cada ação</td>
-          </tr>
-          <tr>
-            <td>Documentação</td>
-            <td class="no">Dentro do código ou nenhuma</td>
-            <td class="yes">Em docs/, indexada no CLAUDE.md</td>
-          </tr>
-          <tr>
-            <td>Remoção de features</td>
-            <td class="no">Código e doc mortos acumulam</td>
-            <td class="yes">Código e doc removidos juntos</td>
-          </tr>
-          <tr>
-            <td>Atualização da skill</td>
-            <td class="no">Não existe</td>
-            <td class="yes">git pull automático sob demanda</td>
-          </tr>
-          <tr>
-            <td>Custo</td>
-            <td class="no">—</td>
-            <td class="yes" style="color:var(--gold); font-weight:700;">Grátis. Para sempre.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <p class="section-tag">// comparativo</p>
+    <h2 class="section-title">Com e sem OMNX Code.</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-yes">Com OMNX Code</th>
+          <th class="col-no">Sem OMNX Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Plano antes de codar</td>
+          <td class="yes">✓ tasks criadas antes de qualquer ação</td>
+          <td class="no">✗ claude age direto sem avisar</td>
+        </tr>
+        <tr>
+          <td>Documentação viva</td>
+          <td class="yes">✓ docs/ atualizado com cada mudança</td>
+          <td class="no">✗ docs ficam desatualizados ou não existem</td>
+        </tr>
+        <tr>
+          <td>Segurança automática</td>
+          <td class="yes">✓ /security-auditor sempre atualizado</td>
+          <td class="no">✗ auditoria manual, se lembrar</td>
+        </tr>
+        <tr>
+          <td>Stack consistente</td>
+          <td class="yes">✓ nenhuma dependência nova sem aprovação</td>
+          <td class="no">✗ claude instala o que quiser</td>
+        </tr>
+        <tr>
+          <td>Código removido = tudo removido</td>
+          <td class="yes">✓ imports, docs e testes deletados junto</td>
+          <td class="no">✗ lixo acumula em silêncio</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
-<!-- COMUNIDADE -->
-<section id="community" style="background:var(--void); padding:var(--s96) 0; border-top:1px solid rgba(255,255,255,.05);">
+<!-- ─── COMMUNITY ─────────────────────────────────────────────────── -->
+<section id="community">
   <div class="container">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--s64); align-items:center;">
-
-      <div>
-        <span class="eyebrow">Open source</span>
-        <h2 style="color:var(--white); margin-top:var(--s12);">Construído pela comunidade,<br/>para a comunidade.</h2>
-        <span class="gold-line"></span>
-        <p style="color:var(--platinum); font-size:1.0625rem; margin-bottom:var(--s16);">
-          O empire-vibe-coding é completamente aberto. Se você usa no dia a dia e quer melhorar o processo — seja uma regra nova no CLAUDE.md, uma checklist de segurança, ou uma melhoria no fluxo — sua contribuição é bem-vinda.
-        </p>
-        <p style="color:var(--steel); font-size:.9375rem; font-style:italic; margin-bottom:var(--s32);">
-          Empire Vibe Coding is fully open source. If you use it daily and want to improve the process — new rules, security checklists, flow improvements — your contribution is welcome.
-        </p>
-        <a href="https://github.com/Empire-Business/empire-vibe-coding/pulls" target="_blank" rel="noopener" class="btn-primary">
-          Abrir um PR no GitHub
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+    <p class="section-tag">// open source</p>
+    <h2 class="section-title" style="text-align:center">Aberto à comunidade.</h2>
+    <div class="community-card">
+      <h2>Ajude a evoluir o processo.</h2>
+      <p>
+        OMNX Code é open source e cresce com contribuições reais de quem usa no dia a dia.
+        Encontrou um padrão melhor? Faltou alguma coisa? Abra um PR — avaliamos tudo.
+      </p>
+      <div class="gh-badges">
+        <span class="gh-badge">MIT License</span>
+        <span class="gh-badge">PRs welcome</span>
+        <span class="gh-badge">Stack: React + TS + Supabase</span>
+        <span class="gh-badge">Claude Code skill</span>
       </div>
-
-      <div style="display:flex; flex-direction:column; gap:var(--s16);">
-
-        <div style="background:rgba(13,24,41,.7); border:1px solid rgba(255,255,255,.07); border-radius:var(--radius-lg); padding:var(--s24);">
-          <div style="display:flex; align-items:center; gap:var(--s12); margin-bottom:var(--s12);">
-            <div style="width:36px;height:36px;border-radius:50%;background:rgba(201,162,64,.1);border:1px solid rgba(201,162,64,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L10 6h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5L8 1Z" stroke="var(--gold)" stroke-width="1.2" stroke-linejoin="round"/></svg>
-            </div>
-            <p style="font-family:var(--font-mono); font-size:.75rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--gold);">Como contribuir</p>
-          </div>
-          <ol style="list-style:none; display:flex; flex-direction:column; gap:var(--s10); padding:0;">
-            <li style="display:flex;gap:var(--s12);align-items:flex-start;">
-              <span style="font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;">01</span>
-              <p style="font-size:.9rem;color:var(--platinum);">Faça um fork do repositório no GitHub</p>
-            </li>
-            <li style="display:flex;gap:var(--s12);align-items:flex-start;">
-              <span style="font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;">02</span>
-              <p style="font-size:.9rem;color:var(--platinum);">Aplique sua melhoria no SKILL.md, no modelo-claude.md ou no security-auditor</p>
-            </li>
-            <li style="display:flex;gap:var(--s12);align-items:flex-start;">
-              <span style="font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;">03</span>
-              <p style="font-size:.9rem;color:var(--platinum);">Abra um PR descrevendo o que muda e por quê — iremos avaliar e dar feedback</p>
-            </li>
-          </ol>
-        </div>
-
-        <div style="background:rgba(40,200,64,.04); border:1px solid rgba(40,200,64,.15); border-radius:var(--radius-md); padding:var(--s16) var(--s20); display:flex; align-items:flex-start; gap:var(--s12);">
-          <svg style="flex-shrink:0;margin-top:2px;" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" stroke="#28C840" stroke-width="1.5"/><path d="M5.5 8l2 2 3-3" stroke="#28C840" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p style="font-size:.875rem; color:var(--platinum);">Todo PR aprovado entra na próxima versão da skill — disponível para toda a comunidade via <code style="font-family:var(--font-mono);font-size:.85em;color:var(--gold);">git pull</code>.</p>
-        </div>
-
-      </div>
+      <a href="https://github.com/Empire-Business/omnx-code" target="_blank" rel="noopener" class="btn-primary">
+        Ver repositório no GitHub
+      </a>
     </div>
   </div>
 </section>
 
-<!-- CTA FINAL -->
-<section id="cta-final">
+<!-- ─── CTA ───────────────────────────────────────────────────────── -->
+<section class="cta-section">
   <div class="container">
-    <div class="cta-final-inner">
-      <div class="free-pill" style="margin: 0 auto var(--s24);">
-        <span class="free-dot"></span>
-        Open source · Grátis · Para sempre
-      </div>
-      <h2>Pronto para codar com método?</h2>
-      <p>Manda o link do GitHub pro Claude Code e ele instala tudo em menos de um minuto.</p>
-      <div class="cta-final-btns">
-        <a href="#install-quick" class="btn-primary">
-          Instalar agora — grátis
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener" class="btn-outline">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          Ver código no GitHub
-        </a>
-      </div>
-    </div>
+    <h2>Comece agora.<br/>É grátis.</h2>
+    <p>Mande o link pro Claude e ele instala tudo. Sem terminal. Sem npm. Sem configuração.</p>
+    <a href="#install" class="btn-primary">Ver como instalar</a>
+    <p class="cta-note"><strong>100% gratuito</strong> · open source · MIT</p>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ─── FOOTER ────────────────────────────────────────────────────── -->
 <footer>
-  <div class="container">
-    <div class="footer-inner">
-      <img src="assets/logo-dark.png" alt="Empire Business" class="footer-logo" />
-      <ul class="footer-links">
-        <li><a href="https://github.com/Empire-Business/empire-vibe-coding" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://github.com/Empire-Business/empire-vibe-coding/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
-        <li><a href="https://github.com/Empire-Business/security-auditor" target="_blank" rel="noopener">Security Auditor</a></li>
-      </ul>
-      <p class="footer-copy">v1.1 · MIT License · Empire Business</p>
+  <div class="footer-inner">
+    <span class="wordmark">OMNX<span>.</span>code</span>
+    <div class="footer-links">
+      <a href="https://github.com/Empire-Business/omnx-code" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/Empire-Business/omnx-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
+      <a href="https://github.com/Empire-Business/omnx-code/issues" target="_blank" rel="noopener">Issues</a>
     </div>
+    <span class="footer-copy">MIT License · OMNX</span>
   </div>
 </footer>
-
-<script>
-  /* Stat counter animation */
-  const counters = document.querySelectorAll('.stat-num[data-target]');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = parseInt(el.dataset.target, 10);
-      const suffix = el.querySelector('span') ? el.querySelector('span').outerHTML : '';
-      const duration = 1200;
-      const step = duration / target || duration;
-      let current = 0;
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) { el.innerHTML = target + suffix; observer.unobserve(el); return; }
-      const timer = setInterval(() => {
-        current += 1;
-        el.innerHTML = current + suffix;
-        if (current >= target) { el.innerHTML = target + suffix; clearInterval(timer); }
-      }, step);
-      observer.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c => observer.observe(c));
-</script>
 
 </body>
 </html>
