@@ -23,7 +23,7 @@ description: |
 
 | Campo | Valor |
 |-------|-------|
-| Versão da skill | **1.4** |
+| Versão da skill | **1.5** |
 | Security-auditor mínimo requerido | **v1.5** |
 | GitHub (esta skill) | https://github.com/Empire-Business/omnx-code |
 | GitHub (security-auditor) | https://github.com/Empire-Business/security-auditor |
@@ -78,7 +78,7 @@ Crie a pasta `.empire/` e o arquivo `state.json` se ainda não existirem:
 
 ```json
 {
-  "omnx_version": "1.4",
+  "omnx_version": "1.5",
   "setup_complete": false,
   "claude_md_installed": false,
   "claude_md_merged_at": null,
@@ -323,28 +323,138 @@ Quando `setup_complete: true` e o usuário pede qualquer coisa (codar, refatorar
 **1. Sempre criar tasks primeiro**
 Antes de qualquer ação, crie tasks com `TaskCreate` descrevendo cada etapa. Nunca execute sem tasks visíveis.
 
+**1.5. Sugerir, não forçar**
+Sempre que uma ação de Git pudesse ser arriscada ou não-ideal (como trabalhar em `main`), explique o risco e sugira a alternativa ao usuário. Não bloqueie automaticamente — deixe o usuário decidir. A regra é: informar o risco, esperar confirmação, executar.
+
 **2. Ler CLAUDE.md antes de começar**
 O `CLAUDE.md` é o ponto de entrada de todo projeto. Leia-o antes de qualquer decisão técnica. Não assuma nada que não esteja documentado lá.
 
-**3. Documentar em `docs/`, indexar no CLAUDE.md**
+**3. Fazer higiene Git antes de tocar no código**
+Antes de implementar qualquer funcionalidade, correção ou documentação, verifique:
+
+```bash
+git status --short
+git branch --show-current
+git remote get-url origin 2>/dev/null
+```
+
+Use essa checagem para decidir o fluxo:
+- Se houver mudanças locais não relacionadas ou ambíguas, pare e peça direção ao usuário. Não misture trabalho novo com alteração antiga.
+- Se estiver em `main` ou `master`, sugira ao usuário: "⚠️ Você está na branch '{branch_atual}'. Recomendo criar uma branch dedicada antes de prosseguir. Deseja que eu crie uma branch?" Aguarde confirmação antes de continuar.
+- Se já estiver em uma branch de tarefa compatível com o pedido atual, pode continuar nela. Se a branch atual não corresponder ao escopo, sugira criar outra branch.
+
+**4. Toda nova funcionalidade recomenda-se em branch separada**
+Para qualquer trabalho novo fora de setup e auto-atualização, recomenda-se usar branch dedicada. Isso inclui `feature`, `fix`, `docs`, `refactor`, testes e tarefas técnicas.
+
+Padrão de nome:
+
+```text
+feat/<slug-curto>
+fix/<slug-curto>
+docs/<slug-curto>
+refactor/<slug-curto>
+test/<slug-curto>
+chore/<slug-curto>
+```
+
+**Fluxo recomendado:**
+
+Ao iniciar trabalho novo em `main` ou `master`, informe ao usuário:
+
+```
+⚠️ Branch atual: {branch_atual}
+Para este tipo de trabalho, recomendo criar uma branch dedicada.
+Deseja que eu crie uma branch (ex: feat/{slug})? Responda com o slug desejado ou "sim" para sugestão automática.
+```
+
+Aguarde confirmação do usuário. Se ele recusar, prossiga com cuidado e documente no commit que o trabalho foi feito diretamente na branch principal.
+
+**5. GitHub em modo conservador (`local first`)**
+Por padrão, a skill pode:
+- Criar branch local
+- Editar arquivos
+- Gerar commits locais
+
+Por padrão, a skill não pode:
+- Fazer `git push`
+- Abrir PR
+- Fazer merge em branch compartilhada
+- Fazer rebase em branch compartilhada
+- Alterar remote
+
+Só faça escrita remota quando o usuário pedir explicitamente. Antes de qualquer ação remota, informe claramente qual branch será enviada e qual comando será executado.
+
+**6. Documentar commits com padrão obrigatório**
+Todo commit deve seguir `Conventional Commits` no assunto e usar corpo rico quando a mudança não for trivial.
+
+Formato obrigatório:
+
+```text
+<tipo>: <resumo curto>
+
+Contexto: <problema, motivação ou objetivo>
+Mudanças: <o que foi alterado de forma concreta>
+Impacto/Testes: <efeito esperado, riscos e como foi validado>
+```
+
+Tipos aceitos no assunto:
+- `feat`
+- `fix`
+- `docs`
+- `refactor`
+- `test`
+- `chore`
+
+Regras adicionais:
+- Não use mensagens genéricas como `update`, `ajustes`, `misc`, `wip` ou `temp`
+- Separe commits por unidade lógica quando isso não quebrar o fluxo
+- Se não houve teste, diga explicitamente em `Impacto/Testes`
+
+Exemplo bom:
+
+```text
+feat: adiciona onboarding guiado no dashboard
+
+Contexto: reduzir abandono na primeira sessão de uso
+Mudanças: cria fluxo inicial com tour, estado persistido e CTA final
+Impacto/Testes: validado com testes manuais no fluxo principal; sem impacto em usuários já onboarded
+```
+
+Exemplo ruim:
+
+```text
+update stuff
+```
+
+**7. Documentar em `docs/`, indexar no CLAUDE.md**
 - Toda documentação técnica vai para `docs/[NOME].md`
 - O `CLAUDE.md` é um índice enxuto — aponta para os docs, não os contém
 - Após criar ou atualizar qualquer doc, atualize o campo "Atualizado em" da tabela no CLAUDE.md
 
-**4. Sem código morto, sem documentação morta**
+**8. Sem código morto, sem documentação morta**
 Ao remover uma feature ou componente:
 - Delete o código
 - Delete o arquivo de doc relacionado em `docs/`
 - Remova a entrada correspondente no índice do CLAUDE.md
 - Remova imports, referências e testes que não servem mais
 
-**5. Seguir a stack obrigatória**
+**9. Seguir a stack obrigatória**
 React 18 + TypeScript strict + Vite + Tailwind + shadcn/ui + Supabase + Vercel. Não introduza dependências fora desta stack sem aprovar com o usuário e documentar a decisão em `docs/ARQUITETURA.md`.
 
-**6. Repositório GitHub sempre privado**
+**10. Repositório GitHub sempre privado**
 Nunca execute `gh repo edit --visibility public` nem qualquer variante que torne o repositório público. Se o usuário pedir explicitamente para tornar o repo público, explique o risco (exposição de variáveis de ambiente, chaves, segredos) e recuse-se. Oriente-o a fazer isso manualmente via GitHub Settings se ainda assim quiser. Ao criar qualquer repo novo durante o trabalho normal (fora do setup), aplique as mesmas regras da Task 4 do setup.
 
-**7. Seguir as fases do CLAUDE.md**
+**11. Operações perigosas de Git são proibidas por padrão**
+Não execute sem pedido explícito e contexto muito claro:
+- `git push --force`
+- `git reset --hard`
+- `git checkout -- <arquivo>`
+- `git clean -fd`
+- merge direto em `main` ou `master`
+
+Se alguma dessas ações parecer necessária, pare, explique o risco e peça direção.
+
+**12. Seguir as fases do CLAUDE.md**
 Se o projeto ainda não tem PRD, ROADMAP ou ARQUITETURA aprovados → não comece a codar. Siga a trilha obrigatória descrita no CLAUDE.md.
 
 ### Quando usar agentes em time
